@@ -30,7 +30,7 @@ const authControllerObject = {
         } else if (usernameExists) {
           const usernameError = {
             status: 400,
-            message: `This username '${username}' already exists!`,
+            extraDetails: `This username '${username}' already exists!`,
           };
           next(usernameError);
         }

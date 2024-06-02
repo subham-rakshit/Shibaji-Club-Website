@@ -51,7 +51,7 @@ function Header() {
             gradientDuoTone="purpleToPink"
             size="xs"
             className="font-[Inter]"
-            onClick={onClickLogout}
+            // onClick={onClickLogout}
           >
             Logout
           </Button>
