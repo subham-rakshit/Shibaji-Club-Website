@@ -35,7 +35,6 @@ function Register() {
   // Form submission handeler
   const signUpSumbitHandle = async (e) => {
     e.preventDefault();
-    // console.log(newUser);
 
     try {
       const apiUrl = "http://localhost:5000/api/auth/register";
