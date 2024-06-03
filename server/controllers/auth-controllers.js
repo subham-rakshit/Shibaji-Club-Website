@@ -45,12 +45,13 @@ const authControllerObject = {
           password,
           category,
         });
+        const { password: pass, ...rest } = userCreated._doc;
 
         //? We are just send a JSON message with JWT token (which is generated ny [generateToken() middleware in user-model.js file]) and userId for perticular user details to extract data.
         return res.status(201).json({
           message: "Registration successful!",
           jwt_token: await userCreated.generateToken(),
-          userId: userCreated._id.toString(),
+          userDetails: rest,
         });
       }
       //! **NOTE** : While new user data will store in database, before that we are hash the user's password (which is created in user-model.js file)
@@ -82,7 +83,9 @@ const authControllerObject = {
         );
 
         if (isPasswordValid) {
+          //* We are seperating password field from the userDetails object.
           const { password: pass, ...rest } = userExist._doc;
+
           return res.status(200).json({
             message: "Login successful!",
             jwt_token: await userExist.generateToken(),
