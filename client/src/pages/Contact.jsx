@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Button, Textarea, Label, Alert } from "flowbite-react";
+import { Button, Textarea, Label, Alert, Spinner } from "flowbite-react";
 import { Input } from "../components";
 
 import { FaUser, FaPhoneAlt, FaAddressBook } from "react-icons/fa";
@@ -15,10 +15,8 @@ function Contact() {
     address: "",
     message: "",
   });
-  const [alertMessage, setAlertMessage] = useState({
-    status: "",
-    alertMsg: "",
-  });
+
+  const [loading, setLoading] = useState(false);
 
   const handleInputs = (e) => {
     let name = e.target.name;
@@ -32,6 +30,7 @@ function Contact() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const apiUrl = "http://localhost:5000/api/form/contact-us";
     const options = {
@@ -48,10 +47,7 @@ function Contact() {
     console.log(data);
 
     if (response.ok === true) {
-      setAlertMessage({
-        status: 200,
-        alertMsg: data.message,
-      });
+      alert(data.message);
       setContactDetails({
         firstName: "",
         lastName: "",
@@ -60,17 +56,14 @@ function Contact() {
         address: "",
         message: "",
       });
+      setLoading(false);
     } else {
       if (response.status === 400) {
-        setAlertMessage({
-          status: 400,
-          alertMsg: data.message,
-        });
+        alert(data.message);
+        setLoading(false);
       } else {
-        setAlertMessage({
-          status: 500,
-          alertMsg: data.extraDetails,
-        });
+        alert(data.extraDetails);
+        setLoading(false);
       }
     }
   };
@@ -100,21 +93,6 @@ function Contact() {
                 Need assistance or information? Send us a message to our team
                 now
               </p>
-              {alertMessage.status === 200 && (
-                <Alert className="mt-5" color="success">
-                  {alertMessage.alertMsg}
-                </Alert>
-              )}
-              {alertMessage.status === 400 && (
-                <Alert className="mt-5" color="failure">
-                  {alertMessage.alertMsg}
-                </Alert>
-              )}
-              {alertMessage.status === 500 && (
-                <Alert className="mt-5" color="failure">
-                  {alertMessage.alertMsg}
-                </Alert>
-              )}
             </div>
 
             {/* Form header Left */}
@@ -217,8 +195,16 @@ function Contact() {
               gradientDuoTone="purpleToPink"
               className="w-full font-[Inter] sm:w-2/4 mt-8"
               type="submit"
+              disabled={loading}
             >
-              Send Message
+              {loading ? (
+                <>
+                  <Spinner size="sm" />
+                  <span className="pl-3">Loading ....</span>
+                </>
+              ) : (
+                "Send Message"
+              )}
             </Button>
           </form>
           {/* Main From */}
