@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Button, Textarea, Label } from "flowbite-react";
+import { Button, Textarea, Label, Alert } from "flowbite-react";
 import { Input } from "../components";
 
 import { FaUser, FaPhoneAlt, FaAddressBook } from "react-icons/fa";
@@ -14,6 +14,10 @@ function Contact() {
     phone: "",
     address: "",
     message: "",
+  });
+  const [alertMessage, setAlertMessage] = useState({
+    status: "",
+    alertMsg: "",
   });
 
   const handleInputs = (e) => {
@@ -39,19 +43,28 @@ function Contact() {
     };
 
     const response = await fetch(apiUrl, options);
+    // console.log(response);
     const data = await response.json();
+    console.log(data);
 
     if (response.ok === true) {
-      alert(data.message);
+      setAlertMessage({
+        status: 200,
+        alertMsg: data.message,
+      });
     } else {
       if (response.status === 400) {
-        alert(data.message);
+        setAlertMessage({
+          status: 400,
+          alertMsg: data.message,
+        });
       } else {
-        alert(data.extraDetails);
+        setAlertMessage({
+          status: 500,
+          alertMsg: data.extraDetails,
+        });
       }
     }
-
-    console.log(data);
   };
 
   return (
@@ -79,6 +92,21 @@ function Contact() {
                 Need assistance or information? Send us a message to our team
                 now
               </p>
+              {alertMessage.status === 200 && (
+                <Alert className="mt-5" color="success">
+                  {alertMessage.alertMsg}
+                </Alert>
+              )}
+              {alertMessage.status === 400 && (
+                <Alert className="mt-5" color="failure">
+                  {alertMessage.alertMsg}
+                </Alert>
+              )}
+              {alertMessage.status === 500 && (
+                <Alert className="mt-5" color="failure">
+                  {alertMessage.alertMsg}
+                </Alert>
+              )}
             </div>
 
             {/* Form header Left */}

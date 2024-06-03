@@ -23,7 +23,9 @@ const contactController = async (req, res, next) => {
           { $push: { message } },
           { useFindAndModify: false }
         );
-        res.status(201).json({ message: "Quarry successfully submitted" });
+        res.status(201).json({
+          message: "Congratulations! Your message has been sent successfully.",
+        });
       }
     } else {
       const createContactDetails = await ContactCollection.create({
@@ -35,7 +37,11 @@ const contactController = async (req, res, next) => {
         message,
       });
 
-      res.status(201).json({ message: "Quarry successfully submitted" });
+      res
+        .status(201)
+        .json({
+          message: "Congratulations! Your message has been sent successfully.",
+        });
     }
   } catch (err) {
     const catchError = {
