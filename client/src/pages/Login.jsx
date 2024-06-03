@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
 import { Alert, Button, Spinner } from "flowbite-react";
-import { Input } from "../components";
+import { Input, Auth } from "../components";
 import { IoMdMail } from "react-icons/io";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -149,7 +149,7 @@ function Login() {
 
           <Button
             gradientDuoTone="purpleToPink"
-            className="w-full sm:w-2/4 mt-8"
+            className="w-full mt-8"
             type="submit"
           >
             {loading ? (
@@ -161,6 +161,7 @@ function Login() {
               "Sign In"
             )}
           </Button>
+          <Auth />
           {error && (
             <Alert className="mt-5" color="failure">
               * {error}

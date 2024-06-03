@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Alert, Button, Label, Select, Spinner } from "flowbite-react";
-import { Input } from "../components";
+import { Input, Auth } from "../components";
 
 import { FaUser, FaPhoneAlt, FaAddressBook } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
@@ -219,7 +219,7 @@ function Register() {
           </div>
           <Button
             gradientDuoTone="purpleToPink"
-            className="w-full sm:w-2/4 mt-8"
+            className="w-full mt-8"
             type="submit"
           >
             {loading ? (
@@ -231,6 +231,7 @@ function Register() {
               "Sign Up"
             )}
           </Button>
+          <Auth />
           {error && (
             <Alert className="mt-5" color="failure">
               * {error}
