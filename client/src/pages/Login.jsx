@@ -2,9 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
-import { Button, Spinner } from "flowbite-react";
+import { Alert, Button, Spinner } from "flowbite-react";
 import { Input } from "../components";
 import { IoMdMail } from "react-icons/io";
+
+import { useDispatch, useSelector } from "react-redux";
+import {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+} from "../redux-slice/userSlice";
 
 function Login() {
   const [loginDetails, setLoginDetails] = useState({
@@ -12,9 +19,10 @@ function Login() {
     password: "",
   });
 
-  const [loading, setLoading] = useState(false);
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { loading, error } = useSelector((state) => state.user);
 
   const handleInputs = (e) => {
     const name = e.target.name;
@@ -28,9 +36,9 @@ function Login() {
 
   const submitFormHandle = async (e) => {
     e.preventDefault();
-    setLoading(true);
 
     try {
+      dispatch(signInStart());
       const apiUrl = "http://localhost:5000/api/auth/login";
       const options = {
         method: "POST",
@@ -49,14 +57,17 @@ function Login() {
           path: "/",
         });
         alert(data.message);
-        setLoading(false);
+        dispatch(signInSuccess(data.userDetails));
+        setLoginDetails({
+          email: "",
+          password: "",
+        });
         navigate("/");
       } else {
-        alert(data.extraDetails);
-        setLoading(false);
+        dispatch(signInFailure(data.extraDetails));
       }
     } catch (error) {
-      console.log(`Error :: submitFormHandle() in Login Page :: ${error}`);
+      dispatch(signInFailure(error.message));
     }
   };
 
@@ -69,7 +80,7 @@ function Login() {
   }, []);
 
   return (
-    <div className="w-full min-h-screen py-10 px-5 flex flex-col lg:flex-row justify-center items-center gap-5 md:gap-10">
+    <div className="w-full min-h-screen py-10 px-5 flex flex-col lg:flex-row justify-center items-center gap-5 md:gap-10 mt-[65px] lg:mt-[76px] border-black border-2">
       {/* Desktop Image */}
       <img
         src="/login-img-bck-remove.png"
@@ -150,6 +161,11 @@ function Login() {
               "Sign In"
             )}
           </Button>
+          {error && (
+            <Alert className="mt-5" color="failure">
+              * {error}
+            </Alert>
+          )}
         </form>
         {/* Main From */}
       </div>

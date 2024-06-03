@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Button, Label, Select, Spinner } from "flowbite-react";
+import { Alert, Button, Label, Select, Spinner } from "flowbite-react";
 import { Input } from "../components";
 
 import { FaUser, FaPhoneAlt, FaAddressBook } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
 import { Link } from "react-router-dom";
+
+import { useDispatch, useSelector } from "react-redux";
+import {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+} from "../redux-slice/userSlice";
 
 import Cookies from "js-cookie";
 
@@ -20,9 +27,9 @@ function Register() {
     category: "Footballer",
   });
 
-  const [loading, setLoading] = useState(false);
-
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { loading, error } = useSelector((state) => state.user);
 
   // Input's value handelers
   const inputHandler = (e) => {
@@ -37,9 +44,9 @@ function Register() {
   // Form submission handeler
   const signUpSumbitHandle = async (e) => {
     e.preventDefault();
-    setLoading(true);
 
     try {
+      dispatch(signInStart());
       const apiUrl = "http://localhost:5000/api/auth/register";
       const options = {
         method: "POST",
@@ -50,9 +57,8 @@ function Register() {
       };
 
       const response = await fetch(apiUrl, options);
-      // console.log(response);
+
       const data = await response.json();
-      console.log(data);
 
       if (response.ok === true) {
         Cookies.set("jwt_token", data.jwt_token, {
@@ -60,8 +66,7 @@ function Register() {
           path: "/",
         });
         alert(data.message);
-        setLoading(false);
-        navigate("/");
+        dispatch(signInSuccess(data.userDetails));
         setNewUser({
           username: "",
           email: "",
@@ -70,12 +75,12 @@ function Register() {
           password: "",
           category: "Footballer",
         });
+        navigate("/");
       } else {
-        alert(data.extraDetails);
-        setLoading(false);
+        dispatch(signInFailure(data.extraDetails));
       }
     } catch (error) {
-      console.log(`Error :: signUpSumbitHandle() in Register Page :: ${error}`);
+      dispatch(signInFailure(data.extraDetails));
     }
   };
 
@@ -204,6 +209,7 @@ function Register() {
                 id="category"
                 value={newUser.category}
                 onChange={inputHandler}
+                name="category"
                 required
               >
                 <option name="Footballer">Footballer</option>
@@ -225,6 +231,11 @@ function Register() {
               "Sign Up"
             )}
           </Button>
+          {error && (
+            <Alert className="mt-5" color="failure">
+              * {error}
+            </Alert>
+          )}
         </form>
         {/* Main From */}
       </div>
