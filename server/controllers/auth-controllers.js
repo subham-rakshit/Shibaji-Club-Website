@@ -82,10 +82,11 @@ const authControllerObject = {
         );
 
         if (isPasswordValid) {
+          const { password: pass, ...rest } = userExist._doc;
           return res.status(200).json({
             message: "Login successful!",
             jwt_token: await userExist.generateToken(),
-            userId: userExist._id.toString(),
+            userDetails: rest,
           });
         } else {
           const error = {
@@ -97,7 +98,7 @@ const authControllerObject = {
       } else {
         const loginError = {
           status: 400,
-          extraDetails: "Email and Password doesn't match!",
+          extraDetails: "User not found!",
         };
         next(loginError);
       }

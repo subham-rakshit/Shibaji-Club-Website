@@ -61,7 +61,7 @@ function Register() {
         });
         alert(data.message);
         setLoading(false);
-        navigate("/");
+        navigate("/register");
         setNewUser({
           username: "",
           email: "",

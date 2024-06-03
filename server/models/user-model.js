@@ -79,7 +79,7 @@ userSchema.methods.generateToken = function () {
 
 //! ******** COMPARE THE REQUESTED with EXISTED PASSWORD ******** !//
 userSchema.methods.passwordCompare = function (password, comparePassword) {
-  return bcrypt.compare(password, comparePassword);
+  return bcrypt.compareSync(password, comparePassword);
 };
 
 const UserCollection = new mongoose.model("User", userSchema);
