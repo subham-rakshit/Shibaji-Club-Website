@@ -52,6 +52,14 @@ function Contact() {
         status: 200,
         alertMsg: data.message,
       });
+      setContactDetails({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        address: "",
+        message: "",
+      });
     } else {
       if (response.status === 400) {
         setAlertMessage({
@@ -85,10 +93,10 @@ function Contact() {
             {/* Form header Left */}
 
             <div className="flex flex-col justify-center">
-              <h1 className="text-[#333] font-bold font-sans text-xl md:text-2xl mb-2">
+              <h1 className="text-[#333] font-bold font-[Inter] text-xl md:text-2xl mb-2">
                 Contact Support
               </h1>
-              <p className="hidden sm:inline tex-[#333] font-semibold text-[14px]">
+              <p className="hidden sm:inline tex-[#333] font-[Inter] font-semibold text-[14px]">
                 Need assistance or information? Send us a message to our team
                 now
               </p>
@@ -191,7 +199,7 @@ function Contact() {
                 <Label
                   htmlFor="comment"
                   value="Message"
-                  className="text-[#333] font-semibold text-xs"
+                  className="text-[#333] font-[Inter] font-semibold text-xs"
                 />
               </div>
               <Textarea
@@ -207,7 +215,7 @@ function Contact() {
 
             <Button
               gradientDuoTone="purpleToPink"
-              className="w-full sm:w-2/4 mt-8"
+              className="w-full font-[Inter] sm:w-2/4 mt-8"
               type="submit"
             >
               Send Message
