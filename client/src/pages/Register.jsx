@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Button, Label, Select } from "flowbite-react";
+import { Button, Label, Select, Spinner } from "flowbite-react";
 import { Input } from "../components";
 
 import { FaUser, FaPhoneAlt, FaAddressBook } from "react-icons/fa";
@@ -20,6 +20,8 @@ function Register() {
     category: "Footballer",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   // Input's value handelers
@@ -35,6 +37,7 @@ function Register() {
   // Form submission handeler
   const signUpSumbitHandle = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const apiUrl = "http://localhost:5000/api/auth/register";
@@ -57,9 +60,19 @@ function Register() {
           path: "/",
         });
         alert(data.message);
+        setLoading(false);
         navigate("/");
+        setNewUser({
+          username: "",
+          email: "",
+          phone: "",
+          address: "",
+          password: "",
+          category: "Footballer",
+        });
       } else {
         alert(data.extraDetails);
+        setLoading(false);
       }
     } catch (error) {
       console.log(`Error :: signUpSumbitHandle() in Register Page :: ${error}`);
@@ -203,7 +216,14 @@ function Register() {
             className="w-full sm:w-2/4 mt-8"
             type="submit"
           >
-            Sign up
+            {loading ? (
+              <>
+                <Spinner size="sm" />
+                <span className="pl-3">Loading ....</span>
+              </>
+            ) : (
+              "Sign Up"
+            )}
           </Button>
         </form>
         {/* Main From */}

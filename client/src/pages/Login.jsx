@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
-import { Button } from "flowbite-react";
+import { Button, Spinner } from "flowbite-react";
 import { Input } from "../components";
 import { IoMdMail } from "react-icons/io";
 
@@ -11,6 +11,8 @@ function Login() {
     email: "",
     password: "",
   });
+
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -26,28 +28,35 @@ function Login() {
 
   const submitFormHandle = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
-    const apiUrl = "http://localhost:5000/api/auth/login";
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(loginDetails),
-    };
+    try {
+      const apiUrl = "http://localhost:5000/api/auth/login";
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginDetails),
+      };
 
-    const response = await fetch(apiUrl, options);
-    const data = await response.json();
+      const response = await fetch(apiUrl, options);
+      const data = await response.json();
 
-    if (response.ok === true) {
-      Cookies.set("jwt_token", data.jwt_token, {
-        expires: 30,
-        path: "/",
-      });
-      alert(data.message);
-      navigate("/");
-    } else {
-      alert(data.extraDetails);
+      if (response.ok === true) {
+        Cookies.set("jwt_token", data.jwt_token, {
+          expires: 30,
+          path: "/",
+        });
+        alert(data.message);
+        setLoading(false);
+        navigate("/");
+      } else {
+        alert(data.extraDetails);
+        setLoading(false);
+      }
+    } catch (error) {
+      console.log(`Error :: submitFormHandle() in Login Page :: ${error}`);
     }
   };
 
@@ -132,7 +141,14 @@ function Login() {
             className="w-full sm:w-2/4 mt-8"
             type="submit"
           >
-            Sign in
+            {loading ? (
+              <>
+                <Spinner size="sm" />
+                <span className="pl-3">Loading ....</span>
+              </>
+            ) : (
+              "Sign In"
+            )}
           </Button>
         </form>
         {/* Main From */}

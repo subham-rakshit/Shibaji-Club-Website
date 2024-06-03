@@ -24,7 +24,7 @@ const authControllerObject = {
         if (emailExists) {
           const emailError = {
             status: 400,
-            message: "Email already exists!",
+            extraDetails: "Email already exists!",
           };
           next(emailError);
         } else if (usernameExists) {
@@ -62,7 +62,7 @@ const authControllerObject = {
       // return res.status(500).send({ message: "Internal Server Error!" });
       const catchError = {
         status: 500,
-        message: "Internal Server Error",
+        extraDetails: "Internal Server Error",
       };
       next(catchError);
     }
@@ -90,14 +90,14 @@ const authControllerObject = {
         } else {
           const error = {
             status: 401,
-            message: "Invalid Credentials!",
+            extraDetails: "Invalid Credentials!",
           };
           next(error);
         }
       } else {
         const loginError = {
           status: 400,
-          message: "Email and Password doesn't match!",
+          extraDetails: "Email and Password doesn't match!",
         };
         next(loginError);
       }
@@ -105,7 +105,7 @@ const authControllerObject = {
       console.log(`Error in :: auth-controller.js/loginController :: `, error);
       const catchError = {
         status: 500,
-        message: "Internal Server Error!",
+        extraDetails: "Internal Server Error!",
       };
       next(catchError);
     }

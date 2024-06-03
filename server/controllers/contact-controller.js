@@ -13,7 +13,7 @@ const contactController = async (req, res, next) => {
       if (userExistInContactSchema.message.includes(message)) {
         const messageSimilarError = {
           status: 400,
-          message: "Your message is already exists!",
+          extraDetails: "Your message is already exists!",
         };
         next(messageSimilarError);
       } else {
@@ -37,16 +37,14 @@ const contactController = async (req, res, next) => {
         message,
       });
 
-      res
-        .status(201)
-        .json({
-          message: "Congratulations! Your message has been sent successfully.",
-        });
+      res.status(201).json({
+        message: "Congratulations! Your message has been sent successfully.",
+      });
     }
   } catch (err) {
     const catchError = {
       status: 500,
-      message: "Internal Server Error",
+      extraDetails: "Internal Server Error",
     };
     next(catchError);
   }

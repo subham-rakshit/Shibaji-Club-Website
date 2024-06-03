@@ -32,39 +32,38 @@ function Contact() {
     e.preventDefault();
     setLoading(true);
 
-    const apiUrl = "http://localhost:5000/api/form/contact-us";
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(contactDetails),
-    };
+    try {
+      const apiUrl = "http://localhost:5000/api/form/contact-us";
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(contactDetails),
+      };
 
-    const response = await fetch(apiUrl, options);
-    // console.log(response);
-    const data = await response.json();
-    console.log(data);
+      const response = await fetch(apiUrl, options);
+      // console.log(response);
+      const data = await response.json();
+      console.log(data);
 
-    if (response.ok === true) {
-      alert(data.message);
-      setContactDetails({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: "",
-        address: "",
-        message: "",
-      });
-      setLoading(false);
-    } else {
-      if (response.status === 400) {
+      if (response.ok === true) {
         alert(data.message);
+        setContactDetails({
+          firstName: "",
+          lastName: "",
+          email: "",
+          phone: "",
+          address: "",
+          message: "",
+        });
         setLoading(false);
       } else {
         alert(data.extraDetails);
         setLoading(false);
       }
+    } catch (error) {
+      console.log(`Error :: handleSubmit() in Contact Page :: ${error}`);
     }
   };
 
