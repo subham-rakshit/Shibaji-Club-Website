@@ -29,12 +29,12 @@ const contactController = async (req, res, next) => {
       }
     } else {
       const createContactDetails = await ContactCollection.create({
-        firstName,
-        lastName,
-        email,
-        phone,
-        address,
-        message,
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        email: email.trim(),
+        phone: phone.trim(),
+        address: address.trim(),
+        message: message.trim(),
       });
 
       res.status(201).json({

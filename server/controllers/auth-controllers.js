@@ -16,35 +16,26 @@ const authControllerObject = {
       const { username, email, phone, address, password, category } = req.body;
 
       //? Checking if user exists in DB with same email id
-      const emailExists = await UserCollection.findOne({ email });
-      const usernameExists = await UserCollection.findOne({ username });
+      const userExists = await UserCollection.findOne({ email });
 
       //? If user with same email id exists, then simply we return a message "Email already exists"
-      if (emailExists || usernameExists) {
-        if (emailExists) {
-          const emailError = {
-            status: 400,
-            extraDetails: "Email already exists!",
-          };
-          next(emailError);
-        } else if (usernameExists) {
-          const usernameError = {
-            status: 400,
-            extraDetails: `This username '${username}' already exists!`,
-          };
-          next(usernameError);
-        }
+      if (userExists) {
+        const emailError = {
+          status: 400,
+          extraDetails: "Email already exists!",
+        };
+        next(emailError);
       }
       //? If user with same email id doesn't exists, then we are creating a new user in DB
       else {
         const userCreated = await UserCollection.create({
           username:
-            username.toLowerCase().split(" ").join("") +
+            username.trim().toLowerCase().split(" ").join("") +
             Math.random().toString(9).slice(-4),
-          email,
-          phone,
-          address,
-          password,
+          email: email.trim(),
+          phone: phone.trim(),
+          address: address.trim(),
+          password: password.trim(),
           category,
         });
         const { password: pass, ...rest } = userCreated._doc;

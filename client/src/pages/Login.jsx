@@ -11,6 +11,7 @@ import {
   signInStart,
   signInSuccess,
   signInFailure,
+  initialRender,
 } from "../redux-slice/userSlice";
 
 function Login() {
@@ -72,8 +73,8 @@ function Login() {
   };
 
   useEffect(() => {
+    dispatch(initialRender());
     const token = Cookies.get("jwt_token");
-
     if (token) {
       navigate("/");
     }
