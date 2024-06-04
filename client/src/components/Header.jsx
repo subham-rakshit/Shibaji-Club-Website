@@ -66,11 +66,13 @@ function Header() {
               </span>
             </Dropdown.Header>
             {currentUserDetails.isAdmin && (
-              <Dropdown.Item className="text-[14px] font-[Inter]">
-                Dashboard
-              </Dropdown.Item>
+              <Link to="/admin-dashboard">
+                <Dropdown.Item className="text-[14px] font-[Inter]">
+                  Dashboard
+                </Dropdown.Item>
+              </Link>
             )}
-            <Link to="/dashboard?tab=profile">
+            <Link to="/admin-dashboard?tab=profile">
               <Dropdown.Item className="text-[14px] font-[Inter]">
                 Profile
               </Dropdown.Item>

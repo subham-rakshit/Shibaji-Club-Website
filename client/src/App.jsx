@@ -12,7 +12,7 @@ import {
   Dashboard,
 } from "./pages";
 
-import { Header, Footer } from "./components";
+import { Header, Footer, ProtectedRoute } from "./components";
 
 const App = () => {
   return (
@@ -27,7 +27,9 @@ const App = () => {
           <Route path="/contact-us" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/admin-dashboard" element={<Dashboard />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/admin-dashboard" element={<Dashboard />} />
+          </Route>
         </Routes>
         <Footer />
       </BrowserRouter>
