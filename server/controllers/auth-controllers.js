@@ -29,9 +29,7 @@ const authControllerObject = {
       //? If user with same email id doesn't exists, then we are creating a new user in DB
       else {
         const userCreated = await UserCollection.create({
-          username:
-            username.trim().toLowerCase().split(" ").join("") +
-            Math.random().toString(9).slice(-4),
+          username: username.trim(),
           email: email.trim(),
           phone: phone.trim(),
           address: address.trim(),

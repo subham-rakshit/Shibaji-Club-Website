@@ -1,14 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
-import { Button, Navbar, TextInput } from "flowbite-react";
-
-import Cookies from "js-cookie";
-
+import { Button, Navbar, TextInput, Avatar, Dropdown } from "flowbite-react";
 import { AiOutlineSearch } from "react-icons/ai";
+import { useSelector } from "react-redux";
 
 function Header() {
-  const token = Cookies.get("jwt_token");
-
   const path = useLocation().pathname;
+  const currentUserDetails = useSelector((state) => state.user.currentUser);
+  console.log("Header: ", currentUserDetails);
   return (
     <Navbar className="fixed w-full z-10 shadow-lg flex items-center justify-between gap-1">
       <Link to="/" className="flex items-center gap-1">
@@ -45,16 +43,43 @@ function Header() {
       </Button>
 
       <div className="flex items-center gap-3 md:order-2">
-        {token ? (
-          <Button
-            outline
-            gradientDuoTone="purpleToPink"
-            size="xs"
-            className="font-[Inter]"
-            // onClick={onClickLogout}
+        {currentUserDetails ? (
+          <Dropdown
+            label={
+              <Avatar
+                rounded
+                className="text-success font-[Inter] text-sm"
+                size="sm"
+                alt="user"
+                img="/profile-logo.jpg"
+              />
+            }
+            arrowIcon={true}
+            inline
           >
-            Logout
-          </Button>
+            <Dropdown.Header>
+              <span className="block text-xs font-medium font-[Inter">
+                {currentUserDetails.username}
+              </span>
+              <span className="block truncate text-xs font-[Inter] trancate">
+                {currentUserDetails.email}
+              </span>
+            </Dropdown.Header>
+            {currentUserDetails.isAdmin && (
+              <Dropdown.Item className="text-[14px] font-[Inter]">
+                Dashboard
+              </Dropdown.Item>
+            )}
+            <Link to="/dashboard?tab=profile">
+              <Dropdown.Item className="text-[14px] font-[Inter]">
+                Profile
+              </Dropdown.Item>
+            </Link>
+            <Dropdown.Divider />
+            <Dropdown.Item className="text-[14px] text-[blue] font-semibold font-[Inter]">
+              Sign out
+            </Dropdown.Item>
+          </Dropdown>
         ) : (
           <Link to="/login">
             <Button

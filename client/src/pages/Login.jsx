@@ -23,7 +23,7 @@ function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loading, error } = useSelector((state) => state.user);
+  const { loading, error, currentUser } = useSelector((state) => state.user);
 
   const handleInputs = (e) => {
     const name = e.target.name;
@@ -74,8 +74,8 @@ function Login() {
 
   useEffect(() => {
     dispatch(initialRender());
-    const token = Cookies.get("jwt_token");
-    if (token) {
+
+    if (currentUser) {
       navigate("/");
     }
   }, []);

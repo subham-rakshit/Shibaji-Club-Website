@@ -30,7 +30,7 @@ function Register() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.user);
+  const { loading, error, currentUser } = useSelector((state) => state.user);
 
   // Input's value handelers
   const inputHandler = (e) => {
@@ -87,8 +87,7 @@ function Register() {
 
   useEffect(() => {
     dispatch(initialRender());
-    const token = Cookies.get("jwt_token");
-    if (token) {
+    if (currentUser) {
       navigate("/");
     }
   }, []);
