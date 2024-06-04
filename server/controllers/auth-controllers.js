@@ -38,7 +38,9 @@ const authControllerObject = {
       //? If user with same email id doesn't exists, then we are creating a new user in DB
       else {
         const userCreated = await UserCollection.create({
-          username,
+          username:
+            username.toLowerCase().split(" ").join("") +
+            Math.random().toString(9).slice(-4),
           email,
           phone,
           address,
@@ -60,7 +62,6 @@ const authControllerObject = {
         `Error in :: auth-controllers.js/registerController :: `,
         error
       );
-      // return res.status(500).send({ message: "Internal Server Error!" });
       const catchError = {
         status: 500,
         extraDetails: "Internal Server Error",

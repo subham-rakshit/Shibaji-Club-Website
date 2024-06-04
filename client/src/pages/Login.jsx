@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
 import { Alert, Button, Spinner } from "flowbite-react";
-import { Input, Auth } from "../components";
+import { Input } from "../components";
 import { IoMdMail } from "react-icons/io";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -80,7 +80,7 @@ function Login() {
   }, []);
 
   return (
-    <div className="w-full min-h-screen py-10 px-5 flex flex-col lg:flex-row justify-center items-center gap-5 md:gap-10 mt-[65px] lg:mt-[76px] border-black border-2">
+    <div className="w-full min-h-screen py-10 px-5 flex flex-col lg:flex-row justify-center items-center gap-5 md:gap-10 mt-[65px] lg:mt-[76px]">
       {/* Desktop Image */}
       <img
         src="/login-img-bck-remove.png"
@@ -95,10 +95,10 @@ function Login() {
         <div className="w-full max-w-xl flex items-center justify-between mb-5 md:mb-8">
           {/* Form header Left */}
           <div className="flex flex-col justify-center">
-            <h1 className="text-[#333] font-bold font-sans text-xl md:text-2xl mb-2">
+            <h1 className="text-[#333] font-bold font-[Inter] text-xl md:text-2xl mb-2">
               Wellcome Back!
             </h1>
-            <p className="tex-[#333] font-semibold text-[14px] sm:text-sm">
+            <p className="tex-[#333] font-[Inter] font-semibold text-[14px] sm:text-sm">
               Don't have an account?{" "}
               <Link to="/register" className="text-[#1f3fcf] font-bold">
                 Sign up
@@ -114,7 +114,7 @@ function Login() {
               className="mr-0 mb-1 sm:mb-2 h-6 lg:h-9 rounded-full"
               alt="Shibaji logo"
             />
-            <p className="self-center whitespace-nowrap text-xs lg:text-sm font-semibold font-sans dark:text-white ml-0 py-1">
+            <p className="self-center whitespace-nowrap text-xs lg:text-sm font-semibold font-[Inter] dark:text-white ml-0 py-1">
               <span className="px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-md text-white">
                 Shibaji
               </span>
@@ -149,7 +149,7 @@ function Login() {
 
           <Button
             gradientDuoTone="purpleToPink"
-            className="w-full mt-8"
+            className="w-full mt-8 font-[Inter]"
             type="submit"
           >
             {loading ? (
@@ -161,7 +161,7 @@ function Login() {
               "Sign In"
             )}
           </Button>
-          <Auth />
+
           {error && (
             <Alert className="mt-5" color="failure">
               * {error}

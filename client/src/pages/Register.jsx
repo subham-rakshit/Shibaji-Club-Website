@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Alert, Button, Label, Select, Spinner } from "flowbite-react";
-import { Input, Auth } from "../components";
+import { Input } from "../components";
 
 import { FaUser, FaPhoneAlt, FaAddressBook } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
@@ -231,7 +231,7 @@ function Register() {
               "Sign Up"
             )}
           </Button>
-          <Auth />
+
           {error && (
             <Alert className="mt-5" color="failure">
               * {error}
