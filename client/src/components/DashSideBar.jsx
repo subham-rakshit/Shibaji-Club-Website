@@ -21,11 +21,12 @@ function DashSideBar() {
         <Sidebar.ItemGroup>
           <Link to="/admin-dashboard?tab=profile">
             <Sidebar.Item
-              active={tab === "profile"}
               icon={HiUser}
               label={"User"}
               labelColor="dark"
-              className="font-[Inter] text-sm font-medium"
+              className={`font-[Inter] text-sm font-medium ${
+                tab === "profile" && "bg-[#e9e9e9]"
+              }`}
               as="div"
             >
               Profile
