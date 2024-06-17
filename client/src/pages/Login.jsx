@@ -91,12 +91,12 @@ function Login() {
       {/* Desktop Image */}
 
       {/* Form Content */}
-      <div className="lg:p-8 lg:rounded-2xl lg:shadow-2xl w-full max-w-sm">
+      <div className="lg:p-8 lg:rounded-2xl lg:shadow-2xl dark:shadow-xl dark:shadow-[#374151] w-full max-w-sm">
         {/* Form Header */}
         <div className="w-full max-w-xl flex items-center justify-between mb-2 md:mb-5">
           {/* Form header Left */}
           <div className="flex flex-col justify-center">
-            <h1 className="text-[#333] font-bold font-[Inter] text-xl md:text-2xl mb-2">
+            <h1 className="font-bold font-[Inter] text-xl md:text-2xl mb-2">
               Wellcome Back!
             </h1>
           </div>

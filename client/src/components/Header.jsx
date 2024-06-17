@@ -1,12 +1,16 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button, Navbar, TextInput, Avatar, Dropdown } from "flowbite-react";
 import { AiOutlineSearch } from "react-icons/ai";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { toggleTheme } from "../redux-slice/themeSlice";
+import { FaMoon, FaSun } from "react-icons/fa";
 
 function Header() {
   const path = useLocation().pathname;
+  const dispatch = useDispatch();
   const currentUserDetails = useSelector((state) => state.user.currentUser);
   console.log("Header: ", currentUserDetails);
+  const { theme } = useSelector((state) => state.theme);
   return (
     <Navbar className="fixed w-full z-10 shadow-lg flex items-center justify-between gap-1">
       <Link to="/" className="flex items-center gap-1">
@@ -43,6 +47,14 @@ function Header() {
       </Button>
 
       <div className="flex items-center gap-3 md:order-2">
+        <Button
+          className="w-12 h-10 hidden sm:inline border-none focus:outline-none focus:ring-0"
+          color="gray"
+          pill
+          onClick={() => dispatch(toggleTheme())}
+        >
+          {theme === "light" ? <FaMoon /> : <FaSun />}
+        </Button>
         {currentUserDetails ? (
           <Dropdown
             label={
@@ -96,7 +108,7 @@ function Header() {
         )}
 
         <Navbar.Toggle
-          className="w-10 h-8 flex justify-center items-center"
+          className="w-10 h-8 flex justify-center items-center focus:ring-0 focus:outline-none"
           color="gray"
         />
       </div>
@@ -123,7 +135,7 @@ function Header() {
             Practices
           </Link>
         </Navbar.Link>
-        <Navbar.Link active={path === "/contact-us"} as={"div"}>
+        {/* <Navbar.Link active={path === "/contact-us"} as={"div"}>
           <Link
             to="/contact-us"
             className="text-xs lg:text-sm font-[Inter] font-semibold"
@@ -138,7 +150,7 @@ function Header() {
           >
             Blogs
           </Link>
-        </Navbar.Link>
+        </Navbar.Link> */}
       </Navbar.Collapse>
     </Navbar>
   );

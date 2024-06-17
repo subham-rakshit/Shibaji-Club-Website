@@ -13,7 +13,7 @@ const Input = forwardRef(function Input(
         <Label
           htmlFor={id}
           value={labelText}
-          className="text-[#333] font-semibold font-[Inter] text-xs"
+          className="font-semibold font-[Inter] text-xs"
         />
       </div>
       <TextInput

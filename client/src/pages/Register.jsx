@@ -99,15 +99,13 @@ function Register() {
       {/* Desktop Image */}
 
       {/* Form Content */}
-      <div className="lg:p-8 lg:rounded-2xl lg:shadow-2xl w-full max-w-sm">
+      <div className="lg:p-8 lg:rounded-2xl lg:shadow-2xl dark:shadow-xl dark:shadow-[#374151] w-full max-w-sm">
         {/* Form Header */}
         <div className="w-full max-w-xl flex items-center justify-between mb-2 lg:mb-5">
           {/* Form header Left */}
 
           <div className="flex flex-col justify-center">
-            <h1 className="text-[#333] font-bold text-xl md:text-2xl mb-2">
-              Let's Start!
-            </h1>
+            <h1 className="font-bold text-xl md:text-2xl mb-2">Let's Start!</h1>
           </div>
 
           {/* Form header Left */}
@@ -165,7 +163,7 @@ function Register() {
                 <Label
                   htmlFor="category"
                   value="Category"
-                  className="text-[#333] font-semibold text-xs"
+                  className="font-semibold text-xs"
                 />
               </div>
               <Select
@@ -196,7 +194,7 @@ function Register() {
             )}
           </Button>
           <OAuth />
-          <p className="text-[#333] font-[500] text-[14px] mt-2">
+          <p className="font-[500] text-[14px] mt-2">
             Have an account?{" "}
             <Link to="/login" className="text-[#f00d49] font-bold pl-1">
               Sign in
