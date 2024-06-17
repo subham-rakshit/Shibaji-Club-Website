@@ -25,7 +25,7 @@ function DashSideBar() {
               label={"User"}
               labelColor="dark"
               className={`font-[Inter] text-sm font-medium ${
-                tab === "profile" && "bg-[#e9e9e9]"
+                tab === "profile" && "bg-[#e9e9e9] dark:bg-[#374151]"
               }`}
               as="div"
             >
