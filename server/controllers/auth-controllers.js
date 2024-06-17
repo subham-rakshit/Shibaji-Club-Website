@@ -39,11 +39,16 @@ const authControllerObject = {
         const { password: pass, ...rest } = userCreated._doc;
 
         //? We are just send a JSON message with JWT token (which is generated ny [generateToken() middleware in user-model.js file]) and userId for perticular user details to extract data.
-        return res.status(201).json({
-          message: "Registration successful!",
-          jwt_token: await userCreated.generateToken(),
-          userDetails: rest,
-        });
+        return res
+          .status(201)
+          .cookie("jwt_token", await userCreated.generateToken(), {
+            httpOnly: true,
+          })
+          .json({
+            message: "Registration successful!",
+            jwt_token: await userCreated.generateToken(),
+            userDetails: rest,
+          });
       }
       //! **NOTE** : While new user data will store in database, before that we are hash the user's password (which is created in user-model.js file)
     } catch (error) {
@@ -76,11 +81,16 @@ const authControllerObject = {
           //* We are seperating password field from the userDetails object.
           const { password: pass, ...rest } = userExist._doc;
 
-          return res.status(200).json({
-            message: "Login successful!",
-            jwt_token: await userExist.generateToken(),
-            userDetails: rest,
-          });
+          return res
+            .status(200)
+            .cookie("jwt_token", await userExist.generateToken(), {
+              httpOnly: true,
+            })
+            .json({
+              message: "Login successful!",
+              jwt_token: await userExist.generateToken(),
+              userDetails: rest,
+            });
         } else {
           const error = {
             status: 401,
@@ -113,11 +123,16 @@ const authControllerObject = {
       if (user) {
         const { password: pass, ...rest } = user._doc;
 
-        return res.status(200).json({
-          message: "Login successful!",
-          jwt_token: await user.generateToken(),
-          userDetails: rest,
-        });
+        return res
+          .status(200)
+          .cookie("jwt_token", await user.generateToken(), {
+            httpOnly: true,
+          })
+          .json({
+            message: "Login successful!",
+            jwt_token: await user.generateToken(),
+            userDetails: rest,
+          });
       } else {
         const generatedPassword =
           Math.random().toString(36).slice(-8) +
@@ -133,11 +148,16 @@ const authControllerObject = {
         });
 
         const { password: pass, ...rest } = userCreated._doc;
-        return res.status(201).json({
-          message: "Registration successful!",
-          jwt_token: await userCreated.generateToken(),
-          userDetails: rest,
-        });
+        return res
+          .status(201)
+          .cookie("jwt_token", await user.generateToken(), {
+            httpOnly: true,
+          })
+          .json({
+            message: "Registration successful!",
+            jwt_token: await userCreated.generateToken(),
+            userDetails: rest,
+          });
       }
     } catch (error) {
       next(error);

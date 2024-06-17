@@ -91,7 +91,7 @@ function DashProfile() {
   };
 
   return (
-    <div className="max-w-lg mx-auto p-3 w-full">
+    <div className="max-w-lg mx-auto px-3 py-8 w-full">
       <h1 className="font-[Inter] font-[700] text-xl text-center my-3">
         Profile
       </h1>
@@ -169,11 +169,13 @@ function DashProfile() {
           Update
         </Button>
       </form>
-      <div className="text-red-500 flex justify-between items-center mt-3 text-xs font-[Inter] font-normal">
-        <span className="cursor-pointer hover:font-semibold">
+      <div className="text-red-500 flex justify-between items-center mt-2 text-xs font-[Inter] font-normal">
+        <span className="cursor-pointer font-bold hover:font-extrabold">
           Delete Account
         </span>
-        <span className="cursor-pointer hover:font-semibold">Sign Out</span>
+        <span className="cursor-pointer font-bold hover:font-extrabold">
+          Sign Out
+        </span>
       </div>
     </div>
   );
