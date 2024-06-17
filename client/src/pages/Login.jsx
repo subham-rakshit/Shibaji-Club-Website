@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
 import { Alert, Button, Spinner } from "flowbite-react";
-import { Input } from "../components";
+import { Input, OAuth } from "../components";
 import { IoMdMail } from "react-icons/io";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -81,7 +81,7 @@ function Login() {
   }, []);
 
   return (
-    <div className="w-full min-h-screen py-10 px-5 flex flex-col lg:flex-row justify-center items-center gap-5 md:gap-10 mt-[65px] lg:mt-[76px]">
+    <div className="w-full min-h-screen py-10 px-5 flex flex-col lg:flex-row justify-center items-center gap-5 md:gap-10 mt-[65px] lg:mt-[76px] font-[Inter]">
       {/* Desktop Image */}
       <img
         src="/login-img-bck-remove.png"
@@ -93,35 +93,23 @@ function Login() {
       {/* Form Content */}
       <div className="lg:p-8 lg:rounded-2xl lg:shadow-2xl w-full max-w-sm">
         {/* Form Header */}
-        <div className="w-full max-w-xl flex items-center justify-between mb-5 md:mb-8">
+        <div className="w-full max-w-xl flex items-center justify-between mb-2 md:mb-5">
           {/* Form header Left */}
           <div className="flex flex-col justify-center">
             <h1 className="text-[#333] font-bold font-[Inter] text-xl md:text-2xl mb-2">
               Wellcome Back!
             </h1>
-            <p className="tex-[#333] font-[Inter] font-semibold text-[14px] sm:text-sm">
-              Don't have an account?{" "}
-              <Link to="/register" className="text-[#1f3fcf] font-bold">
-                Sign up
-              </Link>
-            </p>
           </div>
           {/* Form header Left */}
 
           {/* Form header Right */}
-          <div className="lg:hidden">
-            <img
-              src="/logo.png"
-              className="mr-0 mb-1 sm:mb-2 h-6 lg:h-9 rounded-full"
-              alt="Shibaji logo"
-            />
-            <p className="self-center whitespace-nowrap text-xs lg:text-sm font-semibold font-[Inter] dark:text-white ml-0 py-1">
-              <span className="px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-md text-white">
-                Shibaji
-              </span>
-              Sangha
-            </p>
-          </div>
+          <p className="self-center whitespace-nowrap text-xs lg:text-sm font-semibold font-[Inter] dark:text-white ml-0 py-1 lg:hidden">
+            <span className="px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-md text-white">
+              Shibaji
+            </span>
+            Sangha
+          </p>
+
           {/* Form header Right */}
         </div>
         {/* Form Header */}
@@ -150,7 +138,8 @@ function Login() {
 
           <Button
             gradientDuoTone="purpleToPink"
-            className="w-full mt-8 font-[Inter]"
+            outline
+            className="w-full mt-5 font-[Inter]"
             type="submit"
           >
             {loading ? (
@@ -162,9 +151,16 @@ function Login() {
               "Sign In"
             )}
           </Button>
+          <OAuth />
+          <p className="tex-[#333] font-[Inter] font-[500] text-[14px] mt-2">
+            Don't have an account?{" "}
+            <Link to="/register" className="text-[#f00d49] font-bold">
+              Sign up
+            </Link>
+          </p>
 
           {error && (
-            <Alert className="mt-5" color="failure">
+            <Alert className="mt-5 font-[Inter] text-xs" color="failure">
               * {error}
             </Alert>
           )}

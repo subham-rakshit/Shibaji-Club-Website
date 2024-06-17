@@ -4,5 +4,14 @@ import Input from "./Input";
 import ProtectedRoute from "./ProtectedRoute";
 import DashProfile from "./DashProfile";
 import DashSideBar from "./DashSideBar";
+import OAuth from "./OAuth";
 
-export { Header, Footer, Input, ProtectedRoute, DashProfile, DashSideBar };
+export {
+  Header,
+  Footer,
+  Input,
+  ProtectedRoute,
+  DashProfile,
+  DashSideBar,
+  OAuth,
+};

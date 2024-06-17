@@ -13,7 +13,7 @@ const authControllerObject = {
   async registerController(req, res, next) {
     try {
       //? Taking requested data from users
-      const { username, email, phone, address, password, category } = req.body;
+      const { username, email, password, category } = req.body;
 
       //? Checking if user exists in DB with same email id
       const userExists = await UserCollection.findOne({ email });
@@ -29,10 +29,10 @@ const authControllerObject = {
       //? If user with same email id doesn't exists, then we are creating a new user in DB
       else {
         const userCreated = await UserCollection.create({
-          username: username.trim(),
+          username:
+            username.toLowerCase().split(" ").join("") +
+            Math.random().toString(9).slice(-4),
           email: email.trim(),
-          phone: phone.trim(),
-          address: address.trim(),
           password: password.trim(),
           category,
         });
@@ -102,6 +102,45 @@ const authControllerObject = {
         extraDetails: "Internal Server Error!",
       };
       next(catchError);
+    }
+  },
+
+  //* Google Api Route Controller -->
+  async googleController(req, res, next) {
+    const { email, username, googleProfilePhotoURL } = req.body;
+    try {
+      const user = await UserCollection.findOne({ email });
+      if (user) {
+        const { password: pass, ...rest } = user._doc;
+
+        return res.status(200).json({
+          message: "Login successful!",
+          jwt_token: await user.generateToken(),
+          userDetails: rest,
+        });
+      } else {
+        const generatedPassword =
+          Math.random().toString(36).slice(-8) +
+          Math.random().toString(36).slice(-8);
+        const userCreated = await UserCollection.create({
+          username:
+            username.toLowerCase().split(" ").join("") +
+            Math.random().toString(9).slice(-4),
+          email: email.trim(),
+          password: generatedPassword,
+          category: "General",
+          profilePicture: googleProfilePhotoURL,
+        });
+
+        const { password: pass, ...rest } = userCreated._doc;
+        return res.status(201).json({
+          message: "Registration successful!",
+          jwt_token: await userCreated.generateToken(),
+          userDetails: rest,
+        });
+      }
+    } catch (error) {
+      next(error);
     }
   },
 };

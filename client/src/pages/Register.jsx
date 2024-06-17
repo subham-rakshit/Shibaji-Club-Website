@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Alert, Button, Label, Select, Spinner } from "flowbite-react";
-import { Input } from "../components";
+import { Input, OAuth } from "../components";
 
-import { FaUser, FaPhoneAlt, FaAddressBook } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
 import { Link } from "react-router-dom";
 
@@ -22,8 +22,6 @@ function Register() {
   const [newUser, setNewUser] = useState({
     username: "",
     email: "",
-    phone: "",
-    address: "",
     password: "",
     category: "Footballer",
   });
@@ -71,8 +69,6 @@ function Register() {
         setNewUser({
           username: "",
           email: "",
-          phone: "",
-          address: "",
           password: "",
           category: "Footballer",
         });
@@ -93,7 +89,7 @@ function Register() {
   }, []);
 
   return (
-    <div className="w-full min-h-screen py-10 px-5 flex flex-col lg:flex-row justify-center items-center gap-5 lg:gap-20 mt-[65px] lg:mt-[76px]">
+    <div className="w-full min-h-screen py-10 px-5 flex flex-col lg:flex-row justify-center items-center gap-5 lg:gap-20 mt-[65px] lg:mt-[76px] font-[Inter]">
       {/* Desktop Image */}
       <img
         src="/signUp-img-bck-remove.png"
@@ -103,40 +99,27 @@ function Register() {
       {/* Desktop Image */}
 
       {/* Form Content */}
-      <div className="lg:p-8 lg:rounded-2xl lg:shadow-2xl w-full max-w-lg">
+      <div className="lg:p-8 lg:rounded-2xl lg:shadow-2xl w-full max-w-sm">
         {/* Form Header */}
-        <div className="w-full max-w-xl flex items-center justify-between mb-5 md:mb-8">
+        <div className="w-full max-w-xl flex items-center justify-between mb-2 lg:mb-5">
           {/* Form header Left */}
 
           <div className="flex flex-col justify-center">
-            <h1 className="text-[#333] font-bold font-sans text-xl md:text-2xl mb-2">
+            <h1 className="text-[#333] font-bold text-xl md:text-2xl mb-2">
               Let's Start!
             </h1>
-            <p className="tex-[#333] font-semibold text-[14px] md:text-sm">
-              Have an account?{" "}
-              <Link to="/login" className="text-[#1f3fcf] font-bold pl-1">
-                Sign in
-              </Link>
-            </p>
           </div>
 
           {/* Form header Left */}
 
           {/* Form header Right */}
 
-          <div className="lg:hidden">
-            <img
-              src="/logo.png"
-              className="mr-0 mb-1 sm:mb-2 h-6 lg:h-9 rounded-full"
-              alt="Shibaji logo"
-            />
-            <p className="self-center whitespace-nowrap text-xs lg:text-sm font-semibold font-sans dark:text-white ml-0 py-1">
-              <span className="px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-md text-white">
-                Shibaji
-              </span>
-              Sangha
-            </p>
-          </div>
+          <p className="self-center whitespace-nowrap text-xs font-semibold  dark:text-white ml-0 py-1 lg:hidden">
+            <span className="px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-md text-white">
+              Shibaji
+            </span>
+            Sangha
+          </p>
 
           {/* Form header Right */}
         </div>
@@ -144,7 +127,7 @@ function Register() {
 
         {/* Main From */}
         <form className="w-full max-w-lg" onSubmit={signUpSumbitHandle}>
-          <div className="flex items-center gap-2 w-full">
+          <div className="flex lg:flex-col items-center gap-2 lg:gap-0 w-full">
             {/* Full Name input */}
             <Input
               placeholder="Enter your name"
@@ -165,27 +148,7 @@ function Register() {
             />
           </div>
 
-          {/* Phone Number input */}
-          <Input
-            placeholder="+91 0000000000"
-            icon={FaPhoneAlt}
-            labelText="Phone Number"
-            name="phone"
-            value={newUser.phone}
-            onChange={inputHandler}
-          />
-
-          {/* Address input */}
-          <Input
-            placeholder="Enter your address"
-            icon={FaAddressBook}
-            labelText="Address"
-            name="address"
-            value={newUser.address}
-            onChange={inputHandler}
-          />
-
-          <div className="flex items-center gap-2 w-full">
+          <div className="flex lg:flex-col items-center gap-2 lg:gap-0 w-full">
             {/* Password input */}
             <Input
               placeholder="********"
@@ -219,7 +182,8 @@ function Register() {
           </div>
           <Button
             gradientDuoTone="purpleToPink"
-            className="w-full mt-8"
+            outline
+            className="w-full mt-5"
             type="submit"
           >
             {loading ? (
@@ -231,9 +195,16 @@ function Register() {
               "Sign Up"
             )}
           </Button>
+          <OAuth />
+          <p className="text-[#333] font-[500] text-[14px] mt-2">
+            Have an account?{" "}
+            <Link to="/login" className="text-[#f00d49] font-bold pl-1">
+              Sign in
+            </Link>
+          </p>
 
           {error && (
-            <Alert className="mt-5" color="failure">
+            <Alert className="mt-5 text-xs" color="failure">
               * {error}
             </Alert>
           )}

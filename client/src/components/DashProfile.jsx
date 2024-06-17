@@ -1,21 +1,52 @@
 import { useSelector } from "react-redux";
 import { Input } from "../components";
 
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "flowbite-react";
 
 function DashProfile() {
   const currentUser = useSelector((state) => state.user.currentUser);
-  console.log(currentUser);
+  const [imageFile, setImageFile] = useState(null);
+  const [imageFileURL, setImageFileURL] = useState(null);
+  const imageFileRef = useRef();
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setImageFileURL(URL.createObjectURL(file));
+    }
+  };
+
+  useEffect(() => {
+    if (imageFile) {
+      uploadFile();
+    }
+  }, [imageFile]);
+
+  const uploadFile = () => {
+    console.log("Upload Image ...");
+  };
+
   return (
     <div className="max-w-lg mx-auto p-3 w-full">
       <h1 className="font-[Inter] text-[#333] font-semibold text-xl text-center my-3">
         Profile
       </h1>
       <form className="flex flex-col">
-        <div className="w-32 h-32 self-center cursor-pointer shadow-xl overflow-hidden rounded-full mb-3 md:mb-7">
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+          ref={imageFileRef}
+          hidden
+        />
+        <div
+          className="w-32 h-32 self-center cursor-pointer shadow-xl overflow-hidden rounded-full mb-3 md:mb-7"
+          onClick={() => imageFileRef.current.click()}
+        >
           <img
-            src="/profile-logo.jpg"
+            src={imageFileURL ? imageFileURL : `${"/profile-logo.jpg"}`}
             alt="user"
             className="rounded-full w-full h-full border-8 border-[lightgray] object-cover"
           />

@@ -13,21 +13,6 @@ const signUpSchema = z.object({
     .trim()
     .min(1, { message: "Email is required!" })
     .email({ message: "Invalid email address!" }),
-  phone: z
-    .string()
-    .trim()
-    .min(1, { message: "Phone number is required!" })
-    .min(10, { message: "Please enter a valid phone number" })
-    .max(20, {
-      message: "Phone number can't be more than 20 characters!",
-    }),
-  address: z
-    .string()
-    .trim()
-    .min(1, { message: "Address is required!" })
-    .max(255, {
-      message: "Address can't be more than 255 characters!",
-    }),
   password: z
     .string()
     .trim()

@@ -15,14 +15,6 @@ const userSchema = new mongoose.Schema(
       require: true,
       unique: true,
     },
-    phone: {
-      type: String,
-      require: true,
-    },
-    address: {
-      type: String,
-      require: true,
-    },
     password: {
       type: String,
       require: true,
@@ -30,6 +22,10 @@ const userSchema = new mongoose.Schema(
     category: {
       type: String,
       require: true,
+    },
+    profilePicture: {
+      type: String,
+      default: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
     },
     isAdmin: {
       type: Boolean,
@@ -43,7 +39,7 @@ const userSchema = new mongoose.Schema(
 userSchema.pre("save", async function (next) {
   const user = this; // this = user creation data
 
-  // If password is mpdified then call the next()
+  // If password is modified then call the next()
   if (!user.isModified("password")) {
     next();
   }
@@ -64,7 +60,6 @@ userSchema.methods.generateToken = function () {
       {
         userId: this._id.toString(),
         email: this.email,
-        phone: this.phone,
         isAdmin: this.isAdmin,
       },
       JWT_SIGNATURE,

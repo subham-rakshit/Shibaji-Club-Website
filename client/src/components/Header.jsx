@@ -51,7 +51,7 @@ function Header() {
                 className="text-success font-[Inter] text-sm"
                 size="sm"
                 alt="user"
-                img="/profile-logo.jpg"
+                img={currentUserDetails.profilePicture}
               />
             }
             arrowIcon={true}

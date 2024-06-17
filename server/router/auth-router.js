@@ -19,4 +19,7 @@ router
   .route("/login")
   .post(validate(loginSchema), authControllerObject.loginController);
 
+//? Google Api Route --->
+router.route("/google").post(authControllerObject.googleController);
+
 export default router;
