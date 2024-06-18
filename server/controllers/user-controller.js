@@ -31,6 +31,19 @@ export const updateUserDetails = async (req, res, next) => {
 
   //? Check if user enters a valid username or not -->
   if (req.body.username) {
+    const { username } = req.body;
+    const usernameExist = await UserCollection.findOne({ username });
+    console.log(usernameExist);
+    if (usernameExist) {
+      if (req.user.userId !== usernameExist._id.toString()) {
+        const usernameError = {
+          status: 401,
+          message: "Invalid usernae",
+          extraDetails: "Username already exists!",
+        };
+        return next(usernameError);
+      }
+    }
     if (req.body.username.length < 7 || req.body.username.length > 20) {
       const usernameError = {
         status: 401,
@@ -76,7 +89,7 @@ export const updateUserDetails = async (req, res, next) => {
 
   //? Check if user enters email is already used by someone or not -->
   if (req.body.email) {
-    const email = req.body.email;
+    const { email } = req.body;
     const userExist = await UserCollection.findOne({ email });
     if (userExist) {
       if (req.user.userId !== userExist._id.toString()) {
@@ -109,7 +122,7 @@ export const updateUserDetails = async (req, res, next) => {
     const { password, ...rest } = updateUserDetails._doc;
     res.status(200).json({
       message: "Details updated successfully",
-      useruserDetails: rest,
+      userDetails: rest,
     });
   } catch (error) {
     next(error);

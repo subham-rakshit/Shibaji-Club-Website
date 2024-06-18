@@ -1,8 +1,9 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Input } from "../components";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Alert, Button } from "flowbite-react";
+import { Alert, Button, Spinner } from "flowbite-react";
+import Cookies from "js-cookie";
 
 import {
   getDownloadURL,
@@ -13,14 +14,24 @@ import {
 import { app } from "../firebase";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import {
+  updateStart,
+  updateSuccess,
+  updateFailure,
+} from "../redux-slice/userSlice";
 
 function DashProfile() {
-  const currentUser = useSelector((state) => state.user.currentUser);
+  const { currentUser, loading } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState(null);
   const [imageFileURL, setImageFileURL] = useState(null);
   const [imageUploadProgress, setImageFileUploadProgress] = useState(null);
   const [imageFileUploadError, setImageFileUploadError] = useState(null);
+  const [imageFileUploading, setIageFileUploading] = useState(false);
+  const [formData, setFormData] = useState({});
+  const [userUpdateSuccess, setUserUpdateSuccess] = useState(null);
+  const [possibleErrors, setPossibleErrors] = useState(null);
   const imageFileRef = useRef();
+  const dispatch = useDispatch();
 
   // console.log(imageFile);
   // console.log(imageUploadProgress, imageFileUploadError);
@@ -51,8 +62,7 @@ function DashProfile() {
     //     }
     //   }
     // }
-    // console.log("Upload Image ...", imageFileURL, imageFile);
-
+    setIageFileUploading(true);
     setImageFileUploadError(null);
     //? To understand the requesting person is correct or not by passing the firebase app which is exported from firebase.js file.
     const storage = getStorage(app);
@@ -80,14 +90,67 @@ function DashProfile() {
         setImageFileUploadProgress(null);
         setImageFile(null);
         setImageFileURL(null);
+        setIageFileUploading(false);
       },
       //? File download and genrate image link to store in imageFileURL state.
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           setImageFileURL(downloadURL);
+          setFormData({ ...formData, profilePicture: downloadURL });
+          setIageFileUploading(false);
         });
       }
     );
+  };
+
+  const handleFormDataChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  console.log(formData);
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    // console.log(Object.keys(formData));
+    setUserUpdateSuccess(null);
+    setPossibleErrors(null);
+    const token = Cookies.get("jwt_token");
+    console.log(token);
+    if (Object.keys(formData).length === 0) {
+      setPossibleErrors("No changes made!");
+      return;
+    }
+    //? This is protect our request from sending request between image uploading proccess.
+    if (imageFileUploading) {
+      setPossibleErrors("Please wait for image to be uploaded!");
+      return;
+    }
+
+    try {
+      dispatch(updateStart());
+      const api = `http://localhost:5000/api/user/update/${currentUser._id}`;
+      const options = {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...formData, jwt_token: token }),
+      };
+      const res = await fetch(api, options);
+      const data = await res.json();
+      console.log(data);
+      if (res.ok) {
+        dispatch(updateSuccess(data.userDetails));
+        setFormData({});
+        setUserUpdateSuccess(data.message);
+      } else {
+        dispatch(updateFailure(data.extraDetails));
+        setPossibleErrors(data.extraDetails);
+      }
+    } catch (error) {
+      dispatch(updateFailure(error.message));
+      setPossibleErrors(error.message);
+    }
   };
 
   return (
@@ -95,7 +158,7 @@ function DashProfile() {
       <h1 className="font-[Inter] font-[700] text-xl text-center my-3">
         Profile
       </h1>
-      <form className="flex flex-col">
+      <form className="flex flex-col" onSubmit={handleFormSubmit}>
         <input
           type="file"
           accept="image/*"
@@ -145,19 +208,27 @@ function DashProfile() {
         <div className="flex flex-col gap-2">
           <Input
             labelText="Username"
+            name="username"
             placeholder="Firstname Lastname"
             defaultValue={currentUser.username}
+            onChange={handleFormDataChange}
           />
           <Input
             labelText="Email"
+            name="email"
             placeholder="example@example.com"
             defaultValue={currentUser.email}
+            onChange={handleFormDataChange}
           />
 
+          <p>Change password</p>
           <Input
             type="password"
+            name="password"
             placeholder="********"
             labelText="New password"
+            required={0}
+            onChange={handleFormDataChange}
           />
         </div>
         <Button
@@ -166,7 +237,14 @@ function DashProfile() {
           outline
           className="mt-7 font-[Inter]"
         >
-          Update
+          {loading ? (
+            <>
+              <Spinner size="sm" />
+              <span className="pl-3">Updating ....</span>
+            </>
+          ) : (
+            "Update"
+          )}
         </Button>
       </form>
       <div className="text-red-500 flex justify-between items-center mt-2 text-xs font-[Inter] font-normal">
@@ -177,6 +255,16 @@ function DashProfile() {
           Sign Out
         </span>
       </div>
+      {userUpdateSuccess && (
+        <Alert color="success" className="mt-5">
+          {userUpdateSuccess}
+        </Alert>
+      )}
+      {possibleErrors && (
+        <Alert color="failure" className="mt-5">
+          {possibleErrors}
+        </Alert>
+      )}
     </div>
   );
 }

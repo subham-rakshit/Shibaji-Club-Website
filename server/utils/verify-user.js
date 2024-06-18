@@ -8,7 +8,6 @@ export const verifyToken = (req, res, next) => {
       message: "Invalid User",
       extraDetails: "User Unauthorized!",
     };
-
     return next(authError);
   } else {
     jwt.verify(token, process.env.JWT_SIGNATURE, (err, user) => {

@@ -3,7 +3,7 @@ import { useId, forwardRef } from "react";
 import { Label, TextInput } from "flowbite-react";
 
 const Input = forwardRef(function Input(
-  { label, type = "text", labelText = "", ...props },
+  { label, type = "text", labelText = "", required = 1, ...props },
   ref
 ) {
   const id = useId();
@@ -23,7 +23,7 @@ const Input = forwardRef(function Input(
         className="font-[Inter]"
         {...props}
         autoComplete="off"
-        required
+        required={required}
         shadow
       />
     </div>
