@@ -1,6 +1,7 @@
 import UserCollection from "../models/user-model.js";
 import bcrypt from "bcryptjs";
 
+//! UPDATE Profile -->
 export const updateUserDetails = async (req, res, next) => {
   // console.log(req.user);
   // console.log(req.params);
@@ -123,6 +124,29 @@ export const updateUserDetails = async (req, res, next) => {
     res.status(200).json({
       message: "Details updated successfully",
       userDetails: rest,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+//! DELETE Profile -->
+export const deleteUserDetails = async (req, res, next) => {
+  //? Make user user is owner of the account.
+  if (req.user.userId !== req.params.userId) {
+    const deleteAuthError = {
+      status: 403,
+      message: "Not Authenticated",
+      extraDetails: "You are not allowed to delete this account!",
+    };
+    return next(deleteAuthError);
+  }
+
+  //? Delete Functionality.
+  try {
+    await UserCollection.findByIdAndDelete(req.params.userId);
+    return res.status(200).json({
+      message: "User deleted successfully",
     });
   } catch (error) {
     next(error);
