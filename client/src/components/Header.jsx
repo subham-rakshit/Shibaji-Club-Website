@@ -4,6 +4,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "../redux-slice/themeSlice";
 import { FaMoon, FaSun } from "react-icons/fa";
+import { signOutSuccess } from "../redux-slice/userSlice";
 
 function Header() {
   const path = useLocation().pathname;
@@ -11,6 +12,27 @@ function Header() {
   const currentUserDetails = useSelector((state) => state.user.currentUser);
   console.log("Header: ", currentUserDetails);
   const { theme } = useSelector((state) => state.theme);
+
+  const handleSignOut = async () => {
+    try {
+      const api = "/api/user/signout";
+      const options = {
+        method: "POST",
+      };
+      const res = await fetch(api, options);
+      const data = await res.json();
+
+      if (res.ok) {
+        dispatch(signOutSuccess());
+        Cookies.remove("jwt_token");
+      } else {
+        console.log(data.message);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <Navbar className="fixed w-full z-10 shadow-lg flex items-center justify-between gap-1">
       <Link to="/" className="flex items-center gap-1">
@@ -90,7 +112,10 @@ function Header() {
               </Dropdown.Item>
             </Link>
             <Dropdown.Divider />
-            <Dropdown.Item className="text-[14px] text-[blue] font-semibold font-[Inter]">
+            <Dropdown.Item
+              className="text-[14px] text-[blue] font-semibold font-[Inter]"
+              onClick={handleSignOut}
+            >
               Sign out
             </Dropdown.Item>
           </Dropdown>

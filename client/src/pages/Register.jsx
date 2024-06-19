@@ -46,7 +46,7 @@ function Register() {
 
     try {
       dispatch(signInStart());
-      const apiUrl = "http://localhost:5000/api/auth/register";
+      const apiUrl = "/api/auth/register";
       const options = {
         method: "POST",
         headers: {

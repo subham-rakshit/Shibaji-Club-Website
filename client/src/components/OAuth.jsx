@@ -24,7 +24,7 @@ function OAuth() {
       console.log(googleResult.user.displayName);
       console.log(googleResult.user.email);
       console.log(googleResult.user.photoURL);
-      const apiURL = "http://localhost:5000/api/auth/google";
+      const apiURL = "/api/auth/google";
       const options = {
         method: "POST",
         headers: { "Content-Type": "application/json" },

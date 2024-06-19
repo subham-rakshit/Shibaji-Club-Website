@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Sidebar } from "flowbite-react";
 import { HiUser, HiArrowSmRight } from "react-icons/hi";
 import { Link, useLocation } from "react-router-dom";
+import { signOutSuccess } from "../redux-slice/userSlice";
+import { useDispatch } from "react-redux";
 
 function DashSideBar() {
   const location = useLocation();
   const [tab, setTab] = useState("");
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -17,6 +20,26 @@ function DashSideBar() {
       setTab("");
     }
   }, [location.search]);
+
+  const handleSignOut = async () => {
+    try {
+      const api = "/api/user/signout";
+      const options = {
+        method: "POST",
+      };
+      const res = await fetch(api, options);
+      const data = await res.json();
+
+      if (res.ok) {
+        dispatch(signOutSuccess());
+        Cookies.remove("jwt_token");
+      } else {
+        console.log(data.message);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   return (
     <Sidebar className="w-full md:w-56">
       <Sidebar.Items>
@@ -37,6 +60,7 @@ function DashSideBar() {
           <Sidebar.Item
             icon={HiArrowSmRight}
             className="font-[Inter] text-sm font-medium cursor-pointer"
+            onClick={handleSignOut}
           >
             Sign Out
           </Sidebar.Item>

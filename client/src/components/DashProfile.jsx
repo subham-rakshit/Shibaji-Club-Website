@@ -21,6 +21,7 @@ import {
   deleteUserStart,
   deleteUserSuccess,
   deleteUserFailure,
+  signOutSuccess,
 } from "../redux-slice/userSlice";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
@@ -134,7 +135,7 @@ function DashProfile() {
 
     try {
       dispatch(updateStart());
-      const api = `http://localhost:5000/api/user/update/${currentUser._id}`;
+      const api = `/api/user/update/${currentUser._id}`;
       const options = {
         method: "PUT",
         headers: {
@@ -164,7 +165,7 @@ function DashProfile() {
     try {
       dispatch(deleteUserStart());
 
-      const api = `http://localhost:5000/api/user/delete/${currentUser._id}`;
+      const api = `/api/user/delete/${currentUser._id}`;
       const options = {
         method: "DELETE",
         headers: {
@@ -183,6 +184,26 @@ function DashProfile() {
       }
     } catch (error) {
       dispatch(deleteUserFailure(error.message));
+    }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      const api = "/api/user/signout";
+      const options = {
+        method: "POST",
+      };
+      const res = await fetch(api, options);
+      const data = await res.json();
+
+      if (res.ok) {
+        dispatch(signOutSuccess());
+        Cookies.remove("jwt_token");
+      } else {
+        console.log(data.message);
+      }
+    } catch (error) {
+      console.log(error.message);
     }
   };
 
@@ -286,7 +307,10 @@ function DashProfile() {
         >
           Delete Account
         </span>
-        <span className="cursor-pointer font-bold hover:font-extrabold">
+        <span
+          className="cursor-pointer font-bold hover:font-extrabold"
+          onClick={handleSignOut}
+        >
           Sign Out
         </span>
       </div>

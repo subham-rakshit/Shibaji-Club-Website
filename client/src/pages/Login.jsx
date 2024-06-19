@@ -42,7 +42,7 @@ function Login() {
 
     try {
       dispatch(signInStart());
-      const apiUrl = "http://localhost:5000/api/auth/login";
+      const apiUrl = "/api/auth/login";
       const options = {
         method: "POST",
         headers: {
