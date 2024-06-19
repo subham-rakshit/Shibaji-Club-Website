@@ -1,4 +1,5 @@
 import UserCollection from "../models/user-model.js";
+import jwt from "jsonwebtoken";
 
 const authControllerObject = {
   async homeController(req, res) {
@@ -117,20 +118,32 @@ const authControllerObject = {
 
   //* Google Api Route Controller -->
   async googleController(req, res, next) {
-    const { email, username, googleProfilePhotoURL } = req.body;
+    const { username, email, googleProfilePhotoURL } = req.body;
     try {
       const user = await UserCollection.findOne({ email });
+
       if (user) {
+        const token = jwt.sign(
+          {
+            userId: user._id.toString(),
+            email: user.email,
+            isAdmin: user.isAdmin,
+          },
+          process.env.JWT_SIGNATURE,
+          {
+            expiresIn: "30d",
+          }
+        );
         const { password: pass, ...rest } = user._doc;
 
         return res
           .status(200)
-          .cookie("jwt_token", await user.generateToken(), {
+          .cookie("jwt_token", token, {
             httpOnly: true,
           })
           .json({
             message: "Login successful!",
-            jwt_token: await user.generateToken(),
+            jwt_token: token,
             userDetails: rest,
           });
       } else {
@@ -147,15 +160,27 @@ const authControllerObject = {
           profilePicture: googleProfilePhotoURL,
         });
 
+        const token = jwt.sign(
+          {
+            userId: userCreated._id.toString(),
+            email: userCreated.email,
+            isAdmin: userCreated.isAdmin,
+          },
+          process.env.JWT_SIGNATURE,
+          {
+            expiresIn: "30d",
+          }
+        );
+
         const { password: pass, ...rest } = userCreated._doc;
         return res
           .status(201)
-          .cookie("jwt_token", await user.generateToken(), {
+          .cookie("jwt_token", token, {
             httpOnly: true,
           })
           .json({
             message: "Registration successful!",
-            jwt_token: await userCreated.generateToken(),
+            jwt_token: token,
             userDetails: rest,
           });
       }

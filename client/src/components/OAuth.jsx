@@ -21,6 +21,9 @@ function OAuth() {
       //* Result from google by a method called signInWithPopup()
       const googleResult = await signInWithPopup(auth, provider);
       console.log(googleResult);
+      console.log(googleResult.user.displayName);
+      console.log(googleResult.user.email);
+      console.log(googleResult.user.photoURL);
       const apiURL = "http://localhost:5000/api/auth/google";
       const options = {
         method: "POST",

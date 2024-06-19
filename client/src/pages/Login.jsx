@@ -20,6 +20,8 @@ function Login() {
     password: "",
   });
 
+  console.log(loginDetails);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

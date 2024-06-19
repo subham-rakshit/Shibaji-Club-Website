@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Input } from "../components";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Alert, Button, Spinner } from "flowbite-react";
+import { Alert, Button, Spinner, Modal } from "flowbite-react";
 import Cookies from "js-cookie";
 
 import {
@@ -18,10 +18,14 @@ import {
   updateStart,
   updateSuccess,
   updateFailure,
+  deleteUserStart,
+  deleteUserSuccess,
+  deleteUserFailure,
 } from "../redux-slice/userSlice";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 function DashProfile() {
-  const { currentUser, loading } = useSelector((state) => state.user);
+  const { currentUser, loading, error } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState(null);
   const [imageFileURL, setImageFileURL] = useState(null);
   const [imageUploadProgress, setImageFileUploadProgress] = useState(null);
@@ -30,11 +34,14 @@ function DashProfile() {
   const [formData, setFormData] = useState({});
   const [userUpdateSuccess, setUserUpdateSuccess] = useState(null);
   const [possibleErrors, setPossibleErrors] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
   const imageFileRef = useRef();
   const dispatch = useDispatch();
 
   // console.log(imageFile);
   // console.log(imageUploadProgress, imageFileUploadError);
+
+  const token = Cookies.get("jwt_token");
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -114,7 +121,6 @@ function DashProfile() {
     // console.log(Object.keys(formData));
     setUserUpdateSuccess(null);
     setPossibleErrors(null);
-    const token = Cookies.get("jwt_token");
     console.log(token);
     if (Object.keys(formData).length === 0) {
       setPossibleErrors("No changes made!");
@@ -150,6 +156,33 @@ function DashProfile() {
     } catch (error) {
       dispatch(updateFailure(error.message));
       setPossibleErrors(error.message);
+    }
+  };
+
+  const handleDeleteFunction = async () => {
+    setOpenModal(false);
+    try {
+      dispatch(deleteUserStart());
+
+      const api = `http://localhost:5000/api/user/delete/${currentUser._id}`;
+      const options = {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ jwt_token: token }),
+      };
+      const res = await fetch(api, options);
+      const data = await res.json();
+      console.log(data);
+      if (res.ok) {
+        dispatch(deleteUserSuccess());
+        Cookies.remove("jwt_token");
+      } else {
+        dispatch(deleteUserFailure(data.message));
+      }
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message));
     }
   };
 
@@ -221,7 +254,6 @@ function DashProfile() {
             onChange={handleFormDataChange}
           />
 
-          <p>Change password</p>
           <Input
             type="password"
             name="password"
@@ -248,7 +280,10 @@ function DashProfile() {
         </Button>
       </form>
       <div className="text-red-500 flex justify-between items-center mt-2 text-xs font-[Inter] font-normal">
-        <span className="cursor-pointer font-bold hover:font-extrabold">
+        <span
+          className="cursor-pointer font-bold hover:font-extrabold"
+          onClick={() => setOpenModal(true)}
+        >
           Delete Account
         </span>
         <span className="cursor-pointer font-bold hover:font-extrabold">
@@ -265,6 +300,37 @@ function DashProfile() {
           {possibleErrors}
         </Alert>
       )}
+      {error && (
+        <Alert color="failure" className="mt-5">
+          {error}
+        </Alert>
+      )}
+
+      {/* Delete Modal */}
+      <Modal
+        show={openModal}
+        size="md"
+        onClose={() => setOpenModal(false)}
+        popup
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+              Are you sure you want to delete this account?
+            </h3>
+            <div className="flex justify-center gap-4">
+              <Button color="failure" onClick={handleDeleteFunction}>
+                Yes, I'm sure
+              </Button>
+              <Button color="gray" onClick={() => setOpenModal(false)}>
+                No, cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }
