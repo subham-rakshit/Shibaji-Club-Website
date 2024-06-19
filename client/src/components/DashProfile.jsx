@@ -23,6 +23,7 @@ import {
   signOutSuccess,
 } from "../redux-slice/userSlice";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { Link } from "react-router-dom";
 
 function DashProfile() {
   const { currentUser, loading, error } = useSelector((state) => state.user);
@@ -117,7 +118,7 @@ function DashProfile() {
     // console.log(Object.keys(formData));
     setUserUpdateSuccess(null);
     setPossibleErrors(null);
-    console.log(token);
+
     if (Object.keys(formData).length === 0) {
       setPossibleErrors("No changes made!");
       return;
@@ -150,6 +151,7 @@ function DashProfile() {
         setPossibleErrors(data.extraDetails);
       }
     } catch (error) {
+      console.log(error.message);
       dispatch(updateFailure(error.message));
       setPossibleErrors(error.message);
     }
@@ -247,7 +249,13 @@ function DashProfile() {
           />
         </div>
         {imageFileUploadError && (
-          <Alert color="failure" className="mb-2">
+          <Alert
+            color="failure"
+            className="mb-2"
+            onDismiss={() => {
+              setImageFileUploadError(null);
+            }}
+          >
             {imageFileUploadError}
           </Alert>
         )}
@@ -281,6 +289,7 @@ function DashProfile() {
           gradientDuoTone="purpleToBlue"
           outline
           className="mt-7 font-[Inter]"
+          disabled={loading || imageFileUploading}
         >
           {loading ? (
             <>
@@ -291,6 +300,17 @@ function DashProfile() {
             "Update"
           )}
         </Button>
+        {currentUser.isAdmin && (
+          <Link to="/create-post">
+            <Button
+              type="button"
+              gradientDuoTone="purpleToPink"
+              className="mt-5 font-[Inter] w-full"
+            >
+              Create a post
+            </Button>
+          </Link>
+        )}
       </form>
       <div className="text-red-500 flex justify-between items-center mt-2 text-xs font-[Inter] font-normal">
         <span
@@ -307,18 +327,21 @@ function DashProfile() {
         </span>
       </div>
       {userUpdateSuccess && (
-        <Alert color="success" className="mt-5">
+        <Alert
+          color="success"
+          className="mt-5"
+          onDismiss={() => setUserUpdateSuccess(null)}
+        >
           {userUpdateSuccess}
         </Alert>
       )}
       {possibleErrors && (
-        <Alert color="failure" className="mt-5">
+        <Alert
+          color="failure"
+          className="mt-5"
+          onDismiss={() => setPossibleErrors(null)}
+        >
           {possibleErrors}
-        </Alert>
-      )}
-      {error && (
-        <Alert color="failure" className="mt-5">
-          {error}
         </Alert>
       )}
 
