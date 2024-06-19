@@ -8,6 +8,7 @@ import errorMiddleware from "./middlewares/error-middleware.js";
 
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import postRouter from "./router/post-router.js";
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use(express.json());
 app.use("/api/auth", router);
 app.use("/api/form", contactRouter);
 app.use("/api/user", userRouter);
+app.use("/api/post", postRouter);
 
 app.use(errorMiddleware);
 
