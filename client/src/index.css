@@ -5,3 +5,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  height: 100vh;
+}
+
+.jodit-react-container {
+  font-size: 14px;
+  font-family: "Inter";
+}
+@media screen and (min-width: 768px) {
+  .jodit-react-container {
+    font-size: 18px;
+  }
+}

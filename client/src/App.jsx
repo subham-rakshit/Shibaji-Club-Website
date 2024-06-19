@@ -10,14 +10,22 @@ import {
   Login,
   Register,
   Dashboard,
+  CreatePost,
 } from "./pages";
 
-import { Header, Footer, ProtectedRoute } from "./components";
+import {
+  Header,
+  Footer,
+  ProtectedRoute,
+  OnlyAdmiProtectedRoute,
+  ScrollToTop,
+} from "./components";
 
 const App = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <BrowserRouter>
+        <ScrollToTop />
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -29,6 +37,9 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/admin-dashboard" element={<Dashboard />} />
+          </Route>
+          <Route element={<OnlyAdmiProtectedRoute />}>
+            <Route path="/create-post" element={<CreatePost />} />
           </Route>
         </Routes>
         <Footer />
