@@ -3,7 +3,6 @@ import { Input } from "../components";
 
 import React, { useEffect, useRef, useState } from "react";
 import { Alert, Button, Spinner, Modal } from "flowbite-react";
-import Cookies from "js-cookie";
 
 import {
   getDownloadURL,
@@ -41,8 +40,6 @@ function DashProfile() {
 
   // console.log(imageFile);
   // console.log(imageUploadProgress, imageFileUploadError);
-
-  const token = Cookies.get("jwt_token");
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -115,8 +112,6 @@ function DashProfile() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  console.log(formData);
-
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     // console.log(Object.keys(formData));
@@ -141,7 +136,7 @@ function DashProfile() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ...formData, jwt_token: token }),
+        body: JSON.stringify({ ...formData }),
       };
       const res = await fetch(api, options);
       const data = await res.json();
@@ -171,14 +166,12 @@ function DashProfile() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ jwt_token: token }),
       };
       const res = await fetch(api, options);
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
       if (res.ok) {
         dispatch(deleteUserSuccess());
-        Cookies.remove("jwt_token");
       } else {
         dispatch(deleteUserFailure(data.message));
       }
@@ -198,7 +191,6 @@ function DashProfile() {
 
       if (res.ok) {
         dispatch(signOutSuccess());
-        Cookies.remove("jwt_token");
       } else {
         console.log(data.message);
       }

@@ -6,7 +6,6 @@ import { app } from "../firebase";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { signInSuccess } from "../redux-slice/userSlice";
-import Cookies from "js-cookie";
 
 function OAuth() {
   //* For authorization we need to get the auth from getAuth() method and pass that app which are created when firbase sdk is initialized. For knowing google who will be requesting in firebase.
@@ -37,10 +36,6 @@ function OAuth() {
       const response = await fetch(apiURL, options);
       const data = await response.json();
       if (response.ok) {
-        Cookies.set("jwt_token", data.jwt_token, {
-          expires: 30,
-          path: "/",
-        });
         alert(data.message);
         dispatch(signInSuccess(data.userDetails));
         navigate("/");

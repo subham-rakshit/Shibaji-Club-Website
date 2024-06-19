@@ -47,7 +47,6 @@ const authControllerObject = {
           })
           .json({
             message: "Registration successful!",
-            jwt_token: await userCreated.generateToken(),
             userDetails: rest,
           });
       }
@@ -89,7 +88,6 @@ const authControllerObject = {
             })
             .json({
               message: "Login successful!",
-              jwt_token: await userExist.generateToken(),
               userDetails: rest,
             });
         } else {
@@ -143,7 +141,6 @@ const authControllerObject = {
           })
           .json({
             message: "Login successful!",
-            jwt_token: token,
             userDetails: rest,
           });
       } else {
@@ -180,7 +177,7 @@ const authControllerObject = {
           })
           .json({
             message: "Registration successful!",
-            jwt_token: token,
+            // jwt_token: token,
             userDetails: rest,
           });
       }

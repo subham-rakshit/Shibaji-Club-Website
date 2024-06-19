@@ -17,8 +17,8 @@ const corsOptions = {
   credential: true,
 };
 
+app.use(cookieParser());
 app.use(cors(corsOptions));
-
 app.use(express.json());
 
 app.use("/api/auth", router);
@@ -26,7 +26,6 @@ app.use("/api/form", contactRouter);
 app.use("/api/user", userRouter);
 
 app.use(errorMiddleware);
-app.use(cookieParser());
 
 connectionDB().then(() => {
   app.listen(APP_PORT, () => {

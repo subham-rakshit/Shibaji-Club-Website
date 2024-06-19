@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
 export const verifyToken = (req, res, next) => {
-  const token = req.body.jwt_token;
+  const token = req.cookies.jwt_token;
   if (!token) {
     const authError = {
       status: 401,

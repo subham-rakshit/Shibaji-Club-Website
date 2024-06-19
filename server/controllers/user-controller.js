@@ -145,7 +145,7 @@ export const deleteUserDetails = async (req, res, next) => {
   //? Delete Functionality.
   try {
     await UserCollection.findByIdAndDelete(req.params.userId);
-    return res.status(200).json({
+    return res.status(200).clearCookie("jwt_token").json({
       message: "User deleted successfully",
     });
   } catch (error) {
