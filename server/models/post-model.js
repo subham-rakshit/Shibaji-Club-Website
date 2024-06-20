@@ -17,12 +17,12 @@ const postSchema = new mongoose.Schema(
     },
     blogImage: {
       type: String,
-      defaultValue:
+      default:
         "https://www.shutterstock.com/shutterstock/photos/2172254787/display_1500/stock-vector-football-cup-soccer-banner-template-sport-poster-infinity-concept-background-2172254787.jpg",
     },
     category: {
       type: String,
-      defaultValue: "uncategorized",
+      default: "uncategorized",
     },
     slug: {
       type: String,

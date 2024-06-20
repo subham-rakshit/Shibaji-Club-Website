@@ -26,7 +26,7 @@ import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { Link } from "react-router-dom";
 
 function DashProfile() {
-  const { currentUser, loading, error } = useSelector((state) => state.user);
+  const { currentUser, loading } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState(null);
   const [imageFileURL, setImageFileURL] = useState(null);
   const [imageUploadProgress, setImageFileUploadProgress] = useState(null);
@@ -46,6 +46,7 @@ function DashProfile() {
     const file = event.target.files[0];
     if (file) {
       setImageFile(file);
+      //? Create a temporary image url in localhost environment
       setImageFileURL(URL.createObjectURL(file));
     }
   };

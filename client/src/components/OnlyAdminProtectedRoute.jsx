@@ -4,7 +4,7 @@ import { Navigate, Outlet } from "react-router-dom";
 
 function OnlyAdmiProtectedRoute() {
   const { currentUser } = useSelector((state) => state.user);
-  console.log(currentUser);
+  // console.log(currentUser);
   return (
     <>
       {currentUser && currentUser.isAdmin ? (

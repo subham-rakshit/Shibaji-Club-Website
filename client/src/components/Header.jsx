@@ -152,7 +152,7 @@ function Header() {
             About
           </Link>
         </Navbar.Link>
-        <Navbar.Link active={path === "/practices"} as={"div"}>
+        {/* <Navbar.Link active={path === "/practices"} as={"div"}>
           <Link
             to="/practices"
             className="text-xs lg:text-sm font-[Inter] font-semibold"
@@ -160,14 +160,14 @@ function Header() {
             Practices
           </Link>
         </Navbar.Link>
-        {/* <Navbar.Link active={path === "/contact-us"} as={"div"}>
+        <Navbar.Link active={path === "/contact-us"} as={"div"}>
           <Link
             to="/contact-us"
             className="text-xs lg:text-sm font-[Inter] font-semibold"
           >
             Contact
           </Link>
-        </Navbar.Link>
+        </Navbar.Link> */}
         <Navbar.Link active={path === "/blogs"} as={"div"}>
           <Link
             to="/blogs"
@@ -175,7 +175,7 @@ function Header() {
           >
             Blogs
           </Link>
-        </Navbar.Link> */}
+        </Navbar.Link>
       </Navbar.Collapse>
     </Navbar>
   );
