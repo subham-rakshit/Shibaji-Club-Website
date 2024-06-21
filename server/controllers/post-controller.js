@@ -1,5 +1,6 @@
 import PostCollection from "../models/post-model.js";
 
+//* Create Post -->
 export const createPost = async (req, res, next) => {
   //? Check if user isAdmin or not -->
   if (!req.user.isAdmin) {
@@ -66,6 +67,60 @@ export const createPost = async (req, res, next) => {
     res.status(201).json({
       message: "You have successfully created a new post",
       postDetails: savePost,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+//* Get all Posts -->
+export const getPosts = async (req, res, next) => {
+  try {
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const limit = parseInt(req.query.limit) || 9;
+    const sortDirection = req.query.order === "asc" ? 1 : -1;
+    const posts = await PostCollection.find({
+      //? Posts for specific person
+      ...(req.query.userId && { userId: req.query.userId }),
+      //? Posts for specific category
+      ...(req.query.category && { category: req.query.category }),
+      //? Posts for specific slug to use this API where ever u want
+      ...(req.query.slug && { slug: req.query.slug }),
+      //? Posts for specific postId (_id)
+      ...(req.query.postId && { _id: req.query.postId }),
+      //? We extract posts based on seach words if those words present in title or content in a post
+      ...(req.query.searchTerm && {
+        // $or allow use search b/w two places, $regex allows us to search a perticular word by it's letters, $options allows case-insensitive
+        $or: [
+          { title: { $regex: req.query.searchTerm, $options: "i" } },
+          { content: { $regex: req.query.searchTerm, $options: "i" } },
+        ],
+      }),
+    })
+      .sort({ updateAt: sortDirection })
+      .skip(startIndex)
+      .limit(limit);
+
+    //* Total number of posts for Dashboard
+    const totalPosts = await PostCollection.countDocuments();
+
+    //* Total number of posts in Last Month for Dashboard
+    const now = new Date();
+    const lastMonth = new Date(
+      now.getFullYear(),
+      now.getMonth() - 1,
+      now.getDate()
+    );
+
+    const lastMonthPosts = await PostCollection.countDocuments({
+      createdAt: { $gte: lastMonth },
+    });
+
+    //* Send the response
+    res.status(200).json({
+      posts,
+      totalPosts,
+      lastMonthPosts,
     });
   } catch (error) {
     next(error);

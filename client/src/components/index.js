@@ -7,6 +7,7 @@ import DashProfile from "./DashProfile";
 import DashSideBar from "./DashSideBar";
 import OAuth from "./OAuth";
 import ScrollToTop from "./ScrollToTop";
+import DashPosts from "./DashPosts";
 
 export {
   Header,
@@ -18,4 +19,5 @@ export {
   DashSideBar,
   OAuth,
   ScrollToTop,
+  DashPosts,
 };

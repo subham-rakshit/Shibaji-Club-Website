@@ -44,6 +44,7 @@ const authControllerObject = {
           .status(201)
           .cookie("jwt_token", await userCreated.generateToken(), {
             httpOnly: true,
+            expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30days
           })
           .json({
             message: "Registration successful!",
@@ -85,6 +86,7 @@ const authControllerObject = {
             .status(200)
             .cookie("jwt_token", await userExist.generateToken(), {
               httpOnly: true,
+              expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30days
             })
             .json({
               message: "Login successful!",
@@ -121,23 +123,13 @@ const authControllerObject = {
       const user = await UserCollection.findOne({ email });
 
       if (user) {
-        const token = jwt.sign(
-          {
-            userId: user._id.toString(),
-            email: user.email,
-            isAdmin: user.isAdmin,
-          },
-          process.env.JWT_SIGNATURE,
-          {
-            expiresIn: "30d",
-          }
-        );
         const { password: pass, ...rest } = user._doc;
 
         return res
           .status(200)
-          .cookie("jwt_token", token, {
+          .cookie("jwt_token", await user.generateToken(), {
             httpOnly: true,
+            expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), //30days
           })
           .json({
             message: "Login successful!",
@@ -157,27 +149,15 @@ const authControllerObject = {
           profilePicture: googleProfilePhotoURL,
         });
 
-        const token = jwt.sign(
-          {
-            userId: userCreated._id.toString(),
-            email: userCreated.email,
-            isAdmin: userCreated.isAdmin,
-          },
-          process.env.JWT_SIGNATURE,
-          {
-            expiresIn: "30d",
-          }
-        );
-
         const { password: pass, ...rest } = userCreated._doc;
         return res
           .status(201)
-          .cookie("jwt_token", token, {
+          .cookie("jwt_token", await userCreated.generateToken(), {
             httpOnly: true,
+            expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), //30days
           })
           .json({
             message: "Registration successful!",
-            // jwt_token: token,
             userDetails: rest,
           });
       }

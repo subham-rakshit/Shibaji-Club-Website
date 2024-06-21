@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Sidebar } from "flowbite-react";
-import { HiUser, HiArrowSmRight } from "react-icons/hi";
+import { HiUser, HiArrowSmRight, HiDocumentText } from "react-icons/hi";
 import { Link, useLocation } from "react-router-dom";
 import { signOutSuccess } from "../redux-slice/userSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,7 +33,6 @@ function DashSideBar() {
 
       if (res.ok) {
         dispatch(signOutSuccess());
-        Cookies.remove("jwt_token");
       } else {
         console.log(data.message);
       }
@@ -44,11 +43,17 @@ function DashSideBar() {
   return (
     <Sidebar className="w-full md:w-56">
       <Sidebar.Items>
-        <Sidebar.ItemGroup>
+        <Sidebar.ItemGroup className="flex flex-col gap-1">
           <Link to="/admin-dashboard?tab=profile">
             <Sidebar.Item
               icon={HiUser}
-              label={currentUser.isAdmin ? "Admin" : "User"}
+              label={
+                tab === "profile"
+                  ? currentUser.isAdmin
+                    ? "Admin"
+                    : "User"
+                  : ""
+              }
               labelColor="dark"
               className={`font-[Inter] text-sm font-medium ${
                 tab === "profile" && "bg-[#e9e9e9] dark:bg-[#374151]"
@@ -58,6 +63,21 @@ function DashSideBar() {
               Profile
             </Sidebar.Item>
           </Link>
+          {currentUser.isAdmin && (
+            <Link to="/admin-dashboard?tab=posts">
+              <Sidebar.Item
+                icon={HiDocumentText}
+                label={tab === "posts" && "Admin"}
+                labelColor="dark"
+                className={`font-[Inter] text-sm font-medium ${
+                  tab === "posts" && "bg-[#e9e9e9] dark:bg-[#374151]"
+                }`}
+                as="div"
+              >
+                Posts
+              </Sidebar.Item>
+            </Link>
+          )}
           <Sidebar.Item
             icon={HiArrowSmRight}
             className="font-[Inter] text-sm font-medium cursor-pointer"

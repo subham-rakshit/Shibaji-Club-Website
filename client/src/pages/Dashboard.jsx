@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { DashSideBar, DashProfile } from "../components";
+import { DashSideBar, DashProfile, DashPosts } from "../components";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -18,12 +18,13 @@ const Dashboard = () => {
   }, [location.search]);
   return (
     <div className="min-h-screen mt-[65px] lg:mt-[76px] flex flex-col md:flex-row">
+      {/* Dashboard Left Side Bar */}
       <div className="md:w-56">
-        {/* :TODO Side Bar */}
         <DashSideBar />
       </div>
-      {/* :TODO Right Portion */}
+      {/* Dashboard COntent According to selected tab */}
       {tab === "profile" && <DashProfile />}
+      {tab === "posts" && <DashPosts />}
     </div>
   );
 };
