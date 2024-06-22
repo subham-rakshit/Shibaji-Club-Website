@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Button, Table } from "flowbite-react";
+import { Button, Table, Modal } from "flowbite-react";
 import { Link, useNavigate } from "react-router-dom";
 import { IoImagesSharp } from "react-icons/io5";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { PacmanLoader } from "react-spinners";
 
 function DashPosts() {
@@ -10,8 +11,12 @@ function DashPosts() {
   const [allPostsData, setAllPostsData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showMoreData, setShowMoreData] = useState(true);
+  const [showModel, setShowModel] = useState(false);
+  const [selectedPostId, setSelectedPostId] = useState(null);
 
   const navigate = useNavigate();
+
+  allPostsData.map((post) => console.log(new Date(post.createdAt).getTime()));
 
   //* Fetch All data when ever admin user is changed -->
   useEffect(() => {
@@ -21,7 +26,12 @@ function DashPosts() {
         const res = await fetch(`/api/post/getposts?userId=${currentUser._id}`);
         const data = await res.json();
         if (res.ok) {
-          setAllPostsData(data.posts);
+          const sortedPost = data.posts.sort(
+            (a, b) =>
+              new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          );
+
+          setAllPostsData(sortedPost);
           setIsLoading(false);
           if (data.posts.length < 9) {
             setShowMoreData(false);
@@ -47,11 +57,47 @@ function DashPosts() {
       const data = await res.json();
       console.log(data.posts.length);
       if (res.ok) {
-        setAllPostsData((prev) => [...prev, ...data.posts]);
-        setIsLoading(false);
+        if (data.posts.length > 1) {
+          const sortedNewPostsList = data.posts.sort(
+            (a, b) =>
+              new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          );
+          setAllPostsData((prev) => [...prev, ...sortedNewPostsList]);
+          setIsLoading(false);
+        } else {
+          setAllPostsData((prev) => [...prev, ...data.posts]);
+          setIsLoading(false);
+        }
         if (data.posts.length < 9) {
           setShowMoreData(false);
         }
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  //* Delete a post functionality -->
+  const handleDeletePost = async (e) => {
+    setShowModel(false);
+    try {
+      const res = await fetch(
+        `/api/post/deletepost/${selectedPostId}/${currentUser._id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      const data = await res.json();
+      console.log(data);
+      if (res.ok) {
+        setAllPostsData((prev) =>
+          prev.filter((post) => post._id !== selectedPostId)
+        );
+        console.log(data.message);
+        alert(data.message);
+      } else {
+        console.log(data.extraDetails);
+        alert(data.extraDetails);
       }
     } catch (error) {
       console.log(error.message);
@@ -115,7 +161,13 @@ function DashPosts() {
                     {eachPost.category}
                   </Table.Cell>
                   <Table.Cell>
-                    <span className="text-red-600 hover:underline dark:text-red-500 cursor-pointer">
+                    <span
+                      className="text-red-600 hover:underline dark:text-red-500 cursor-pointer"
+                      onClick={() => {
+                        setShowModel(true);
+                        setSelectedPostId(eachPost._id);
+                      }}
+                    >
                       Delete
                     </span>
                   </Table.Cell>
@@ -161,6 +213,30 @@ function DashPosts() {
           </Button>
         </>
       )}
+      <Modal
+        show={showModel}
+        size="md"
+        onClose={() => setShowModel(false)}
+        popup
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+              Are you sure you want to delete this post?
+            </h3>
+            <div className="flex justify-center gap-4">
+              <Button color="failure" onClick={handleDeletePost}>
+                {"Yes, I'm sure"}
+              </Button>
+              <Button color="gray" onClick={() => setShowModel(false)}>
+                No, cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }

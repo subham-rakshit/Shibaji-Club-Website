@@ -166,9 +166,6 @@ function DashProfile() {
       const api = `/api/user/delete/${currentUser._id}`;
       const options = {
         method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
       };
       const res = await fetch(api, options);
       const data = await res.json();

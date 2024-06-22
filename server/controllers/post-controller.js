@@ -126,3 +126,24 @@ export const getPosts = async (req, res, next) => {
     next(error);
   }
 };
+
+//* Delete a specific post -->
+export const deletePost = async (req, res, next) => {
+  //? Check user is an admin or not and also requesting userId is a owner of that posts or not
+  if (!req.user.isAdmin || req.user.userId !== req.params.userId) {
+    const authError = {
+      status: 403,
+      message: "Not Authenticated",
+      extraDetails: "You are not allowed to delete this post!",
+    };
+    return next(authError);
+  }
+  try {
+    await PostCollection.findByIdAndDelete(req.params.postId);
+    res.status(200).json({
+      message: "The post has been deleted successfully."
+    })
+  } catch (error) {
+    next(error);
+  }
+};
