@@ -9,8 +9,11 @@ function DashPosts() {
   const { currentUser } = useSelector((state) => state.user);
   const [allPostsData, setAllPostsData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [showMoreData, setShowMoreData] = useState(true);
+
   const navigate = useNavigate();
 
+  //* Fetch All data when ever admin user is changed -->
   useEffect(() => {
     setIsLoading(true);
     const getPosts = async () => {
@@ -20,6 +23,9 @@ function DashPosts() {
         if (res.ok) {
           setAllPostsData(data.posts);
           setIsLoading(false);
+          if (data.posts.length < 9) {
+            setShowMoreData(false);
+          }
         }
       } catch (error) {
         console.log(error.message);
@@ -29,6 +35,28 @@ function DashPosts() {
       getPosts();
     }
   }, [currentUser._id]);
+
+  //* Show more btn functionality -->
+  const handleShowMore = async () => {
+    const startIndex = allPostsData.length;
+    try {
+      setIsLoading(true);
+      const res = await fetch(
+        `/api/post/getposts?userId=${currentUser._id}&startIndex=${startIndex}`
+      );
+      const data = await res.json();
+      console.log(data.posts.length);
+      if (res.ok) {
+        setAllPostsData((prev) => [...prev, ...data.posts]);
+        setIsLoading(false);
+        if (data.posts.length < 9) {
+          setShowMoreData(false);
+        }
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return (
     <div
@@ -102,6 +130,15 @@ function DashPosts() {
               ))}
             </Table.Body>
           </Table>
+          {showMoreData && (
+            <button
+              type="button"
+              className="w-full text-teal-500 hover:text-green-500 self-center text-sm py-5 font-[Inter] font-semibold hover:font-extrabold"
+              onClick={handleShowMore}
+            >
+              Show more...
+            </button>
+          )}
         </>
       ) : (
         <>

@@ -175,10 +175,10 @@ function CreatePost() {
             value={postFormData.category}
           >
             <option value="uncategorized">Select a category</option>
-            <option value="outfields">Outfields</option>
-            <option value="one to one">One To One</option>
-            <option value="goalkeepers">Goalkeepers</option>
-            <option value="practice matches">Practice Matches</option>
+            <option value="about club">About Club</option>
+            <option value="matches">Matches</option>
+            <option value="practices">Practices</option>
+            <option value="others">Others</option>
           </Select>
         </div>
         <div
