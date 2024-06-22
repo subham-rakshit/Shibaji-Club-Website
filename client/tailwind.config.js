@@ -1,4 +1,4 @@
-const flowbite = require("flowbite-react/tailwind");
+import flowbite from "flowbite-react/tailwind";
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -9,5 +9,5 @@ module.exports = {
       Rubik: ["Rubik", "sans-serif"],
     },
   },
-  plugins: [flowbite.plugin()],
+  plugins: [flowbite.plugin(), require("tailwind-scrollbar")],
 };
