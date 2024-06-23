@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Input } from "../components";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Alert, Button, Spinner, Modal } from "flowbite-react";
+import { Alert, Button, Spinner, Modal, Select, Label } from "flowbite-react";
 
 import {
   getDownloadURL,
@@ -281,6 +281,20 @@ function DashProfile() {
             required={0}
             onChange={handleFormDataChange}
           />
+          <Label
+            className="font-semibold font-[Inter] text-xs"
+            value="Category"
+          />
+          <Select
+            id="category"
+            defaultValue={currentUser.category}
+            onChange={handleFormDataChange}
+            name="category"
+            required
+          >
+            <option name="Footballer">Footballer</option>
+            <option name="General">General</option>
+          </Select>
         </div>
         <Button
           type="submit"

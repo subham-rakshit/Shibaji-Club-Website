@@ -99,7 +99,7 @@ function Register() {
       {/* Desktop Image */}
 
       {/* Form Content */}
-      <div className="lg:p-8 lg:rounded-2xl lg:shadow-2xl dark:shadow-xl dark:shadow-[#374151] w-full max-w-sm">
+      <div className="p-5 lg:p-8 rounded-2xl shadow-2xl dark:shadow-xl dark:shadow-[#374151] w-full max-w-sm">
         {/* Form Header */}
         <div className="w-full max-w-xl flex items-center justify-between mb-2 lg:mb-5">
           {/* Form header Left */}
@@ -125,7 +125,7 @@ function Register() {
 
         {/* Main From */}
         <form className="w-full max-w-lg" onSubmit={signUpSumbitHandle}>
-          <div className="flex lg:flex-col items-center gap-2 lg:gap-0 w-full">
+          <div className="flex flex-col sm:flex-row lg:flex-col items-center gap-2 lg:gap-0 w-full">
             {/* Full Name input */}
             <Input
               placeholder="Enter your name"
@@ -146,7 +146,7 @@ function Register() {
             />
           </div>
 
-          <div className="flex lg:flex-col items-center gap-2 lg:gap-0 w-full">
+          <div className="flex flex-col sm:flex-row lg:flex-col items-center gap-2 lg:gap-0 w-full">
             {/* Password input */}
             <Input
               placeholder="********"

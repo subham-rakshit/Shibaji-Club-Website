@@ -8,7 +8,7 @@ import DashSideBar from "./DashSideBar";
 import OAuth from "./OAuth";
 import ScrollToTop from "./ScrollToTop";
 import DashPosts from "./DashPosts";
-
+import DashUsers from "./DashUsers";
 export {
   Header,
   Footer,
@@ -20,4 +20,5 @@ export {
   OAuth,
   ScrollToTop,
   DashPosts,
+  DashUsers,
 };

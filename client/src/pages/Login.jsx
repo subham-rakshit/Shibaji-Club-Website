@@ -93,19 +93,19 @@ function Login() {
       {/* Desktop Image */}
 
       {/* Form Content */}
-      <div className="lg:p-8 lg:rounded-2xl lg:shadow-2xl dark:shadow-xl dark:shadow-[#374151] w-full max-w-sm">
+      <div className="p-5 lg:p-8 rounded-2xl shadow-2xl dark:shadow-xl dark:shadow-[#374151] w-full max-w-sm">
         {/* Form Header */}
         <div className="w-full max-w-xl flex items-center justify-between mb-2 md:mb-5">
           {/* Form header Left */}
           <div className="flex flex-col justify-center">
-            <h1 className="font-bold font-[Inter] text-xl md:text-2xl mb-2">
+            <h1 className="font-bold font-[Inter] text-normal sm:text-2xl mb-2">
               Wellcome Back!
             </h1>
           </div>
           {/* Form header Left */}
 
           {/* Form header Right */}
-          <p className="self-center whitespace-nowrap text-xs lg:text-sm font-semibold font-[Inter] dark:text-white ml-0 py-1 lg:hidden">
+          <p className="self-center whitespace-nowrap text-[12px] sm:text-sm font-semibold font-[Inter] dark:text-white ml-0 py-1 lg:hidden">
             <span className="px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-md text-white">
               Shibaji
             </span>

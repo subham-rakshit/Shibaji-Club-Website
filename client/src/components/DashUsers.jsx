@@ -1,33 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Button, Table, Modal } from "flowbite-react";
-import { Link, useNavigate } from "react-router-dom";
 import { IoImagesSharp } from "react-icons/io5";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { MdCancel } from "react-icons/md";
+import { FaCircleCheck } from "react-icons/fa6";
+
 import { PacmanLoader } from "react-spinners";
 
-function DashPosts() {
+function DashUsers() {
   const { currentUser } = useSelector((state) => state.user);
-  const [allPostsData, setAllPostsData] = useState([]);
+  const [allUsersData, setAllUsersData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showMoreData, setShowMoreData] = useState(true);
   const [showModel, setShowModel] = useState(false);
-  const [selectedPostId, setSelectedPostId] = useState(null);
-
-  const navigate = useNavigate();
+  const [selectedUserId, setSelectedUserId] = useState(null);
 
   //* Fetch All data when ever admin user is changed -->
   useEffect(() => {
     setIsLoading(true);
-    const getPosts = async () => {
+    const getUserDetails = async () => {
       try {
-        const res = await fetch(`/api/post/getposts`);
+        const res = await fetch(`/api/user/getusers`);
         const data = await res.json();
         console.log(data);
         if (res.ok) {
-          setAllPostsData(data.posts);
+          setAllUsersData(data.users);
           setIsLoading(false);
-          if (data.posts.length < 9) {
+          if (data.users.length < 9) {
             setShowMoreData(false);
           }
         }
@@ -36,21 +36,21 @@ function DashPosts() {
       }
     };
     if (currentUser.isAdmin) {
-      getPosts();
+      getUserDetails();
     }
   }, [currentUser._id]);
 
   //* Show more btn functionality -->
   const handleShowMore = async () => {
-    const startIndex = allPostsData.length;
+    const startIndex = allUsersData.length;
     try {
       setIsLoading(true);
-      const res = await fetch(`/api/post/getposts?startIndex=${startIndex}`);
+      const res = await fetch(`/api/user/getusers?startIndex=${startIndex}`);
       const data = await res.json();
       if (res.ok) {
-        setAllPostsData((prev) => [...prev, ...data.posts]);
+        setAllUsersData((prev) => [...prev, ...data.users]);
         setIsLoading(false);
-        if (data.posts.length < 9) {
+        if (data.users.length < 9) {
           setShowMoreData(false);
         }
       } else {
@@ -62,20 +62,17 @@ function DashPosts() {
   };
 
   //* Delete a post functionality -->
-  const handleDeletePost = async (e) => {
+  const handleDeleteUser = async (e) => {
     setShowModel(false);
     try {
-      const res = await fetch(
-        `/api/post/deletepost/${selectedPostId}/${currentUser._id}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const res = await fetch(`/api/user/delete/${selectedUserId}`, {
+        method: "DELETE",
+      });
       const data = await res.json();
       console.log(data);
       if (res.ok) {
-        setAllPostsData((prev) =>
-          prev.filter((post) => post._id !== selectedPostId)
+        setAllUsersData((prev) =>
+          prev.filter((user) => user._id !== selectedUserId)
         );
         console.log(data.message);
         alert(data.message);
@@ -91,78 +88,67 @@ function DashPosts() {
   return (
     <div
       className={`table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500 flex-1 ${
-        allPostsData.length === 0 || isLoading === true
+        allUsersData.length === 0 || isLoading === true
           ? "flex flex-col justify-center"
           : ""
       }`}
     >
       {isLoading ? (
         <PacmanLoader color="#36d7b7" className="mx-auto" />
-      ) : currentUser.isAdmin && allPostsData.length > 0 ? (
+      ) : currentUser.isAdmin && allUsersData.length > 0 ? (
         <>
           <Table hoverable className="shadow-md font-[Inter]">
-            <Table.Head>
-              <Table.HeadCell>Date updated</Table.HeadCell>
-              <Table.HeadCell>Post image</Table.HeadCell>
-              <Table.HeadCell>Post title</Table.HeadCell>
-              <Table.HeadCell>Category</Table.HeadCell>
+            <Table.Head className="text-[14px]">
+              <Table.HeadCell>Date created</Table.HeadCell>
+              <Table.HeadCell>User image</Table.HeadCell>
+              <Table.HeadCell>Username</Table.HeadCell>
+              <Table.HeadCell>Email</Table.HeadCell>
+              <Table.HeadCell>Admin</Table.HeadCell>
               <Table.HeadCell>Delete</Table.HeadCell>
-              <Table.HeadCell>
-                <span>Edit</span>
-              </Table.HeadCell>
             </Table.Head>
-            <Table.Body className="text-sm font-medium">
-              {allPostsData.map((eachPost, i) => (
+            <Table.Body className="text-[13px] font-medium">
+              {allUsersData.map((user, i) => (
                 <Table.Row
                   className={`bg-white dark:bg-gray-800 ${
-                    i === allPostsData.length - 1
+                    i === allUsersData.length - 1
                       ? ""
                       : "border-gray-200 border-b-2 dark:border-gray-700"
                   }`}
-                  key={eachPost._id}
+                  key={user._id}
                 >
-                  <Table.Cell className="whitespace-nowrap text-gray-500 dark:text-gray-300">
-                    {new Date(eachPost.updatedAt).toLocaleDateString()}
+                  <Table.Cell className="whitespace-nowrap text-gray-700 dark:text-gray-300 text-[14px]">
+                    {new Date(user.createdAt).toLocaleDateString()}
                   </Table.Cell>
                   <Table.Cell>
-                    <Link to={`/post/${eachPost.slug}`}>
-                      <img
-                        src={eachPost.blogImage}
-                        alt={eachPost.title}
-                        className="w-20 h-10 object-cover bg-gray-500 rounded-sm"
-                      />
-                    </Link>
+                    <img
+                      src={user.profilePicture}
+                      alt={user.username}
+                      className="w-8 h-8 object-cover bg-gray-500 rounded-full"
+                    />
                   </Table.Cell>
                   <Table.Cell>
-                    <Link
-                      className="hover:underline hover:text-blue-400 text-xs"
-                      to={`/post/${eachPost.slug}`}
-                    >
-                      {eachPost.title.length > 20
-                        ? eachPost.title.substring(0, 15) + "..."
-                        : eachPost.title}
-                    </Link>
+                    {user.username.length > 20
+                      ? user.username.substring(0, 15) + "..."
+                      : user.username}
                   </Table.Cell>
+                  <Table.Cell>{user.email}</Table.Cell>
                   <Table.Cell className="text-xs">
-                    {eachPost.category}
+                    {user.isAdmin ? (
+                      <FaCircleCheck size="19" color="#31cc3e" />
+                    ) : (
+                      <MdCancel size="22" color="#ed2456" />
+                    )}
                   </Table.Cell>
                   <Table.Cell>
                     <span
                       className="text-red-600 hover:underline dark:text-red-500 cursor-pointer"
                       onClick={() => {
                         setShowModel(true);
-                        setSelectedPostId(eachPost._id);
+                        setSelectedUserId(user._id);
                       }}
                     >
                       Delete
                     </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Link to={`/update-post/${eachPost._id}`}>
-                      <span className="text-cyan-600 hover:underline dark:text-cyan-500 cursor-pointer">
-                        Edit
-                      </span>
-                    </Link>
                   </Table.Cell>
                 </Table.Row>
               ))}
@@ -182,21 +168,12 @@ function DashPosts() {
         <>
           <IoImagesSharp size="100" className="mx-auto mb-10" />
           <h1 className="text-gray-500 dark:text-gray-300 text-2xl font-bold font-[Inter] text-center">
-            Oops! No posts to show
+            Oops! No Users to show
           </h1>
           <p className="text-gray-500 dark:text-gray-300 text-xs font-normal font-[Inter] text-center mt-2">
-            You haven't created any posts yet. Don't miss out—start creating
-            your first post now and share your thoughts with the community!
+            Currently, there are no users available to display. Please check
+            back later for updates.
           </p>
-          <Button
-            type="button"
-            gradientDuoTone="purpleToPink"
-            outline
-            className="font-[Inter] w-[fit-content] mx-auto mt-5"
-            onClick={() => navigate("/create-post")}
-          >
-            Create posts
-          </Button>
         </>
       )}
       <Modal
@@ -210,11 +187,11 @@ function DashPosts() {
           <div className="text-center">
             <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
             <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-              Are you sure you want to delete this post?
+              Are you sure you want to remove this user?
             </h3>
             <div className="flex justify-center gap-4">
-              <Button color="failure" onClick={handleDeletePost}>
-                {"Yes, I'm sure"}
+              <Button color="failure" onClick={handleDeleteUser}>
+                Yes, I'm sure
               </Button>
               <Button color="gray" onClick={() => setShowModel(false)}>
                 No, cancel
@@ -227,4 +204,4 @@ function DashPosts() {
   );
 }
 
-export default DashPosts;
+export default DashUsers;

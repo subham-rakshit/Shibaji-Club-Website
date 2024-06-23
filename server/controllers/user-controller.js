@@ -133,7 +133,8 @@ export const updateUserDetails = async (req, res, next) => {
 //! DELETE Profile -->
 export const deleteUserDetails = async (req, res, next) => {
   //? Make user user is owner of the account.
-  if (req.user.userId !== req.params.userId) {
+  console.log(req.user);
+  if (!req.user.isAdmin && req.user.userId !== req.params.userId) {
     const deleteAuthError = {
       status: 403,
       message: "Not Authenticated",
@@ -145,9 +146,15 @@ export const deleteUserDetails = async (req, res, next) => {
   //? Delete Functionality.
   try {
     await UserCollection.findByIdAndDelete(req.params.userId);
-    return res.status(200).clearCookie("jwt_token").json({
-      message: "User deleted successfully",
-    });
+    if (req.user.isAdmin) {
+      return res.status(200).json({
+        message: "User deleted successfully",
+      });
+    } else {
+      return res.status(200).clearCookie("jwt_token").json({
+        message: "User deleted successfully",
+      });
+    }
   } catch (error) {
     next(error);
   }
