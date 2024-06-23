@@ -163,3 +163,45 @@ export const signOut = async (req, res, next) => {
     next(error);
   }
 };
+
+//! Get All Users Profile -->
+export const getAllUsers = async (req, res, next) => {
+  if (!req.user.isAdmin) {
+    const authError = {
+      status: 403,
+      message: "Not Authenticated!",
+      extraDetails: "You're not allowed to access all user details!",
+    };
+    next(authError);
+  }
+  try {
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const limit = parseInt(req.query.limit) || 9;
+    const usersList = await UserCollection.find().skip(startIndex).limit(limit);
+    //? usersList gives user's details with their password. We have to remove those password in respond
+    const userDetailsWithoutPassword = usersList.map((user) => {
+      const { password, ...rest } = user._doc;
+      return rest;
+    });
+    const totalNumberOfUsers = await UserCollection.countDocuments();
+
+    const now = new Date();
+    const oneMonthAgo = new Date(
+      now.getFullYear(),
+      now.getMonth() - 1,
+      now.getDate()
+    );
+
+    const lastMonthUserDetails = await UserCollection.countDocuments({
+      createdAt: { $gte: oneMonthAgo },
+    });
+
+    res.status(200).json({
+      users: userDetailsWithoutPassword,
+      totleUsers: totalNumberOfUsers,
+      lastMonthUsers: lastMonthUserDetails,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

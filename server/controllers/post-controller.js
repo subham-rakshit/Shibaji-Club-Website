@@ -104,14 +104,14 @@ export const getPosts = async (req, res, next) => {
 
     //* Total number of posts in Last Month for Dashboard
     const now = new Date();
-    const lastMonth = new Date(
+    const oneMonthAgo = new Date(
       now.getFullYear(),
       now.getMonth() - 1,
       now.getDate()
     );
 
     const lastMonthPosts = await PostCollection.countDocuments({
-      createdAt: { $gte: lastMonth },
+      createdAt: { $gte: oneMonthAgo },
     });
 
     //* Send the response
