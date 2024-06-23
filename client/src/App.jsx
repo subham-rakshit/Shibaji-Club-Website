@@ -11,6 +11,7 @@ import {
   Register,
   Dashboard,
   CreatePost,
+  UpdatePost,
 } from "./pages";
 
 import {
@@ -40,6 +41,7 @@ const App = () => {
           </Route>
           <Route element={<OnlyAdmiProtectedRoute />}>
             <Route path="/create-post" element={<CreatePost />} />
+            <Route path="/update-post/:postId" element={<UpdatePost />} />
           </Route>
         </Routes>
         <Footer />

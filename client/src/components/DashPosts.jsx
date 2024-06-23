@@ -16,8 +16,6 @@ function DashPosts() {
 
   const navigate = useNavigate();
 
-  allPostsData.map((post) => console.log(new Date(post.createdAt).getTime()));
-
   //* Fetch All data when ever admin user is changed -->
   useEffect(() => {
     setIsLoading(true);
@@ -25,13 +23,9 @@ function DashPosts() {
       try {
         const res = await fetch(`/api/post/getposts?userId=${currentUser._id}`);
         const data = await res.json();
+        console.log(data);
         if (res.ok) {
-          const sortedPost = data.posts.sort(
-            (a, b) =>
-              new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-          );
-
-          setAllPostsData(sortedPost);
+          setAllPostsData(data.posts);
           setIsLoading(false);
           if (data.posts.length < 9) {
             setShowMoreData(false);
@@ -55,22 +49,14 @@ function DashPosts() {
         `/api/post/getposts?userId=${currentUser._id}&startIndex=${startIndex}`
       );
       const data = await res.json();
-      console.log(data.posts.length);
       if (res.ok) {
-        if (data.posts.length > 1) {
-          const sortedNewPostsList = data.posts.sort(
-            (a, b) =>
-              new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-          );
-          setAllPostsData((prev) => [...prev, ...sortedNewPostsList]);
-          setIsLoading(false);
-        } else {
-          setAllPostsData((prev) => [...prev, ...data.posts]);
-          setIsLoading(false);
-        }
+        setAllPostsData((prev) => [...prev, ...data.posts]);
+        setIsLoading(false);
         if (data.posts.length < 9) {
           setShowMoreData(false);
         }
+      } else {
+        console.log(data.extraDetails);
       }
     } catch (error) {
       console.log(error.message);
@@ -106,9 +92,11 @@ function DashPosts() {
 
   return (
     <div
-      className={`table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500 ${
-        allPostsData.length === 0 && "flex flex-col justify-center"
-      } flex-1`}
+      className={`table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500 flex-1 ${
+        allPostsData.length === 0 || isLoading === true
+          ? "flex flex-col justify-center"
+          : ""
+      }`}
     >
       {isLoading ? (
         <PacmanLoader color="#36d7b7" className="mx-auto" />

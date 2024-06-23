@@ -7,6 +7,7 @@ import Login from "./Login";
 import Register from "./Register";
 import Dashboard from "./Dashboard";
 import CreatePost from "./CreatePost";
+import UpdatePost from "./UpdatePost";
 
 export {
   Home,
@@ -18,4 +19,5 @@ export {
   Blogs,
   Practices,
   CreatePost,
+  UpdatePost,
 };

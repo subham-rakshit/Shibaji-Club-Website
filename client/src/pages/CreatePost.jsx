@@ -37,10 +37,7 @@ function CreatePost() {
   const editor = useRef(null);
 
   //* Create post Form Data state -->
-  const [postFormData, setPostFormData] = useState({
-    category: "uncategorized",
-    content: "",
-  });
+  const [postFormData, setPostFormData] = useState({});
 
   //* Publish details state -->
   const [publishSuccess, setPublishSuccess] = useState(null);
@@ -129,6 +126,7 @@ function CreatePost() {
       if (res.ok) {
         setPublishError(null);
         setPublishSuccess(data.message);
+        setPostFormData({});
         navigate(`/post/${data.postDetails.slug}`);
       }
       if (!res.ok) {
@@ -163,6 +161,7 @@ function CreatePost() {
             className="flex-1"
             name="title"
             sizing="sm"
+            value={postFormData.title ? postFormData.title : ""}
             onChange={(e) =>
               setPostFormData({ ...postFormData, title: e.target.value })
             }
@@ -172,13 +171,16 @@ function CreatePost() {
               setPostFormData({ ...postFormData, category: e.target.value })
             }
             sizing="sm"
-            value={postFormData.category}
+            value={
+              postFormData.category ? postFormData.category : "uncategorized"
+            }
           >
             <option value="uncategorized">Select a category</option>
             <option value="about club">About Club</option>
             <option value="matches">Matches</option>
             <option value="practices">Practices</option>
             <option value="others">Others</option>
+            <option value="euro cup 2024">Euro Cup 2024</option>
           </Select>
         </div>
         <div
@@ -240,7 +242,7 @@ function CreatePost() {
         )}
         <JoditEditor
           ref={editor}
-          value={postFormData.content}
+          value={postFormData.content ? postFormData.content : ""}
           onChange={(newContent) =>
             setPostFormData({ ...postFormData, content: newContent })
           }

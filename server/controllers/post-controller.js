@@ -78,7 +78,6 @@ export const getPosts = async (req, res, next) => {
   try {
     const startIndex = parseInt(req.query.startIndex) || 0;
     const limit = parseInt(req.query.limit) || 9;
-    const sortDirection = req.query.order === "asc" ? 1 : -1;
     const posts = await PostCollection.find({
       //? Posts for specific person
       ...(req.query.userId && { userId: req.query.userId }),
@@ -97,7 +96,6 @@ export const getPosts = async (req, res, next) => {
         ],
       }),
     })
-      .sort({ updateAt: sortDirection })
       .skip(startIndex)
       .limit(limit);
 
@@ -141,8 +139,46 @@ export const deletePost = async (req, res, next) => {
   try {
     await PostCollection.findByIdAndDelete(req.params.postId);
     res.status(200).json({
-      message: "The post has been deleted successfully."
-    })
+      message: "The post has been deleted successfully.",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+//* Update a specific post -->
+export const updatePost = async (req, res, next) => {
+  if (!req.user.isAdmin || req.user.userId !== req.params.userId) {
+    const authError = {
+      status: 403,
+      message: "Not Authenticated",
+      extraDetails: "You are not allowed to update this post!",
+    };
+    return next(authError);
+  }
+  try {
+    const updatedPostDetails = await PostCollection.findByIdAndUpdate(
+      req.params.postId,
+      {
+        $set: {
+          title: req.body.title,
+          content: req.body.content,
+          blogImage: req.body.blogImage,
+          category: req.body.category,
+          slug: req.body.title
+            .trim()
+            .replace(/[^a-zA-Z0-9 ]/g, "")
+            .split(" ")
+            .join("-")
+            .toLowerCase(),
+        },
+      },
+      { new: true }
+    );
+    res.status(200).json({
+      message: "You have successfully updated this post.",
+      postDetails: updatedPostDetails,
+    });
   } catch (error) {
     next(error);
   }
