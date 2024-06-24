@@ -39,7 +39,7 @@ function DashProfile() {
   const imageFileRef = useRef();
   const dispatch = useDispatch();
 
-  // console.log(imageFile);
+  console.log(currentUser.profilePicture);
   // console.log(imageUploadProgress, imageFileUploadError);
 
   const handleImageChange = (event) => {

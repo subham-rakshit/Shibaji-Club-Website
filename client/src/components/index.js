@@ -9,6 +9,7 @@ import OAuth from "./OAuth";
 import ScrollToTop from "./ScrollToTop";
 import DashPosts from "./DashPosts";
 import DashUsers from "./DashUsers";
+import PostComentSection from "./PostComentSection";
 export {
   Header,
   Footer,
@@ -21,4 +22,5 @@ export {
   ScrollToTop,
   DashPosts,
   DashUsers,
+  PostComentSection,
 };

@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { RingLoader } from "react-spinners";
 import { Button } from "flowbite-react";
+import { PostComentSection } from "../components";
 
 function PostItem() {
-  const postSlug = useParams();
+  const { postSlug } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [fetchError, setFetcheError] = useState(false);
   const [fetchPostDetails, setFetchPostDetails] = useState(null);
@@ -17,7 +18,7 @@ function PostItem() {
       try {
         setIsLoading(true);
         setFetcheError(false);
-        const res = await fetch(`/api/post/getposts?slug=${postSlug.postSlug}`);
+        const res = await fetch(`/api/post/getposts?slug=${postSlug}`);
         const data = await res.json();
         if (!res.ok) {
           setFetcheError(true);
@@ -91,6 +92,7 @@ function PostItem() {
           }}
           className="w-full max-w-[850px] mt-5 post-item-content-style"
         ></div>
+        <PostComentSection postId={fetchPostDetails && fetchPostDetails._id} />
       </div>
     </main>
   );
