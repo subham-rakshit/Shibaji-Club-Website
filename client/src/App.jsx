@@ -12,6 +12,7 @@ import {
   Dashboard,
   CreatePost,
   UpdatePost,
+  PostItem,
 } from "./pages";
 
 import {
@@ -36,6 +37,7 @@ const App = () => {
           <Route path="/contact-us" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/post/:postSlug" element={<PostItem />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/admin-dashboard" element={<Dashboard />} />
           </Route>

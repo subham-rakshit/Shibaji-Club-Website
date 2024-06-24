@@ -19,3 +19,23 @@ body {
     font-size: 18px;
   }
 }
+
+.post-item-content-style p {
+  background-color: transparent !important;
+  font-size: 16px !important;
+  font-family: "Inter" !important;
+  font-weight: 500 !important;
+  color: rgb(59, 59, 59) !important;
+}
+@media screen and (min-width: 768px) {
+  .post-item-content-style p {
+    font-size: 20px !important;
+  }
+}
+.post-item-content-style a:hover {
+  text-decoration: underline !important;
+}
+
+.dark .post-item-content-style p {
+  color: rgb(190, 189, 189) !important;
+}

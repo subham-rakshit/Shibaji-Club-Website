@@ -62,7 +62,7 @@ function DashPosts() {
   };
 
   //* Delete a post functionality -->
-  const handleDeletePost = async (e) => {
+  const handleDeletePost = async () => {
     setShowModel(false);
     try {
       const res = await fetch(

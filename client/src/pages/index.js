@@ -8,6 +8,7 @@ import Register from "./Register";
 import Dashboard from "./Dashboard";
 import CreatePost from "./CreatePost";
 import UpdatePost from "./UpdatePost";
+import PostItem from "./PostItem";
 
 export {
   Home,
@@ -20,4 +21,5 @@ export {
   Practices,
   CreatePost,
   UpdatePost,
+  PostItem,
 };
