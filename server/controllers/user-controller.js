@@ -212,3 +212,21 @@ export const getAllUsers = async (req, res, next) => {
     next(error);
   }
 };
+
+//! Get perticular user info -->
+export const getUserInfo = async (req, res, next) => {
+  try {
+    const userInfo = await UserCollection.findById(req.params.userId);
+
+    if (!userInfo) {
+      return res.status(404).json({
+        message: "User not found!",
+      });
+    }
+    const { password, ...rest } = userInfo._doc;
+
+    res.status(200).json(rest);
+  } catch (error) {
+    next(error);
+  }
+};

@@ -10,7 +10,7 @@ const Footer = () => {
           <div className="flex md:flex-col items-center md:items-start gap-[20px]">
             <Link to="/">
               <img
-                src="./logo.png"
+                src="https://firebasestorage.googleapis.com/v0/b/shibaji-website.appspot.com/o/logo.png?alt=media&token=5a2d5ea6-6138-4cd3-9d16-a632d513de2d"
                 alt="logo"
                 className="w-[80px] md:w-[100px] rounded-[50%] cursor-pointer"
               />
@@ -101,8 +101,8 @@ const Footer = () => {
           </div>
 
           <img
-            src="./footer-logo.jpg"
-            alt="logo"
+            src="https://firebasestorage.googleapis.com/v0/b/shibaji-website.appspot.com/o/footer-logo.jpg?alt=media&token=012b9c2f-89f5-418e-9f65-c65ccd95f4b0"
+            alt="footerLogo"
             className="hidden md:inline w-[150px] rounded-[50%] opacity-[0.3]"
           />
         </div>

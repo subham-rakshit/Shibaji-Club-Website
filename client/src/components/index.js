@@ -10,6 +10,8 @@ import ScrollToTop from "./ScrollToTop";
 import DashPosts from "./DashPosts";
 import DashUsers from "./DashUsers";
 import PostComentSection from "./PostComentSection";
+import Comment from "./Comment";
+
 export {
   Header,
   Footer,
@@ -23,4 +25,5 @@ export {
   DashPosts,
   DashUsers,
   PostComentSection,
+  Comment,
 };

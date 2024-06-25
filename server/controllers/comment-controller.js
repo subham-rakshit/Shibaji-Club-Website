@@ -27,3 +27,22 @@ export const createComment = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getPostComments = async (req, res, next) => {
+  try {
+    const startIndex = parseInt(req.query.index) || 0;
+    const commentsArray = await UserCommentCollection.find({
+      postId: req.params.postId,
+    })
+      .skip(startIndex)
+      .sort({ updatedAt: -1 })
+      .limit(4);
+
+    console.log(commentsArray);
+    const totlaComments = await UserCommentCollection.countDocuments();
+
+    res.status(200).json({ commentsArray, totlaComments });
+  } catch (error) {
+    next(error);
+  }
+};
