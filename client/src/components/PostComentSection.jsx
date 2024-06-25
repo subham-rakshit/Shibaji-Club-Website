@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { PropagateLoader } from "react-spinners";
 import Comment from "./Comment";
+import { useNavigate } from "react-router-dom";
 
 function PostComentSection({ postId }) {
   const { currentUser } = useSelector((state) => state.user);
@@ -14,6 +15,7 @@ function PostComentSection({ postId }) {
   const [commentsList, setCommentsList] = useState([]);
   const [numberOfComments, setNumberOfComments] = useState(0);
   const [isShowButton, setIsShowButton] = useState(true);
+  const navigate = useNavigate();
 
   // console.log(commentsList);
 
@@ -98,6 +100,36 @@ function PostComentSection({ postId }) {
     } catch (error) {
       console.log(error.message);
       setIsLoading(false);
+    }
+  };
+
+  const handleLikeButton = async (commentId) => {
+    console.log(commentId);
+    try {
+      if (!currentUser) {
+        navigate("/login");
+        return;
+      }
+      const res = await fetch(`/api/comments/likeComment/${commentId}`, {
+        method: "PUT",
+      });
+      const data = await res.json();
+      console.log(data);
+      if (res.ok) {
+        setCommentsList(
+          commentsList.map((comment) =>
+            comment._id === commentId
+              ? {
+                  ...comment,
+                  likes: data.likes,
+                  numberOfLikes: data.likes.length,
+                }
+              : comment
+          )
+        );
+      }
+    } catch (error) {
+      console.log(error.message);
     }
   };
 
@@ -191,14 +223,18 @@ function PostComentSection({ postId }) {
       ) : (
         <>
           <div className="flex items-center gap-3 my-5">
-            <p className="text-sm font-[Inter]">Comments:</p>
-            <div className="text-cyan-600 dark:text-cyan-400 px-3 py-1 text-md font-[Inter] border border-gray-600 dark:border-gray-400 rounded-md">
+            <p className="text-sm font-[Inter] font-medium">Comments:</p>
+            <div className="text-cyan-600 dark:text-cyan-400 px-3 py-1 text-md font-[Inter] border border-gray-400 dark:border-gray-400 rounded-md">
               <p>{numberOfComments}</p>
             </div>
           </div>
 
           {commentsList.map((eachComment) => (
-            <Comment key={eachComment._id} eachComment={eachComment} />
+            <Comment
+              key={eachComment._id}
+              eachComment={eachComment}
+              onLikeClick={handleLikeButton}
+            />
           ))}
 
           {isShowButton && (
