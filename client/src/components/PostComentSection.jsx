@@ -1,10 +1,11 @@
-import { Alert, Button, Textarea } from "flowbite-react";
 import React, { useEffect, useState } from "react";
+import { Alert, Button, Modal, Textarea } from "flowbite-react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { PropagateLoader } from "react-spinners";
 import Comment from "./Comment";
 import { useNavigate } from "react-router-dom";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 function PostComentSection({ postId }) {
   const { currentUser } = useSelector((state) => state.user);
@@ -15,9 +16,10 @@ function PostComentSection({ postId }) {
   const [commentsList, setCommentsList] = useState([]);
   const [numberOfComments, setNumberOfComments] = useState(0);
   const [isShowButton, setIsShowButton] = useState(true);
-  const navigate = useNavigate();
+  const [openModal, setOpenModal] = useState(false);
+  const [deletedCommentId, setDeletedCommentId] = useState(null);
 
-  // console.log(commentsList);
+  const navigate = useNavigate();
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -38,7 +40,7 @@ function PostComentSection({ postId }) {
         body: JSON.stringify({ comment, postId, userId: currentUser._id }),
       });
       const data = await res.json();
-      // console.log(data);
+
       if (res.ok) {
         setComment("");
         setCommentSuccessMsg(data.message);
@@ -66,7 +68,7 @@ function PostComentSection({ postId }) {
       try {
         const res = await fetch(`/api/comments/getcomments/${postId}`);
         const data = await res.json();
-        // console.log(data);
+
         if (res.ok) {
           setCommentsList(data.commentsArray);
           setNumberOfComments(data.totlaComments);
@@ -90,6 +92,7 @@ function PostComentSection({ postId }) {
         `/api/comments/getcomments/${postId}?index=${commentsList.length}`
       );
       const data = await res.json();
+
       if (res.ok) {
         setCommentsList((prev) => [...prev, ...data.commentsArray]);
         setIsLoading(false);
@@ -104,7 +107,6 @@ function PostComentSection({ postId }) {
   };
 
   const handleLikeButton = async (commentId) => {
-    console.log(commentId);
     try {
       if (!currentUser) {
         navigate("/login");
@@ -114,7 +116,7 @@ function PostComentSection({ postId }) {
         method: "PUT",
       });
       const data = await res.json();
-      console.log(data);
+
       if (res.ok) {
         setCommentsList(
           commentsList.map((comment) =>
@@ -127,6 +129,42 @@ function PostComentSection({ postId }) {
               : comment
           )
         );
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const handleEditButton = (editedComment) => {
+    setCommentsList(
+      commentsList.map((commentItem) =>
+        commentItem._id === editedComment._id
+          ? { ...commentItem, comment: editedComment.comment }
+          : commentItem
+      )
+    );
+  };
+
+  const handleDeleteButton = async (commentId) => {
+    try {
+      if (!currentUser) {
+        navigate("login");
+        return;
+      }
+      const res = await fetch(`/api/comments/deleteComment/${commentId}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        alert(data.message);
+        setCommentsList(
+          commentsList.filter(
+            (eachCommentItem) => eachCommentItem._id !== commentId
+          )
+        );
+        setOpenModal(false);
+        setNumberOfComments(data.totalComment);
       }
     } catch (error) {
       console.log(error.message);
@@ -234,6 +272,11 @@ function PostComentSection({ postId }) {
               key={eachComment._id}
               eachComment={eachComment}
               onLikeClick={handleLikeButton}
+              onEditClick={handleEditButton}
+              onDeleteClick={(commentId) => {
+                setOpenModal(true);
+                setDeletedCommentId(commentId);
+              }}
             />
           ))}
 
@@ -248,6 +291,38 @@ function PostComentSection({ postId }) {
           )}
         </>
       )}
+      <Modal
+        show={openModal}
+        size="sm"
+        onClose={() => setOpenModal(false)}
+        popup
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+            <h3 className="mb-5 text-sm lg:text-lg font-[Inter] font-normal text-gray-500 dark:text-gray-400">
+              Are you sure you want to delete this comment?
+            </h3>
+            <div className="flex justify-center gap-4 text-xs font-[Inter]">
+              <Button
+                color="failure"
+                onClick={() => handleDeleteButton(deletedCommentId)}
+                size="xs"
+              >
+                Yes, I'm sure
+              </Button>
+              <Button
+                color="gray"
+                onClick={() => setOpenModal(false)}
+                size="xs"
+              >
+                No, cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }

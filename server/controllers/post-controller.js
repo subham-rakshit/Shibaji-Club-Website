@@ -33,7 +33,6 @@ export const createPost = async (req, res, next) => {
   if (req.body.title) {
     const title = req.body.title;
     const titleExists = await PostCollection.findOne({ title });
-    console.log(titleExists);
 
     if (titleExists) {
       const titleExistsError = {
