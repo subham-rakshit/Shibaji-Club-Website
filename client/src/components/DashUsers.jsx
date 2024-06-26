@@ -23,7 +23,7 @@ function DashUsers() {
       try {
         const res = await fetch(`/api/user/getusers`);
         const data = await res.json();
-        console.log(data);
+
         if (res.ok) {
           setAllUsersData(data.users);
           setIsLoading(false);

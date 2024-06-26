@@ -106,6 +106,7 @@ function PostItem() {
           }}
           className="w-full max-w-[850px] mt-5 post-item-content-style"
         ></div>
+
         <PostComentSection postId={fetchPostDetails && fetchPostDetails._id} />
 
         <div className="flex flex-col items-center my-5 w-full">

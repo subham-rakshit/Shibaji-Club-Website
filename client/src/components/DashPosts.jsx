@@ -101,7 +101,7 @@ function DashPosts() {
       ) : currentUser.isAdmin && allPostsData.length > 0 ? (
         <>
           <Table hoverable className="shadow-md font-[Inter]">
-            <Table.Head>
+            <Table.Head className="text-[14px]">
               <Table.HeadCell>Date updated</Table.HeadCell>
               <Table.HeadCell>Post image</Table.HeadCell>
               <Table.HeadCell>Post title</Table.HeadCell>

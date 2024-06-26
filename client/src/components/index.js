@@ -12,6 +12,8 @@ import DashUsers from "./DashUsers";
 import PostComentSection from "./PostComentSection";
 import Comment from "./Comment";
 import PostCard from "./PostCard";
+import DashComment from "./DashComment";
+import DashCommentUserDetails from "./DashCommentUserDetails";
 
 export {
   Header,
@@ -28,4 +30,6 @@ export {
   PostComentSection,
   Comment,
   PostCard,
+  DashComment,
+  DashCommentUserDetails,
 };

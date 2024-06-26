@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Sidebar } from "flowbite-react";
 import { HiUser, HiArrowSmRight, HiDocumentText } from "react-icons/hi";
-import { FaUsersCog } from "react-icons/fa";
+import { FaUsersCog, FaComments } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import { signOutSuccess } from "../redux-slice/userSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -91,6 +91,21 @@ function DashSideBar() {
                 as="div"
               >
                 Users
+              </Sidebar.Item>
+            </Link>
+          )}
+          {currentUser.isAdmin && (
+            <Link to="/admin-dashboard?tab=comments">
+              <Sidebar.Item
+                icon={FaComments}
+                label={tab === "comments" && "Admin"}
+                labelColor="dark"
+                className={`font-[Inter] text-sm font-medium ${
+                  tab === "comments" && "bg-[#e9e9e9] dark:bg-[#374151]"
+                }`}
+                as="div"
+              >
+                Comments
               </Sidebar.Item>
             </Link>
           )}

@@ -1,4 +1,6 @@
 import UserCommentCollection from "../models/comment-model.js";
+import UserCollection from "../models/user-model.js";
+import PostCollection from "../models/post-model.js";
 
 export const createComment = async (req, res, next) => {
   const { userId, postId, comment } = req.body;
@@ -139,6 +141,59 @@ export const deleteComment = async (req, res, next) => {
       message: "The comment has been deleted successfully.",
       totalComment,
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getAllComments = async (req, res, next) => {
+  if (!req.user.isAdmin) {
+    const authError = {
+      status: 403,
+      message: "Not Authenticated!",
+      extraDetails: "You're not allowed to access all user's comments!",
+    };
+    next(authError);
+  }
+  try {
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const limit = parseInt(req.query.limit) || 9;
+    const commentsList = await UserCommentCollection.find()
+      .skip(startIndex)
+      .limit(limit);
+    //? usersList gives user's details with their password. We have to remove those password in respond
+
+    const totalNumberOfComments = await UserCommentCollection.countDocuments();
+
+    const now = new Date();
+    const oneMonthAgo = new Date(
+      now.getFullYear(),
+      now.getMonth() - 1,
+      now.getDate()
+    );
+
+    const lastMonthCommentDetails = await UserCommentCollection.countDocuments({
+      createdAt: { $gte: oneMonthAgo },
+    });
+
+    res.status(200).json({
+      comments: commentsList,
+      totalComments: totalNumberOfComments,
+      lastMonthComments: lastMonthCommentDetails,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getUserAndPostDetailsOfAComment = async (req, res, next) => {
+  try {
+    const commentedUser = await UserCollection.findById(req.params.userId);
+    const { password, ...rest } = commentedUser._doc;
+
+    const commentedPost = await PostCollection.findById(req.params.postId);
+
+    res.status(200).json({ commentedUser, commentedPost });
   } catch (error) {
     next(error);
   }
