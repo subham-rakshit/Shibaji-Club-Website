@@ -23,7 +23,7 @@ function DashPosts() {
       try {
         const res = await fetch(`/api/post/getposts`);
         const data = await res.json();
-        console.log(data);
+
         if (res.ok) {
           setAllPostsData(data.posts);
           setIsLoading(false);
@@ -72,7 +72,7 @@ function DashPosts() {
         }
       );
       const data = await res.json();
-      console.log(data);
+
       if (res.ok) {
         setAllPostsData((prev) =>
           prev.filter((post) => post._id !== selectedPostId)
@@ -135,12 +135,10 @@ function DashPosts() {
                   </Table.Cell>
                   <Table.Cell>
                     <Link
-                      className="hover:underline hover:text-blue-400 text-xs"
+                      className="hover:underline hover:text-blue-400 text-xs line-clamp-1"
                       to={`/post/${eachPost.slug}`}
                     >
-                      {eachPost.title.length > 20
-                        ? eachPost.title.substring(0, 15) + "..."
-                        : eachPost.title}
+                      {eachPost.title}
                     </Link>
                   </Table.Cell>
                   <Table.Cell className="text-xs">

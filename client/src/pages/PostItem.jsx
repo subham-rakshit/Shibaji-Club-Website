@@ -2,18 +2,17 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { RingLoader } from "react-spinners";
 import { Button } from "flowbite-react";
-import { PostComentSection } from "../components";
+import { PostCard, PostComentSection } from "../components";
+import { PiImageBrokenDuotone } from "react-icons/pi";
 
 function PostItem() {
   const { postSlug } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [fetchError, setFetcheError] = useState(false);
   const [fetchPostDetails, setFetchPostDetails] = useState(null);
-
-  console.log(fetchPostDetails);
+  const [recentlyAddedPost, setRecentlyAddedPost] = useState(null);
 
   useEffect(() => {
-    console.log(postSlug);
     const getPostFetchDetails = async () => {
       try {
         setIsLoading(true);
@@ -37,6 +36,21 @@ function PostItem() {
       }
     };
     getPostFetchDetails();
+  }, [postSlug]);
+
+  useEffect(() => {
+    const getRecentPosts = async () => {
+      try {
+        const res = await fetch(`/api/post/getRecentPosts`);
+        const data = await res.json();
+        if (res.ok) {
+          setRecentlyAddedPost(data.posts);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    getRecentPosts();
   }, [postSlug]);
 
   if (isLoading) {
@@ -93,6 +107,41 @@ function PostItem() {
           className="w-full max-w-[850px] mt-5 post-item-content-style"
         ></div>
         <PostComentSection postId={fetchPostDetails && fetchPostDetails._id} />
+
+        <div className="flex flex-col items-center my-5 w-full">
+          <h1 className="font-[Inter] text-sm sm:text-base font-medium text-gray-40">
+            Recent Posts
+          </h1>
+          {!recentlyAddedPost ? (
+            <div className="flex flex-col items-center my-5">
+              <PiImageBrokenDuotone size="100" className="text-gray-400" />
+              <h1 className="text-base sm:text-lg text-gray-400 font-bold font-[Inter] text-center mt-5">
+                Please check back later for more updates!
+              </h1>
+              <p className="text-xs font-[inter] text-gray-400 text-center mt-3 italic">
+                Explore our repository of fresh content, curated to inform,
+                entertain, and inspire you with every visit.
+              </p>
+              <Link to="/blogs">
+                <Button
+                  type="button"
+                  gradientDuoTone="purpleToBlue"
+                  outline
+                  size="xs"
+                  className="font-[Inter] mt-5"
+                >
+                  More bolgs
+                </Button>
+              </Link>
+            </div>
+          ) : (
+            <div className="flex justify-center items-center gap-2 flex-wrap mt-5">
+              {recentlyAddedPost.map((post) => (
+                <PostCard eachPost={post} key={post._id} />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </main>
   );

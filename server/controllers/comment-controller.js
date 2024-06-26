@@ -30,6 +30,10 @@ export const createComment = async (req, res, next) => {
 
 export const getPostComments = async (req, res, next) => {
   try {
+    const totalComments = await UserCommentCollection.find({
+      postId: req.params.postId,
+    });
+
     const startIndex = parseInt(req.query.index) || 0;
     const commentsArray = await UserCommentCollection.find({
       postId: req.params.postId,
@@ -38,9 +42,9 @@ export const getPostComments = async (req, res, next) => {
       .sort({ createdAt: -1 })
       .limit(4);
 
-    const totlaComments = await UserCommentCollection.countDocuments();
-
-    res.status(200).json({ commentsArray, totlaComments });
+    res
+      .status(200)
+      .json({ commentsArray, totlaComments: totalComments.length });
   } catch (error) {
     next(error);
   }

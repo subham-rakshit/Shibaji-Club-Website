@@ -39,9 +39,6 @@ function DashProfile() {
   const imageFileRef = useRef();
   const dispatch = useDispatch();
 
-  console.log(currentUser.profilePicture);
-  // console.log(imageUploadProgress, imageFileUploadError);
-
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -116,7 +113,6 @@ function DashProfile() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    // console.log(Object.keys(formData));
     setUserUpdateSuccess(null);
     setPossibleErrors(null);
 
@@ -142,7 +138,6 @@ function DashProfile() {
       };
       const res = await fetch(api, options);
       const data = await res.json();
-      console.log(data);
       if (res.ok) {
         dispatch(updateSuccess(data.userDetails));
         setFormData({});
@@ -169,7 +164,6 @@ function DashProfile() {
       };
       const res = await fetch(api, options);
       const data = await res.json();
-      // console.log(data);
       if (res.ok) {
         dispatch(deleteUserSuccess());
       } else {

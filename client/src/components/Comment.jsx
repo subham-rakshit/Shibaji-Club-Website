@@ -102,7 +102,7 @@ function Comment({ eachComment, onLikeClick, onEditClick, onDeleteClick }) {
           </>
         ) : (
           <>
-            <p className="font-[Inter] text-sm font-base text-gray-600 dark:text-gray-500 border-b border-b-gray-600 dark:border-b-gray-400 w-[fit-content]">
+            <p className="font-[Inter] text-sm font-base text-gray-600 dark:text-gray-500">
               {eachComment.comment}
             </p>
             <div className="flex items-center gap-3 text-[14px] text-gray-600 dark:text-gray-500 font-[Inter] font-normal">

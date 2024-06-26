@@ -11,6 +11,7 @@ import DashPosts from "./DashPosts";
 import DashUsers from "./DashUsers";
 import PostComentSection from "./PostComentSection";
 import Comment from "./Comment";
+import PostCard from "./PostCard";
 
 export {
   Header,
@@ -26,4 +27,5 @@ export {
   DashUsers,
   PostComentSection,
   Comment,
+  PostCard,
 };

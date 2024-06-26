@@ -77,6 +77,7 @@ export const getPosts = async (req, res, next) => {
   try {
     const startIndex = parseInt(req.query.startIndex) || 0;
     const limit = parseInt(req.query.limit) || 9;
+
     const posts = await PostCollection.find({
       //? Posts for specific person
       ...(req.query.userId && { userId: req.query.userId }),
@@ -118,6 +119,23 @@ export const getPosts = async (req, res, next) => {
       posts,
       totalPosts,
       lastMonthPosts,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+//* Get Recent 3 posts -->
+export const getRecentPosts = async (req, res, next) => {
+  try {
+    const totalPostsCount = await PostCollection.countDocuments();
+    const startIndex = Math.floor(Math.random() * totalPostsCount);
+
+    const posts = await PostCollection.find().skip(startIndex).limit(3);
+
+    //* Send the response
+    res.status(200).json({
+      posts,
     });
   } catch (error) {
     next(error);
