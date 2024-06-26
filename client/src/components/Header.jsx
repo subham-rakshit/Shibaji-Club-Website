@@ -34,7 +34,7 @@ function Header() {
   };
 
   return (
-    <Navbar className="fixed w-full z-10 shadow-lg flex items-center justify-between gap-1">
+    <Navbar className="fixed w-full z-50 shadow-lg flex items-center justify-between gap-1">
       <Link to="/" className="flex items-center gap-1">
         <img
           src="/logo.png"
@@ -100,7 +100,7 @@ function Header() {
               </span>
             </Dropdown.Header>
             {currentUserDetails.isAdmin && (
-              <Link to="/admin-dashboard">
+              <Link to="/admin-dashboard?tab=dashboard">
                 <Dropdown.Item className="text-[14px] font-[Inter]">
                   Dashboard
                 </Dropdown.Item>

@@ -205,7 +205,7 @@ export const getAllUsers = async (req, res, next) => {
 
     res.status(200).json({
       users: userDetailsWithoutPassword,
-      totleUsers: totalNumberOfUsers,
+      totalUsers: totalNumberOfUsers,
       lastMonthUsers: lastMonthUserDetails,
     });
   } catch (error) {

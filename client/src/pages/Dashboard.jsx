@@ -6,6 +6,7 @@ import {
   DashPosts,
   DashUsers,
   DashComment,
+  DashboardComponent,
 } from "../components";
 
 const Dashboard = () => {
@@ -23,7 +24,7 @@ const Dashboard = () => {
     }
   }, [location.search]);
   return (
-    <div className="min-h-screen mt-[65px] lg:mt-[76px] flex flex-col md:flex-row">
+    <div className="min-h-screen mt-[65px] lg:mt-[77px] flex flex-col md:flex-row">
       {/* Dashboard Left Side Bar */}
       <div className="md:w-56">
         <DashSideBar />
@@ -33,6 +34,7 @@ const Dashboard = () => {
       {tab === "posts" && <DashPosts />}
       {tab === "users" && <DashUsers />}
       {tab === "comments" && <DashComment />}
+      {tab === "dashboard" && <DashboardComponent />}
     </div>
   );
 };

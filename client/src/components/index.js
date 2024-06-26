@@ -14,6 +14,7 @@ import Comment from "./Comment";
 import PostCard from "./PostCard";
 import DashComment from "./DashComment";
 import DashCommentUserDetails from "./DashCommentUserDetails";
+import DashboardComponent from "./DashboardComponent";
 
 export {
   Header,
@@ -32,4 +33,5 @@ export {
   PostCard,
   DashComment,
   DashCommentUserDetails,
+  DashboardComponent,
 };
