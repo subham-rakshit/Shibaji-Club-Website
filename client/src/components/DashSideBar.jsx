@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Sidebar } from "flowbite-react";
-import { HiUser, HiArrowSmRight, HiDocumentText } from "react-icons/hi";
+import {
+  HiUser,
+  HiArrowSmRight,
+  HiDocumentText,
+  HiChartPie,
+} from "react-icons/hi";
 import { FaUsersCog, FaComments } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import { signOutSuccess } from "../redux-slice/userSlice";
@@ -44,7 +49,22 @@ function DashSideBar() {
   return (
     <Sidebar className="w-full md:w-56">
       <Sidebar.Items>
-        <Sidebar.ItemGroup className="flex flex-col gap-1">
+        <Sidebar.ItemGroup className="flex flex-col gap-2">
+          {currentUser && currentUser.isAdmin && (
+            <Link to="/admin-dashboard?tab=dashboard">
+              <Sidebar.Item
+                icon={HiChartPie}
+                label={tab === "dashboard" && "Admin"}
+                labelColor="dark"
+                className={`font-[Inter] text-xs font-medium ${
+                  tab === "dashboard" && "bg-[#e9e9e9] dark:bg-[#374151]"
+                }`}
+                as="div"
+              >
+                Dashboard
+              </Sidebar.Item>
+            </Link>
+          )}
           <Link to="/admin-dashboard?tab=profile">
             <Sidebar.Item
               icon={HiUser}
@@ -56,7 +76,7 @@ function DashSideBar() {
                   : ""
               }
               labelColor="dark"
-              className={`font-[Inter] text-sm font-medium ${
+              className={`font-[Inter] text-xs font-medium ${
                 tab === "profile" && "bg-[#e9e9e9] dark:bg-[#374151]"
               }`}
               as="div"
@@ -70,7 +90,7 @@ function DashSideBar() {
                 icon={HiDocumentText}
                 label={tab === "posts" && "Admin"}
                 labelColor="dark"
-                className={`font-[Inter] text-sm font-medium ${
+                className={`font-[Inter] text-xs font-medium ${
                   tab === "posts" && "bg-[#e9e9e9] dark:bg-[#374151]"
                 }`}
                 as="div"
@@ -85,7 +105,7 @@ function DashSideBar() {
                 icon={FaUsersCog}
                 label={tab === "users" && "Admin"}
                 labelColor="dark"
-                className={`font-[Inter] text-sm font-medium ${
+                className={`font-[Inter] text-xs font-medium ${
                   tab === "users" && "bg-[#e9e9e9] dark:bg-[#374151]"
                 }`}
                 as="div"
@@ -100,7 +120,7 @@ function DashSideBar() {
                 icon={FaComments}
                 label={tab === "comments" && "Admin"}
                 labelColor="dark"
-                className={`font-[Inter] text-sm font-medium ${
+                className={`font-[Inter] text-xs font-medium ${
                   tab === "comments" && "bg-[#e9e9e9] dark:bg-[#374151]"
                 }`}
                 as="div"
@@ -111,7 +131,7 @@ function DashSideBar() {
           )}
           <Sidebar.Item
             icon={HiArrowSmRight}
-            className="font-[Inter] text-sm font-medium cursor-pointer"
+            className="font-[Inter] text-xs font-medium cursor-pointer"
             onClick={handleSignOut}
           >
             Sign Out
