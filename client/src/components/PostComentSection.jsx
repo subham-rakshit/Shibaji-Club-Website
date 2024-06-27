@@ -255,7 +255,7 @@ function PostComentSection({ postId }) {
           <p className="font-[Inter] text-sm text-center sm:text-left">
             <span className="text-cyan-500 font-semibold text-lg">Oops!</span>{" "}
             No comments yet. We'd love to hear from you. Please share your
-            thoughts
+            thoughts.
           </p>
         </div>
       ) : (

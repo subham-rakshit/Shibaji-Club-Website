@@ -81,8 +81,10 @@ function DashboardComponent() {
   }, []);
   return (
     <div className="table-auto overflow-x-scroll md:mx-auto px-3 py-5 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500 w-full">
-      <div className="w-[1024px] md:mx-auto">
+      <div className="w-[900px] md:mx-auto flex flex-col gap-5">
+        {/* Cards */}
         <div className="flex md:justify-center gap-3">
+          {/* Total Users Card */}
           <Card className="w-[300px]">
             <div className="flex justify-between">
               <div className="flex flex-col">
@@ -117,7 +119,9 @@ function DashboardComponent() {
               </div>
             </div>
           </Card>
+          {/* Total Users Card */}
 
+          {/* Total Comments Card */}
           <Card className="w-full max-w-[300px]">
             <div className="flex justify-between">
               <div className="flex flex-col">
@@ -152,7 +156,9 @@ function DashboardComponent() {
               </div>
             </div>
           </Card>
+          {/* Total Comments Card */}
 
+          {/* Total Posts Card */}
           <Card className="w-full max-w-[300px]">
             <div className="flex justify-between">
               <div className="flex flex-col">
@@ -187,10 +193,13 @@ function DashboardComponent() {
               </div>
             </div>
           </Card>
+          {/* Total Posts Card */}
         </div>
+        {/* Cards */}
 
+        {/* Users, Comments, Posts details */}
         <div
-          className={`my-5 max-w-[950px] md:mx-auto flex flex-col gap-5 ${
+          className={`w-[850px] md:mx-auto flex flex-col gap-5 ${
             isLoading && "justify-center items-center h-[500px]"
           }`}
         >
@@ -198,7 +207,9 @@ function DashboardComponent() {
             <HashLoader size={50} color="#00BCD4" />
           ) : (
             <>
+              {/* Users and Comments details */}
               <div className="flex items-center md:justify-center gap-3">
+                {/* Users details */}
                 <div className="px-3 py-5 shadow-xl rounded-xl border border-gray-200 dark:border-gray-700">
                   <div className="flex items-center gap-2 justify-between mb-5">
                     <p className="font-[Inter] text-sm font-medium">
@@ -249,7 +260,9 @@ function DashboardComponent() {
                     </Table.Body>
                   </Table>
                 </div>
+                {/* Users details */}
 
+                {/* Comments details */}
                 <div className="px-3 py-5 shadow-xl rounded-xl border border-gray-200 dark:border-gray-700">
                   <div className="flex items-center gap-2 justify-between mb-5">
                     <p className="font-[Inter] text-sm font-medium">
@@ -295,8 +308,11 @@ function DashboardComponent() {
                     </Table.Body>
                   </Table>
                 </div>
+                {/* Comments details */}
               </div>
+              {/* Users and Comments details */}
 
+              {/* User's Posts details */}
               <div className="w-[80%] md:mx-auto px-3 py-5 shadow-xl rounded-xl border border-gray-200 dark:border-gray-700">
                 <div className="flex items-center gap-2 justify-between mb-5">
                   <p className="font-[Inter] text-sm font-medium">
@@ -343,7 +359,7 @@ function DashboardComponent() {
                           {post.title}
                         </Table.Cell>
 
-                        <Table.Cell className="text-xs">
+                        <Table.Cell className="text-[13px]">
                           {post.category}
                         </Table.Cell>
                       </Table.Row>
@@ -351,9 +367,11 @@ function DashboardComponent() {
                   </Table.Body>
                 </Table>
               </div>
+              {/* User's Posts details */}
             </>
           )}
         </div>
+        {/* Users, Comments, Posts details */}
       </div>
     </div>
   );

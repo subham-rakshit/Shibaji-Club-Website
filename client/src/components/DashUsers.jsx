@@ -96,7 +96,7 @@ function DashUsers() {
       {isLoading ? (
         <PacmanLoader color="#36d7b7" className="mx-auto" />
       ) : currentUser.isAdmin && allUsersData.length > 0 ? (
-        <div className="overflow-x-auto w-[1024px] mx-auto">
+        <div className="overflow-x-auto w-[950px] mx-auto">
           <Table hoverable className="shadow-md font-[Inter]">
             <Table.Head className="text-[14px]">
               <Table.HeadCell>Date created</Table.HeadCell>
