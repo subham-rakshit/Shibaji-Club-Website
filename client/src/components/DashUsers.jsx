@@ -7,6 +7,7 @@ import { MdCancel } from "react-icons/md";
 import { FaCircleCheck } from "react-icons/fa6";
 
 import { PacmanLoader } from "react-spinners";
+import DashToggleButton from "./DashToggleButton";
 
 function DashUsers() {
   const { currentUser } = useSelector((state) => state.user);
@@ -87,7 +88,7 @@ function DashUsers() {
 
   return (
     <div
-      className={`table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500 flex-1 ${
+      className={`table-auto overflow-x-scroll md:mx-auto px-3 py-5 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500 flex-1 ${
         allUsersData.length === 0 || isLoading === true
           ? "flex flex-col justify-center"
           : ""
@@ -96,7 +97,10 @@ function DashUsers() {
       {isLoading ? (
         <PacmanLoader color="#36d7b7" className="mx-auto" />
       ) : currentUser.isAdmin && allUsersData.length > 0 ? (
-        <div className="overflow-x-auto w-[950px] mx-auto">
+        <div className="overflow-x-auto w-[950px] mx-auto flex flex-col gap-5">
+          {/* Toggle Button */}
+          <DashToggleButton />
+
           <Table hoverable className="shadow-md font-[Inter]">
             <Table.Head className="text-[14px]">
               <Table.HeadCell>Date created</Table.HeadCell>

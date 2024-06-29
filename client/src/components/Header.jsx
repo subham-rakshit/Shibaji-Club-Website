@@ -1,17 +1,28 @@
-import { Link, useLocation } from "react-router-dom";
-import { Button, Navbar, TextInput, Avatar, Dropdown } from "flowbite-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  Button,
+  Navbar,
+  TextInput,
+  Avatar,
+  Dropdown,
+  Popover,
+} from "flowbite-react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "../redux-slice/themeSlice";
 import { FaMoon, FaSun } from "react-icons/fa";
 import { signOutSuccess } from "../redux-slice/userSlice";
+import { useEffect, useState } from "react";
 
 function Header() {
-  const path = useLocation().pathname;
-  const dispatch = useDispatch();
+  const [searchItem, setSearchItem] = useState("");
+  const [searchInput, setSearchInput] = useState("");
   const currentUserDetails = useSelector((state) => state.user.currentUser);
-
   const { theme } = useSelector((state) => state.theme);
+  const path = useLocation().pathname;
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSignOut = async () => {
     try {
@@ -33,8 +44,53 @@ function Header() {
     }
   };
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const urlParams = new URLSearchParams(location.search);
+    const tabURL = urlParams.get("tab");
+
+    urlParams.set("searchItem", searchInput);
+    if (!tabURL) {
+      urlParams.set("tab", "all");
+    }
+
+    const searchQuery = urlParams.toString();
+
+    navigate(`/search?${searchQuery}`);
+    setSearchInput("");
+  };
+
+  const content = (
+    <form onSubmit={handleSearch} className="flex items-center lg:hidden pl-2">
+      <input
+        type="text"
+        placeholder="Search..."
+        class="flex-1 px-4 py-1 border-none outline-none rounded-l-lg text-xs font-[Inter] bg-transparent focus:border-none focus:outline-none"
+        value={searchInput}
+        onChange={(e) => setSearchInput(e.target.value)}
+        required
+        autoComplete="false"
+      />
+      <button
+        class="px-4 py-2 rounded-r-lg border-none outline-none"
+        type="submit"
+      >
+        <AiOutlineSearch />
+      </button>
+    </form>
+  );
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const searchItemFromURL = urlParams.get("searchItem");
+
+    if (searchItemFromURL) {
+      setSearchItem(searchItemFromURL);
+    }
+  }, [location.search]);
+
   return (
-    <Navbar className="fixed w-full z-50 shadow-lg flex items-center justify-between gap-1">
+    <Navbar className="fixed top-0 left-0 z-50 w-full flex items-center justify-between gap-1 shadow-lg">
       <Link to="/" className="flex items-center gap-1">
         <img
           src="/logo.png"
@@ -49,24 +105,31 @@ function Header() {
         </p>
       </Link>
 
-      <form>
+      {/* SearchBar in Desktop */}
+      <form onSubmit={handleSearch} className="hidden lg:inline">
         <TextInput
-          id="email1"
+          id="navSearchDesktop"
           type="text"
           placeholder="Search ..."
           rightIcon={AiOutlineSearch}
-          className="hidden lg:inline"
+          value={searchInput}
+          sizing="sm"
           required
+          className="font-[Inter] text-xs"
+          onChange={(e) => setSearchInput(e.target.value)}
         />
       </form>
 
-      <Button
-        className="w-8 h-8 flex justify-center items-center lg:hidden"
-        color="gray"
-        pill
-      >
-        <AiOutlineSearch />
-      </Button>
+      {/* SearchBar in Mobile */}
+      <Popover content={content} trigger="click">
+        <Button
+          className="w-8 h-8 flex justify-center items-center lg:hidden"
+          color="gray"
+          pill
+        >
+          <AiOutlineSearch />
+        </Button>
+      </Popover>
 
       <div className="flex items-center gap-3 md:order-2">
         <Button
@@ -140,40 +203,21 @@ function Header() {
 
       <Navbar.Collapse>
         <Navbar.Link active={path === "/"} as={"div"}>
-          <Link to="/" className="text-xs lg:text-sm font-semibold">
+          <Link to="/" className="text-[16px] font-[Inter] font-semibold">
             Home
           </Link>
         </Navbar.Link>
         <Navbar.Link active={path === "/about"} as={"div"}>
-          <Link
-            to="/about"
-            className="text-xs lg:text-sm font-[Inter] font-semibold"
-          >
+          <Link to="/about" className="text-[16px] font-[Inter] font-semibold">
             About
           </Link>
         </Navbar.Link>
-        {/* <Navbar.Link active={path === "/practices"} as={"div"}>
+        <Navbar.Link active={path === "/search"} as={"div"}>
           <Link
-            to="/practices"
-            className="text-xs lg:text-sm font-[Inter] font-semibold"
+            to="/search?tab=all"
+            className="text-[16px] font-[Inter] font-semibold"
           >
-            Practices
-          </Link>
-        </Navbar.Link>
-        <Navbar.Link active={path === "/contact-us"} as={"div"}>
-          <Link
-            to="/contact-us"
-            className="text-xs lg:text-sm font-[Inter] font-semibold"
-          >
-            Contact
-          </Link>
-        </Navbar.Link> */}
-        <Navbar.Link active={path === "/blogs"} as={"div"}>
-          <Link
-            to="/blogs"
-            className="text-xs lg:text-sm font-[Inter] font-semibold"
-          >
-            Blogs
+            Content
           </Link>
         </Navbar.Link>
       </Navbar.Collapse>

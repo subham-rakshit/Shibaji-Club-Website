@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 function DashSideBar() {
   const location = useLocation();
   const { currentUser } = useSelector((state) => state.user);
+  const { isSlide } = useSelector((state) => state.slider);
   const [tab, setTab] = useState("");
   const dispatch = useDispatch();
 
@@ -47,7 +48,7 @@ function DashSideBar() {
     }
   };
   return (
-    <Sidebar className="w-full md:w-56">
+    <Sidebar className={`w-full md:w-56 ${isSlide === "false" && "hidden"}`}>
       <Sidebar.Items>
         <Sidebar.ItemGroup className="flex flex-col gap-2">
           {currentUser && currentUser.isAdmin && (

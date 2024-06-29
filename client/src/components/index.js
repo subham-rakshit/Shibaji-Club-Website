@@ -15,6 +15,11 @@ import PostCard from "./PostCard";
 import DashComment from "./DashComment";
 import DashCommentUserDetails from "./DashCommentUserDetails";
 import DashboardComponent from "./DashboardComponent";
+import SearchSideBar from "./SearchSideBar";
+import SearchAllContent from "./SearchAllContent";
+import SearchPractices from "./SearchPractices";
+import SearchBlogs from "./SearchBlogs";
+import DashToggleButton from "./DashToggleButton";
 
 export {
   Header,
@@ -24,14 +29,19 @@ export {
   OnlyAdmiProtectedRoute,
   DashProfile,
   DashSideBar,
-  OAuth,
-  ScrollToTop,
   DashPosts,
   DashUsers,
-  PostComentSection,
-  Comment,
-  PostCard,
   DashComment,
   DashCommentUserDetails,
   DashboardComponent,
+  DashToggleButton,
+  OAuth,
+  ScrollToTop,
+  PostComentSection,
+  Comment,
+  PostCard,
+  SearchSideBar,
+  SearchAllContent,
+  SearchPractices,
+  SearchBlogs,
 };

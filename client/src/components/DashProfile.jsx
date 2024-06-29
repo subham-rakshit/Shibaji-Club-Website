@@ -306,17 +306,32 @@ function DashProfile() {
             "Update"
           )}
         </Button>
-        {currentUser.isAdmin && (
-          <Link to="/create-post">
-            <Button
-              type="button"
-              gradientDuoTone="purpleToPink"
-              className="mt-5 font-[Inter] w-full"
-            >
-              Create a post
-            </Button>
-          </Link>
-        )}
+        <div className="flex items-center justify-between gap-3 mt-5">
+          {currentUser.isAdmin && (
+            <>
+              <Link to="/create-post" className="w-full">
+                <Button
+                  type="button"
+                  outline
+                  gradientDuoTone="purpleToPink"
+                  className="font-[Inter] w-full"
+                >
+                  Create a post
+                </Button>
+              </Link>
+              <Link to="/create-video" className="w-full">
+                <Button
+                  type="button"
+                  outline
+                  gradientDuoTone="greenToBlue"
+                  className="font-[Inter] w-full"
+                >
+                  Create a video
+                </Button>
+              </Link>
+            </>
+          )}
+        </div>
       </form>
       <div className="text-red-500 flex justify-between items-center mt-2 text-xs font-[Inter] font-normal">
         <span

@@ -1,6 +1,7 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import userReducer from "../redux-slice/userSlice";
 import themeReducer from "../redux-slice/themeSlice";
+import sliderReducer from "../redux-slice/sliderSlice";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
@@ -8,6 +9,7 @@ import storage from "redux-persist/lib/storage";
 const rootReducer = combineReducers({
   user: userReducer,
   theme: themeReducer,
+  slider: sliderReducer,
 });
 
 // Step3:

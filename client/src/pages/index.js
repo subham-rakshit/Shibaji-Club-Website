@@ -9,6 +9,8 @@ import Dashboard from "./Dashboard";
 import CreatePost from "./CreatePost";
 import UpdatePost from "./UpdatePost";
 import PostItem from "./PostItem";
+import CreateVideo from "./CreateVideo";
+import SearchPage from "./SearchPage";
 
 export {
   Home,
@@ -22,4 +24,6 @@ export {
   CreatePost,
   UpdatePost,
   PostItem,
+  CreateVideo,
+  SearchPage,
 };

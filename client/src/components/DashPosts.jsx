@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { IoImagesSharp } from "react-icons/io5";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { PacmanLoader } from "react-spinners";
+import DashToggleButton from "./DashToggleButton";
 
 function DashPosts() {
   const { currentUser } = useSelector((state) => state.user);
@@ -90,7 +91,7 @@ function DashPosts() {
 
   return (
     <div
-      className={`table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500 flex-1 ${
+      className={`table-auto overflow-x-scroll md:mx-auto px-3 py-5 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500 flex-1 ${
         allPostsData.length === 0 || isLoading === true
           ? "flex flex-col justify-center"
           : ""
@@ -99,7 +100,10 @@ function DashPosts() {
       {isLoading ? (
         <PacmanLoader color="#36d7b7" className="mx-auto" />
       ) : currentUser.isAdmin && allPostsData.length > 0 ? (
-        <div className="overflow-x-auto w-[950px] mx-auto">
+        <div className="overflow-x-auto w-[950px] mx-auto flex flex-col gap-5">
+          {/* Toggle Button */}
+          <DashToggleButton />
+
           <Table hoverable className="shadow-md font-[Inter]">
             <Table.Head className="text-[14px]">
               <Table.HeadCell>Date updated</Table.HeadCell>

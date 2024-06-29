@@ -1,10 +1,13 @@
 import { Button, Card, Table } from "flowbite-react";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { FaLongArrowAltUp } from "react-icons/fa";
 import { HiUserGroup, HiAnnotation, HiDocumentText } from "react-icons/hi";
+import { BiSolidCircle } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { BeatLoader, HashLoader } from "react-spinners";
+import { toggleSilder } from "../redux-slice/sliderSlice";
+import DashToggleButton from "./DashToggleButton";
 
 function DashboardComponent() {
   const [usersList, setUsersList] = useState([]);
@@ -22,6 +25,9 @@ function DashboardComponent() {
   const [isLoading, setIsLoading] = useState(false);
 
   const { currentUser } = useSelector((state) => state.user);
+  const { isSlide } = useSelector((state) => state.slider);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getUsers = async () => {
@@ -80,8 +86,12 @@ function DashboardComponent() {
     }
   }, []);
   return (
-    <div className="table-auto overflow-x-scroll md:mx-auto px-3 py-5 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500 w-full">
+    <div className="table-auto overflow-x-scroll md:mx-auto px-3 py-5 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500 flex-1">
       <div className="w-[900px] md:mx-auto flex flex-col gap-5">
+        {/* Toggle Button */}
+        <DashToggleButton />
+        {/* Toggle Button */}
+
         {/* Cards */}
         <div className="flex md:justify-center gap-3">
           {/* Total Users Card */}

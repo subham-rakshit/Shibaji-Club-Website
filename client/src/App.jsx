@@ -13,6 +13,8 @@ import {
   CreatePost,
   UpdatePost,
   PostItem,
+  CreateVideo,
+  SearchPage,
 } from "./pages";
 
 import {
@@ -38,11 +40,13 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/post/:postSlug" element={<PostItem />} />
+          <Route path="/search" element={<SearchPage />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/admin-dashboard" element={<Dashboard />} />
           </Route>
           <Route element={<OnlyAdmiProtectedRoute />}>
             <Route path="/create-post" element={<CreatePost />} />
+            <Route path="/create-video" element={<CreateVideo />} />
             <Route path="/update-post/:postId" element={<UpdatePost />} />
           </Route>
         </Routes>
