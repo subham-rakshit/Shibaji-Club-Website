@@ -11,7 +11,7 @@ function DashToggleButton() {
       htmlFor="check"
       className={`${
         isSlide === "true" ? "bg-green-300" : "bg-red-300"
-      } cursor-pointer relative w-[80px] h-[36px] rounded-full`}
+      } cursor-pointer relative w-[70px] h-[30px] rounded-full`}
     >
       <input
         type="checkbox"
@@ -20,8 +20,8 @@ function DashToggleButton() {
         onChange={() => dispatch(toggleSilder())}
       />
       <span
-        className={`w-[38px] h-[30px] bg-white absolute rounded-full left-1 top-[3px] ${
-          isSlide === "true" && "left-[37px]"
+        className={`w-[24px] h-[24px] bg-white absolute rounded-full left-1 top-[3px] ${
+          isSlide === "true" && "left-[41px]"
         } transition-all duration-300`}
       ></span>
     </label>

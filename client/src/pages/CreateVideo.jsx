@@ -18,7 +18,6 @@ import {
 } from "firebase/storage";
 import { app } from "../firebase";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 function CreateVideo() {
   //* User provided image file and temporary image URL state -->
