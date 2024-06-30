@@ -7,7 +7,7 @@ export const createPost = async (req, res, next) => {
     const adminAuthError = {
       status: 403,
       message: "Not a admin",
-      extraDetails: "You are not allowed to create a post!",
+      extraDetails: "You are not allowed to create posts!",
     };
     return next(adminAuthError);
   }
@@ -21,11 +21,12 @@ export const createPost = async (req, res, next) => {
     return next(adminAuthError);
   }
   //? Check if User's provide title have any special characters or not -->
-  if (!req.body.title.match(/^[a-zA-Z0-9 ]+$/)) {
+  if (!req.body.title.match(/^[a-zA-Z0-9].*[a-zA-Z0-9]$/)) {
     const titleError = {
       status: 401,
-      message: "Special characters exist",
-      extraDetails: "Please don't use special characters!",
+      message: "Special characters detect!",
+      extraDetails:
+        "The title cannot start or end with a special character. Please revise the sentence!",
     };
     return next(titleError);
   }

@@ -13,6 +13,7 @@ import {
   CreatePost,
   UpdatePost,
   PostItem,
+  VideoItem,
   CreateVideo,
   SearchPage,
 } from "./pages";
@@ -40,6 +41,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/post/:postSlug" element={<PostItem />} />
+          <Route path="/video/:videoSlug" element={<VideoItem />} />
           <Route path="/search" element={<SearchPage />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/admin-dashboard" element={<Dashboard />} />

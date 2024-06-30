@@ -10,6 +10,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import postRouter from "./router/post-router.js";
 import commentRouter from "./router/comment-router.js";
+import videoRouter from "./router/video-router.js";
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use("/api/auth", router);
 app.use("/api/form", contactRouter);
 app.use("/api/user", userRouter);
 app.use("/api/post", postRouter);
+app.use("/api/video", videoRouter);
 app.use("/api/comments", commentRouter);
 
 app.use(errorMiddleware);
