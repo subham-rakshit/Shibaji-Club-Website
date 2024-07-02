@@ -4,6 +4,7 @@ import {
   DashSideBar,
   DashProfile,
   DashPosts,
+  DashVideos,
   DashUsers,
   DashComment,
   DashboardComponent,
@@ -33,6 +34,7 @@ const Dashboard = () => {
       {tab === "dashboard" && <DashboardComponent />}
       {tab === "profile" && <DashProfile />}
       {tab === "posts" && <DashPosts />}
+      {tab === "videos" && <DashVideos />}
       {tab === "users" && <DashUsers />}
       {tab === "comments" && <DashComment />}
     </div>

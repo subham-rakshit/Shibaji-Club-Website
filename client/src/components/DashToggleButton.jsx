@@ -24,6 +24,13 @@ function DashToggleButton() {
           isSlide === "true" && "left-[41px]"
         } transition-all duration-300`}
       ></span>
+      <span
+        className={`absolute text-[13px] text-white font-bold font-[Inter] left-2 top-[6px] ${
+          isSlide === "false" && "left-[38px]"
+        } transition-all duration-300`}
+      >
+        {isSlide === "false" ? "ON" : "OFF"}
+      </span>
     </label>
   );
 }

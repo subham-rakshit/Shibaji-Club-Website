@@ -9,7 +9,7 @@ import OAuth from "./OAuth";
 import ScrollToTop from "./ScrollToTop";
 import DashPosts from "./DashPosts";
 import DashUsers from "./DashUsers";
-import PostComentSection from "./PostComentSection";
+import PostCommentSection from "./PostCommentSection";
 import Comment from "./Comment";
 import PostCard from "./PostCard";
 import DashComment from "./DashComment";
@@ -20,6 +20,7 @@ import SearchAllContent from "./SearchAllContent";
 import SearchPractices from "./SearchPractices";
 import SearchBlogs from "./SearchBlogs";
 import DashToggleButton from "./DashToggleButton";
+import DashVideos from "./DashVideos";
 
 export {
   Header,
@@ -30,6 +31,7 @@ export {
   DashProfile,
   DashSideBar,
   DashPosts,
+  DashVideos,
   DashUsers,
   DashComment,
   DashCommentUserDetails,
@@ -37,7 +39,7 @@ export {
   DashToggleButton,
   OAuth,
   ScrollToTop,
-  PostComentSection,
+  PostCommentSection,
   Comment,
   PostCard,
   SearchSideBar,

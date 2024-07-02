@@ -40,6 +40,7 @@ body::-webkit-scrollbar {
   font-family: "Inter" !important;
   font-weight: 500 !important;
   color: rgb(59, 59, 59) !important;
+  line-height: 1.5 !important;
 }
 @media screen and (min-width: 768px) {
   .post-item-content-style p {
@@ -52,4 +53,8 @@ body::-webkit-scrollbar {
 
 .dark .post-item-content-style p {
   color: rgb(190, 189, 189) !important;
+}
+
+.post-item-content-style span {
+  font-family: "Inter" !important;
 }

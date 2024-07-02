@@ -7,6 +7,7 @@ import {
   HiChartPie,
 } from "react-icons/hi";
 import { FaUsersCog, FaComments } from "react-icons/fa";
+import { BiSolidVideos } from "react-icons/bi";
 import { Link, useLocation } from "react-router-dom";
 import { signOutSuccess } from "../redux-slice/userSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -97,6 +98,21 @@ function DashSideBar() {
                 as="div"
               >
                 Posts
+              </Sidebar.Item>
+            </Link>
+          )}
+          {currentUser.isAdmin && (
+            <Link to="/admin-dashboard?tab=videos">
+              <Sidebar.Item
+                icon={BiSolidVideos}
+                label={tab === "videos" && "Admin"}
+                labelColor="dark"
+                className={`font-[Inter] text-xs font-medium ${
+                  tab === "videos" && "bg-[#e9e9e9] dark:bg-[#374151]"
+                }`}
+                as="div"
+              >
+                Videos
               </Sidebar.Item>
             </Link>
           )}

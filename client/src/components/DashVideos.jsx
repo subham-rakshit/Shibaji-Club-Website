@@ -7,28 +7,28 @@ import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { PacmanLoader } from "react-spinners";
 import DashToggleButton from "./DashToggleButton";
 
-function DashPosts() {
+function DashVideos() {
   const { currentUser } = useSelector((state) => state.user);
-  const [allPostsData, setAllPostsData] = useState([]);
+  const [allVideosData, setAllVideosData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showMoreData, setShowMoreData] = useState(true);
   const [showModel, setShowModel] = useState(false);
-  const [selectedPostId, setSelectedPostId] = useState(null);
+  const [selectedVideoId, setSelectedVideoId] = useState(null);
 
   const navigate = useNavigate();
 
-  //* Fetch All data when ever admin user is changed -->
+  //* Fetch All videos data when ever admin user is changed -->
   useEffect(() => {
     setIsLoading(true);
-    const getPosts = async () => {
+    const getVideos = async () => {
       try {
-        const res = await fetch(`/api/post/getposts`);
+        const res = await fetch(`/api/video/getvideos`);
         const data = await res.json();
         console.log(data);
         if (res.ok) {
-          setAllPostsData(data.posts);
+          setAllVideosData(data.videos);
           setIsLoading(false);
-          if (data.posts.length < 9) {
+          if (data.videos.length < 9) {
             setShowMoreData(false);
           }
         }
@@ -37,21 +37,21 @@ function DashPosts() {
       }
     };
     if (currentUser.isAdmin) {
-      getPosts();
+      getVideos();
     }
   }, [currentUser._id]);
 
   //* Show more btn functionality -->
   const handleShowMore = async () => {
-    const startIndex = allPostsData.length;
+    const startIndex = allVideosData.length;
     try {
       setIsLoading(true);
-      const res = await fetch(`/api/post/getposts?startIndex=${startIndex}`);
+      const res = await fetch(`/api/video/getvideos?startIndex=${startIndex}`);
       const data = await res.json();
       if (res.ok) {
-        setAllPostsData((prev) => [...prev, ...data.posts]);
+        setAllVideosData((prev) => [...prev, ...data.videos]);
         setIsLoading(false);
-        if (data.posts.length < 9) {
+        if (data.videos.length < 9) {
           setShowMoreData(false);
         }
       } else {
@@ -67,7 +67,7 @@ function DashPosts() {
     setShowModel(false);
     try {
       const res = await fetch(
-        `/api/post/deletepost/${selectedPostId}/${currentUser._id}`,
+        `/api/video/deletevideo/${selectedVideoId}/${currentUser._id}`,
         {
           method: "DELETE",
         }
@@ -75,8 +75,8 @@ function DashPosts() {
       const data = await res.json();
 
       if (res.ok) {
-        setAllPostsData((prev) =>
-          prev.filter((post) => post._id !== selectedPostId)
+        setAllVideosData((prev) =>
+          prev.filter((post) => post._id !== selectedVideoId)
         );
         console.log(data.message);
         alert(data.message);
@@ -92,14 +92,14 @@ function DashPosts() {
   return (
     <div
       className={`table-auto overflow-x-scroll md:mx-auto px-3 py-5 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500 flex-1 ${
-        allPostsData.length === 0 || isLoading === true
+        allVideosData.length === 0 || isLoading === true
           ? "flex flex-col justify-center"
           : ""
       }`}
     >
       {isLoading ? (
         <PacmanLoader color="#36d7b7" className="mx-auto" />
-      ) : currentUser.isAdmin && allPostsData.length > 0 ? (
+      ) : currentUser.isAdmin && allVideosData.length > 0 ? (
         <div className="overflow-x-auto w-[950px] mx-auto flex flex-col gap-5">
           {/* Toggle Button */}
           <DashToggleButton />
@@ -107,8 +107,8 @@ function DashPosts() {
           <Table hoverable className="shadow-md font-[Inter]">
             <Table.Head className="text-[14px]">
               <Table.HeadCell>Date updated</Table.HeadCell>
-              <Table.HeadCell>Post image</Table.HeadCell>
-              <Table.HeadCell>Post title</Table.HeadCell>
+              <Table.HeadCell>Video thumbnail</Table.HeadCell>
+              <Table.HeadCell>Video title</Table.HeadCell>
               <Table.HeadCell>Category</Table.HeadCell>
               <Table.HeadCell>Delete</Table.HeadCell>
               <Table.HeadCell>
@@ -116,23 +116,23 @@ function DashPosts() {
               </Table.HeadCell>
             </Table.Head>
             <Table.Body className="text-sm font-medium">
-              {allPostsData.map((eachPost, i) => (
+              {allVideosData.map((eachVideo, i) => (
                 <Table.Row
                   className={`bg-white dark:bg-gray-800 ${
-                    i === allPostsData.length - 1
+                    i === allVideosData.length - 1
                       ? ""
                       : "border-gray-200 border-b-2 dark:border-gray-700"
                   }`}
-                  key={eachPost._id}
+                  key={eachVideo._id}
                 >
                   <Table.Cell className="whitespace-nowrap text-gray-700 dark:text-gray-300 text-[14px]">
-                    {new Date(eachPost.updatedAt).toLocaleDateString()}
+                    {new Date(eachVideo.updatedAt).toLocaleDateString()}
                   </Table.Cell>
                   <Table.Cell>
-                    <Link to={`/post/${eachPost.slug}`}>
+                    <Link to={`/video/${eachVideo.slug}`}>
                       <img
-                        src={eachPost.blogImage}
-                        alt={eachPost.title}
+                        src={eachVideo.thumbnailURL}
+                        alt={eachVideo.title}
                         className="w-20 h-10 object-cover bg-gray-500 rounded-sm"
                       />
                     </Link>
@@ -140,27 +140,27 @@ function DashPosts() {
                   <Table.Cell>
                     <Link
                       className="hover:underline hover:text-blue-400 text-xs line-clamp-1"
-                      to={`/post/${eachPost.slug}`}
+                      to={`/video/${eachVideo.slug}`}
                     >
-                      {eachPost.title}
+                      {eachVideo.title}
                     </Link>
                   </Table.Cell>
                   <Table.Cell className="text-xs">
-                    {eachPost.category}
+                    {eachVideo.category}
                   </Table.Cell>
                   <Table.Cell>
                     <span
                       className="text-red-600 hover:underline dark:text-red-500 cursor-pointer"
                       onClick={() => {
                         setShowModel(true);
-                        setSelectedPostId(eachPost._id);
+                        setSelectedVideoId(eachVideo._id);
                       }}
                     >
                       Delete
                     </span>
                   </Table.Cell>
                   <Table.Cell>
-                    <Link to={`/update-post/${eachPost._id}`}>
+                    <Link to={`/update-video/${eachVideo._id}`}>
                       <span className="text-cyan-600 hover:underline dark:text-cyan-500 cursor-pointer">
                         Edit
                       </span>
@@ -184,20 +184,20 @@ function DashPosts() {
         <>
           <IoImagesSharp size="100" className="mx-auto mb-10" />
           <h1 className="text-gray-500 dark:text-gray-300 text-2xl font-bold font-[Inter] text-center">
-            Oops! No posts to show
+            Oops! No videos to show
           </h1>
           <p className="text-gray-500 dark:text-gray-300 text-xs font-normal font-[Inter] text-center mt-2">
-            You haven't created any posts yet. Don't miss out—start creating
-            your first post now and share your thoughts with the community!
+            You haven't created any videos yet. Don't miss out—start creating
+            your first video now and share your thoughts with the community!
           </p>
           <Button
             type="button"
             gradientDuoTone="purpleToPink"
             outline
             className="font-[Inter] w-[fit-content] mx-auto mt-5"
-            onClick={() => navigate("/create-post")}
+            onClick={() => navigate("/create-video")}
           >
-            Create posts
+            Create videos
           </Button>
         </>
       )}
@@ -212,11 +212,11 @@ function DashPosts() {
           <div className="text-center">
             <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
             <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-              Are you sure you want to delete this post?
+              Are you sure you want to delete this video?
             </h3>
             <div className="flex justify-center gap-4">
               <Button color="failure" onClick={handleDeletePost}>
-                {"Yes, I'm sure"}
+                Yes, I'm sure
               </Button>
               <Button color="gray" onClick={() => setShowModel(false)}>
                 No, cancel
@@ -229,4 +229,4 @@ function DashPosts() {
   );
 }
 
-export default DashPosts;
+export default DashVideos;

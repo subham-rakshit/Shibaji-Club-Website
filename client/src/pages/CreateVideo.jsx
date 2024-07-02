@@ -18,6 +18,7 @@ import {
 } from "firebase/storage";
 import { app } from "../firebase";
 import { useNavigate } from "react-router-dom";
+import { FaCloudUploadAlt, FaCheckCircle } from "react-icons/fa";
 
 function CreateVideo() {
   //* User provided image file and temporary image URL state -->
@@ -101,10 +102,6 @@ function CreateVideo() {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           setImageUploadFileURL(downloadURL);
           setIsImageFileUploading(false);
-          setVideoFormData({
-            ...videoFormData,
-            thumbnailURL: imageUploadFileURL,
-          });
         });
       }
     );
@@ -164,6 +161,18 @@ function CreateVideo() {
     }
   };
 
+  //* Thumbnail Image upload -->
+  const handleThumbnailUpload = () => {
+    if (!imageUploadFileURL) {
+      setImageFileUploadingError("Please select a image to upload!");
+      return;
+    }
+    setVideoFormData({
+      ...videoFormData,
+      thumbnailURL: imageUploadFileURL,
+    });
+  };
+
   //* Form Submit -->
   const handleVideoDataFormSubmit = async (e) => {
     e.preventDefault();
@@ -192,7 +201,7 @@ function CreateVideo() {
         });
         setImageUploadFile(null);
         setImageUploadFileURL(null);
-        // navigate(`/video/${data.videoDetails.slug}`);
+        navigate(`/video/${data.videoDetails.slug}`);
       }
       if (!res.ok) {
         setPublishError(data.extraDetails);
@@ -224,7 +233,7 @@ function CreateVideo() {
           {/* Title Input */}
           <TextInput
             type="text"
-            placeholder="Write post's title"
+            placeholder="Write video title"
             required
             id="title"
             className="flex-1"
@@ -250,10 +259,10 @@ function CreateVideo() {
             <option value="uncategorized">Select a category</option>
             <option value="outfield">Outfield</option>
             <option value="one to one">One to One</option>
-            <option value="practices">SAQ</option>
+            <option value="saq">SAQ</option>
             <option value="goalkeepers">Goalkeepers</option>
             <option value="tutorials">Tutorials</option>
-            <option value="curriculums">Curriculums</option>
+            <option value="youth curriculums">Youth Curriculums</option>
           </Select>
           {/* Category Input */}
         </div>
@@ -267,26 +276,60 @@ function CreateVideo() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-3 md:gap-8">
             {/* Thumbnail Img */}
             <div className="flex flex-col gap-2 w-full">
-              <Label
-                value={`${
-                  imageFileUploadingProgress &&
-                  parseInt(imageFileUploadingProgress) < 100
-                    ? `Uploading... ${imageFileUploadingProgress}%`
-                    : "Upload Thumbnail"
-                }`}
-                htmlFor="image-upload"
-                className="text-xs"
-              />
+              <div className="flex items-center gap-2">
+                <Label
+                  value={`${
+                    imageFileUploadingProgress &&
+                    parseInt(imageFileUploadingProgress) < 100
+                      ? `Uploading... ${imageFileUploadingProgress}%`
+                      : "Upload Thumbnail"
+                  }`}
+                  htmlFor="image-upload"
+                  className="text-xs"
+                />
+                {videoFormData.thumbnailURL && (
+                  <FaCheckCircle
+                    size="20"
+                    color="lightgreen"
+                    className="sm:hidden"
+                  />
+                )}
+              </div>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-2">
+                <FileInput
+                  type="file"
+                  accept="image/*"
+                  sizing="sm"
+                  id="image-upload"
+                  onChange={handleImageFileChange}
+                  className="w-full"
+                  required
+                />
+                {videoFormData.thumbnailURL ? (
+                  <FaCheckCircle
+                    size="30"
+                    color="lightgreen"
+                    className="hidden sm:inline"
+                  />
+                ) : (
+                  <Button
+                    type="button"
+                    className="font-[Inter] relative w-[fit-content]"
+                    gradientDuoTone="purpleToBlue"
+                    outline
+                    size="xs"
+                    onClick={handleThumbnailUpload}
+                    disabled={isImageFileUploading}
+                  >
+                    <span className="absolute flex h-3 w-3 top-[-15%] left-9">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
+                    </span>
 
-              <FileInput
-                type="file"
-                accept="image/*"
-                sizing="sm"
-                id="image-upload"
-                onChange={handleImageFileChange}
-                className="w-full"
-                required
-              />
+                    <FaCloudUploadAlt size="30" />
+                  </Button>
+                )}
+              </div>
             </div>
             {/* Thumbnail Img */}
 
@@ -566,10 +609,10 @@ function CreateVideo() {
               gradientDuoTone="purpleToPink"
               onClick={() => setOpenModal(true)}
             >
-              Image Review
+              Thumbnail Review
             </Button>
             <Modal show={openModal} onClose={() => setOpenModal(false)}>
-              <Modal.Header>Blog Thubnail Preview</Modal.Header>
+              <Modal.Header>Video Thubnail Preview</Modal.Header>
               <Modal.Body>
                 <div className="space-y-6">
                   <img

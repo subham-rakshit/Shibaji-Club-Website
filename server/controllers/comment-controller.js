@@ -1,9 +1,12 @@
 import UserCommentCollection from "../models/comment-model.js";
 import UserCollection from "../models/user-model.js";
 import PostCollection from "../models/post-model.js";
+import VideoCollection from "../models/video-model.js";
 
+//* Create new comment -->
 export const createComment = async (req, res, next) => {
-  const { userId, postId, comment } = req.body;
+  console.log(typeof req.body);
+  const { userId, comment, postId } = req.body;
 
   try {
     if (req.user.userId !== userId) {
@@ -30,6 +33,7 @@ export const createComment = async (req, res, next) => {
   }
 };
 
+//* Get all comments from Individual post -->
 export const getPostComments = async (req, res, next) => {
   try {
     const totalComments = await UserCommentCollection.find({
@@ -52,6 +56,7 @@ export const getPostComments = async (req, res, next) => {
   }
 };
 
+//* Create like functionality for a comment -->
 export const likeComment = async (req, res, next) => {
   try {
     const commentInfo = await UserCommentCollection.findById(
@@ -85,6 +90,7 @@ export const likeComment = async (req, res, next) => {
   }
 };
 
+//* Edit a specific comment -->
 export const editComment = async (req, res, next) => {
   try {
     const commentInfo = await UserCommentCollection.findById(
@@ -117,6 +123,7 @@ export const editComment = async (req, res, next) => {
   }
 };
 
+//* Delete a specific comment -->
 export const deleteComment = async (req, res, next) => {
   try {
     const commentInfo = await UserCommentCollection.findById(
@@ -146,6 +153,7 @@ export const deleteComment = async (req, res, next) => {
   }
 };
 
+//* Get all comments -->
 export const getAllComments = async (req, res, next) => {
   if (!req.user.isAdmin) {
     const authError = {
@@ -186,6 +194,7 @@ export const getAllComments = async (req, res, next) => {
   }
 };
 
+//* Get User and Post details fro a comment -->
 export const getUserAndPostDetailsOfAComment = async (req, res, next) => {
   try {
     const commentedUser = await UserCollection.findById(req.params.userId);

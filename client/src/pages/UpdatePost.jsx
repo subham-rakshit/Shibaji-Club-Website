@@ -50,8 +50,6 @@ function UpdatePost() {
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
 
-  console.log("Extract data: ", postFormData);
-
   //* Fetch the details of will be updated Post -->
   useEffect(() => {
     const getPostDetails = async () => {

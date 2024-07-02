@@ -12,6 +12,7 @@ import {
   Dashboard,
   CreatePost,
   UpdatePost,
+  UpdateVideo,
   PostItem,
   VideoItem,
   CreateVideo,
@@ -50,6 +51,7 @@ const App = () => {
             <Route path="/create-post" element={<CreatePost />} />
             <Route path="/create-video" element={<CreateVideo />} />
             <Route path="/update-post/:postId" element={<UpdatePost />} />
+            <Route path="/update-video/:videoId" element={<UpdateVideo />} />
           </Route>
         </Routes>
         <Footer />

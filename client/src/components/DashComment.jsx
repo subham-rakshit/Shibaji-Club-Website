@@ -16,8 +16,6 @@ function DashComment() {
   const [showModel, setShowModel] = useState(false);
   const [selectedCommentId, setSelectedCommentId] = useState(null);
 
-  //   console.log(allCommentsData);
-
   //* Fetch All data when ever admin user is changed -->
   useEffect(() => {
     setIsLoading(true);
@@ -107,7 +105,7 @@ function DashComment() {
           <DashToggleButton />
 
           <Table hoverable className="shadow-md font-[Inter]">
-            <Table.Head className="text-[12px]">
+            <Table.Head className="text-[14px]">
               <Table.HeadCell>Date created</Table.HeadCell>
               <Table.HeadCell>Comment Content</Table.HeadCell>
               <Table.HeadCell>Number of likes</Table.HeadCell>

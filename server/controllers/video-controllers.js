@@ -1,6 +1,6 @@
 import VideoCollection from "../models/video-model.js";
 
-//* Create Post -->
+//* Create Video -->
 export const createVideo = async (req, res, next) => {
   //? Check if user isAdmin or not -->
   if (!req.user.isAdmin) {
@@ -36,7 +36,7 @@ export const createVideo = async (req, res, next) => {
   //? Check if User's provide valid youtbe video link or not -->
   if (
     !req.body.videoURL.match(
-      /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/(watch\?v=|embed\/|v\/)?([a-zA-Z0-9_-]{11})$/
+      /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/(watch\?v=|embed\/|v\/|shorts\/|live\/)?([a-zA-Z0-9_-]{11})(\S*)?$/
     )
   ) {
     const titleError = {
@@ -85,6 +85,140 @@ export const createVideo = async (req, res, next) => {
     res.status(201).json({
       message: "You have successfully created a new video",
       videoDetails: saveVideo,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+//* Get all Videos -->
+export const getVideos = async (req, res, next) => {
+  try {
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const limit = parseInt(req.query.limit) || 9;
+
+    const videos = await VideoCollection.find({
+      //? Posts for specific person
+      ...(req.query.userId && { userId: req.query.userId }),
+      //? Posts for specific category
+      ...(req.query.category && { category: req.query.category }),
+      //? Posts for specific slug to use this API where ever u want
+      ...(req.query.slug && { slug: req.query.slug }),
+      //? Posts for specific postId (_id)
+      ...(req.query.videoId && { _id: req.query.videoId }),
+      //? We extract posts based on seach words if those words present in title or content in a post
+      ...(req.query.searchTerm && {
+        // $or allow use search b/w two places, $regex allows us to search a perticular word by it's letters, $options allows case-insensitive
+        $or: [
+          { title: { $regex: req.query.searchTerm, $options: "i" } },
+          { content: { $regex: req.query.searchTerm, $options: "i" } },
+        ],
+      }),
+    })
+      .skip(startIndex)
+      .limit(limit);
+
+    //* Total number of videos
+    const totalVideos = await VideoCollection.countDocuments();
+
+    //* Total number of videos in Last Month
+    const now = new Date();
+    const oneMonthAgo = new Date(
+      now.getFullYear(),
+      now.getMonth() - 1,
+      now.getDate()
+    );
+
+    const lastMonthVideos = await VideoCollection.countDocuments({
+      createdAt: { $gte: oneMonthAgo },
+    });
+
+    //* Send the response
+    res.status(200).json({
+      videos,
+      totalVideos,
+      lastMonthVideos,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+//* Update a specific video -->
+export const updateVideo = async (req, res, next) => {
+  if (!req.user.isAdmin || req.user.userId !== req.params.userId) {
+    const authError = {
+      status: 403,
+      message: "Not Authenticated",
+      extraDetails: "You are not allowed to update this video!",
+    };
+    return next(authError);
+  }
+  try {
+    const updatedVideoDetails = await VideoCollection.findByIdAndUpdate(
+      req.params.videoId,
+      {
+        $set: {
+          title: req.body.title,
+          content: req.body.content,
+          thumbnailURL: req.body.thumbnailURL,
+          category: req.body.category,
+          slug: req.body.title
+            .trim()
+            .replace(/[^a-zA-Z0-9 ]/g, "")
+            .split(" ")
+            .join("-")
+            .toLowerCase(),
+          ageRange: req.body.ageRange,
+          requiredEquipments: req.body.requiredEquipments,
+          requiredPlayers: req.body.requiredPlayers,
+          videoDuration: req.body.videoDuration,
+          videoURL: req.body.videoURL,
+        },
+      },
+      { new: true }
+    );
+    res.status(200).json({
+      message: "You have successfully updated this video.",
+      videoDetails: updatedVideoDetails,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+//* Delete a specific video -->
+export const deleteVideo = async (req, res, next) => {
+  //? Check user is an admin or not and also requesting userId is a owner of that posts or not
+  if (!req.user.isAdmin || req.user.userId !== req.params.userId) {
+    const authError = {
+      status: 403,
+      message: "Not Authenticated",
+      extraDetails: "You are not allowed to delete this video!",
+    };
+    return next(authError);
+  }
+  try {
+    await VideoCollection.findByIdAndDelete(req.params.videoId);
+    res.status(200).json({
+      message: "The video has been deleted successfully.",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+//* Get Recent 3 videos -->
+export const getRecentVideos = async (req, res, next) => {
+  try {
+    const totalVideosCount = await VideoCollection.countDocuments();
+    const startIndex = Math.floor(Math.random() * totalVideosCount);
+
+    const videos = await VideoCollection.find().skip(startIndex).limit(3);
+
+    //* Send the response
+    res.status(200).json({
+      videos,
     });
   } catch (error) {
     next(error);

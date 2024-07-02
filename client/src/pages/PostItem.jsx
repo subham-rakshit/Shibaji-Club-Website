@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { RingLoader } from "react-spinners";
 import { Button } from "flowbite-react";
-import { PostCard, PostComentSection } from "../components";
+import { PostCard, PostCommentSection } from "../components";
 import { PiImageBrokenDuotone } from "react-icons/pi";
 
 function PostItem() {
@@ -107,7 +107,7 @@ function PostItem() {
           className="w-full max-w-[850px] mt-5 post-item-content-style"
         ></div>
 
-        <PostComentSection postId={fetchPostDetails && fetchPostDetails._id} />
+        <PostCommentSection postId={fetchPostDetails && fetchPostDetails._id} />
 
         <div className="flex flex-col items-center my-5 w-full">
           <h1 className="font-[Inter] text-sm sm:text-base font-medium text-gray-40">
@@ -123,7 +123,7 @@ function PostItem() {
                 Explore our repository of fresh content, curated to inform,
                 entertain, and inspire you with every visit.
               </p>
-              <Link to="/blogs">
+              <Link to="/search?tab=blogs">
                 <Button
                   type="button"
                   gradientDuoTone="purpleToBlue"

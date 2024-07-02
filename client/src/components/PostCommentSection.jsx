@@ -7,7 +7,7 @@ import Comment from "./Comment";
 import { useNavigate } from "react-router-dom";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
-function PostComentSection({ postId }) {
+function PostCommentSection({ postId }) {
   const { currentUser } = useSelector((state) => state.user);
   const [comment, setComment] = useState("");
   const [commentSuccessMsg, setCommentSuccessMsg] = useState(null);
@@ -327,4 +327,4 @@ function PostComentSection({ postId }) {
   );
 }
 
-export default PostComentSection;
+export default PostCommentSection;
