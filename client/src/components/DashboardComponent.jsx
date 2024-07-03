@@ -1,7 +1,7 @@
 import { Button, Card, Table } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { FaLongArrowAltUp } from "react-icons/fa";
+import { FaLongArrowAltUp, FaVideo } from "react-icons/fa";
 import { HiUserGroup, HiAnnotation, HiDocumentText } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import { BeatLoader, HashLoader, PacmanLoader } from "react-spinners";
@@ -10,14 +10,17 @@ import DashToggleButton from "./DashToggleButton";
 function DashboardComponent() {
   const [usersList, setUsersList] = useState([]);
   const [postsList, setPostsList] = useState([]);
+  const [videosList, setVideosList] = useState([]);
   const [commentsList, setCommentsList] = useState([]);
 
   const [numberOfUsers, setNumberOfUsers] = useState(0);
   const [numberOfPosts, setNumberOfPosts] = useState(0);
+  const [numberOfVideos, setNumberOfVideos] = useState(0);
   const [numberOfComments, setNumberOfComments] = useState(0);
 
   const [lastMonthUsers, setLastMonthUsers] = useState(0);
   const [lastMonthPosts, setLastMonthPosts] = useState(0);
+  const [lastMonthVideos, setLastMonthVideos] = useState(0);
   const [lastMonthComments, setLastMonthComments] = useState(0);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -57,6 +60,22 @@ function DashboardComponent() {
         console.log(error.message);
       }
     };
+    const getVideos = async () => {
+      try {
+        setIsLoading(true);
+        const res = await fetch(`/api/video/getvideos?limit=5`);
+        const videoData = await res.json();
+
+        if (res.ok) {
+          setVideosList(videoData.videos);
+          setNumberOfVideos(videoData.totalVideos);
+          setLastMonthVideos(videoData.lastMonthVideos);
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
     const getComments = async () => {
       try {
         setIsLoading(true);
@@ -77,6 +96,7 @@ function DashboardComponent() {
     if (currentUser.isAdmin) {
       getUsers();
       getPosts();
+      getVideos();
       getComments();
     }
   }, []);
@@ -95,9 +115,9 @@ function DashboardComponent() {
           {/* Toggle Button */}
 
           {/* Cards */}
-          <div className="flex md:justify-center gap-3">
+          <div className="flex items-center flex-wrap gap-3">
             {/* Total Users Card */}
-            <Card className="w-[300px]">
+            <Card className="w-full max-w-[280px]">
               <div className="flex justify-between">
                 <div className="flex flex-col">
                   <h1 className="text-[16px] font-medium font-[Inter] tracking-tight text-gray-600 dark:text-white mb-1">
@@ -134,7 +154,7 @@ function DashboardComponent() {
             {/* Total Users Card */}
 
             {/* Total Comments Card */}
-            <Card className="w-full max-w-[300px]">
+            <Card className="w-full max-w-[280px]">
               <div className="flex justify-between">
                 <div className="flex flex-col">
                   <h1 className="text-[16px] font-medium font-[Inter] tracking-tight text-gray-600 dark:text-white mb-1">
@@ -171,7 +191,7 @@ function DashboardComponent() {
             {/* Total Comments Card */}
 
             {/* Total Posts Card */}
-            <Card className="w-full max-w-[300px]">
+            <Card className="w-full max-w-[280px]">
               <div className="flex justify-between">
                 <div className="flex flex-col">
                   <h1 className="text-[16px] font-medium font-[Inter] tracking-tight text-gray-600 dark:text-white mb-1">
@@ -206,10 +226,47 @@ function DashboardComponent() {
               </div>
             </Card>
             {/* Total Posts Card */}
+
+            {/* Total Videos Card */}
+            <Card className="w-full max-w-[280px]">
+              <div className="flex justify-between">
+                <div className="flex flex-col">
+                  <h1 className="text-[16px] font-medium font-[Inter] tracking-tight text-gray-600 dark:text-white mb-1">
+                    TOTAL VIDEOS
+                  </h1>
+                  {isLoading ? (
+                    <BeatLoader size={5} color="#00BCD4" />
+                  ) : (
+                    <p className="text-xl font-[Inter] font-normal text-gray-700 dark:text-gray-400 mb-3">
+                      {numberOfVideos}
+                    </p>
+                  )}
+                  <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-[5px]">
+                      <FaLongArrowAltUp size="13" color="green" />
+                      {isLoading ? (
+                        <BeatLoader size={5} color="#00BCD4" />
+                      ) : (
+                        <span className="text-[12px] font-[inter] text-green-400">
+                          {lastMonthVideos}
+                        </span>
+                      )}
+                    </div>
+                    <span className="text-[12px] font-[inter] text-gray-500 drak:text-gray-600">
+                      Last month
+                    </span>
+                  </div>
+                </div>
+                <div className="bg-[#94C120] rounded-full p-2 h-[fit-content]">
+                  <FaVideo size="25" color="#fff" />
+                </div>
+              </div>
+            </Card>
+            {/* Total Posts Card */}
           </div>
           {/* Cards */}
 
-          {/* Users, Comments, Posts details */}
+          {/* Users, Comments, Posts, Videos details */}
           <div
             className={`w-[850px] md:mx-auto flex flex-col gap-5 ${
               isLoading && "justify-center items-center h-[500px]"
@@ -380,6 +437,68 @@ function DashboardComponent() {
                   </Table>
                 </div>
                 {/* User's Posts details */}
+
+                {/* User's Videos details */}
+                <div className="w-[850px] md:mx-auto px-3 py-5 shadow-xl rounded-xl border border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center gap-2 justify-between mb-5">
+                    <p className="font-[Inter] text-sm font-medium">
+                      Video Details
+                    </p>
+                    <Link to="/admin-dashboard?tab=videos">
+                      <Button
+                        type="button"
+                        gradientDuoTone="purpleToPink"
+                        outline
+                        size="xs"
+                        className="font-[Inter]"
+                      >
+                        See All
+                      </Button>
+                    </Link>
+                  </div>
+                  <Table hoverable className="font-[Inter] h-[500px]">
+                    <Table.Head className="text-[12px]">
+                      <Table.HeadCell>Video Thumbnail</Table.HeadCell>
+                      <Table.HeadCell>Video Tilte</Table.HeadCell>
+                      <Table.HeadCell>Video Duration</Table.HeadCell>
+                      <Table.HeadCell>Category</Table.HeadCell>
+                    </Table.Head>
+
+                    <Table.Body className="text-[13px] font-medium">
+                      {videosList.map((video, i) => (
+                        <Table.Row
+                          className={`bg-white dark:bg-gray-800 ${
+                            i === videosList.length - 1
+                              ? ""
+                              : "border-gray-200 border-b-2 dark:border-gray-700"
+                          }`}
+                          key={video._id}
+                        >
+                          <Table.Cell>
+                            <img
+                              src={video.thumbnailURL}
+                              alt="bolg image"
+                              className="w-32 h-14 rounded-md bg-gray-500 object-cover"
+                            />
+                          </Table.Cell>
+
+                          <Table.Cell className="text-xs">
+                            {video.title}
+                          </Table.Cell>
+
+                          <Table.Cell className="text-[13px]">
+                            {video.videoDuration} Minutes
+                          </Table.Cell>
+
+                          <Table.Cell className="text-[13px]">
+                            {video.category}
+                          </Table.Cell>
+                        </Table.Row>
+                      ))}
+                    </Table.Body>
+                  </Table>
+                </div>
+                {/* User's Videos details */}
               </>
             )}
           </div>

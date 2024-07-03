@@ -157,7 +157,10 @@ function VideoItem() {
             <div className="flex items-center gap-2">
               {fetchVideoDetails &&
                 fetchVideoDetails.ageRange.map((age) => (
-                  <span className="bg-[#F5F5F5] dark:bg-[#374151] p-2 rounded-lg text-xs font-[Inter] w-[fit-content]">
+                  <span
+                    className="bg-[#F5F5F5] dark:bg-[#374151] p-2 rounded-lg text-xs font-[Inter] w-[fit-content]"
+                    key={age}
+                  >
                     {age}
                   </span>
                 ))}
@@ -176,7 +179,10 @@ function VideoItem() {
                 fetchVideoDetails.requiredEquipments.map((equipment) => {
                   if (equipment === "Footballs") {
                     return (
-                      <span className="bg-[#F5F5F5] dark:bg-[#374151] p-2 rounded-lg text-xs font-[Inter] flex items-center gap-1 w-[fit-content]">
+                      <span
+                        className="bg-[#F5F5F5] dark:bg-[#374151] p-2 rounded-lg text-xs font-[Inter] flex items-center gap-1 w-[fit-content]"
+                        key={equipment}
+                      >
                         <IoFootball size="20" color="#94C120" />
                         <span className="text-xs font-[Inter]">
                           {equipment}
@@ -186,7 +192,10 @@ function VideoItem() {
                   }
                   if (equipment === "Bibs") {
                     return (
-                      <span className="bg-[#F5F5F5] dark:bg-[#374151] p-2 rounded-lg text-xs font-[Inter] flex items-center gap-1 w-[fit-content]">
+                      <span
+                        className="bg-[#F5F5F5] dark:bg-[#374151] p-2 rounded-lg text-xs font-[Inter] flex items-center gap-1 w-[fit-content]"
+                        key={equipment}
+                      >
                         <CiShirt size="20" color="#94C120" />
                         <span className="text-xs font-[Inter]">
                           {equipment}
@@ -196,7 +205,10 @@ function VideoItem() {
                   }
                   if (equipment === "Cones") {
                     return (
-                      <span className="bg-[#F5F5F5] dark:bg-[#374151] p-2 rounded-lg text-xs font-[Inter] flex items-center gap-1 w-[fit-content]">
+                      <span
+                        className="bg-[#F5F5F5] dark:bg-[#374151] p-2 rounded-lg text-xs font-[Inter] flex items-center gap-1 w-[fit-content]"
+                        key={equipment}
+                      >
                         <BsConeStriped size="20" color="#94C120" />
                         <span className="text-xs font-[Inter]">
                           {equipment}
@@ -206,7 +218,10 @@ function VideoItem() {
                   }
                   if (equipment === "Goals") {
                     return (
-                      <span className="bg-[#F5F5F5] dark:bg-[#374151] p-2 rounded-lg text-xs font-[Inter] flex items-center gap-1 w-[fit-content]">
+                      <span
+                        className="bg-[#F5F5F5] dark:bg-[#374151] p-2 rounded-lg text-xs font-[Inter] flex items-center gap-1 w-[fit-content]"
+                        key={equipment}
+                      >
                         <GiGoalKeeper size="20" color="#94C120" />
                         <span className="text-xs font-[Inter]">
                           {equipment}
@@ -228,7 +243,10 @@ function VideoItem() {
             <div className="flex items-center gap-2">
               {fetchVideoDetails &&
                 fetchVideoDetails.requiredPlayers.map((players) => (
-                  <span className="bg-[#F5F5F5] dark:bg-[#374151] p-2 rounded-lg text-xs font-[Inter] w-[fit-content]">
+                  <span
+                    className="bg-[#F5F5F5] dark:bg-[#374151] p-2 rounded-lg text-xs font-[Inter] w-[fit-content]"
+                    key={players}
+                  >
                     {players} {parseInt(players) < 2 ? "Player" : "Players"}
                   </span>
                 ))}
