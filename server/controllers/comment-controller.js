@@ -201,8 +201,12 @@ export const getUserAndPostDetailsOfAComment = async (req, res, next) => {
     const { password, ...rest } = commentedUser._doc;
 
     const commentedPost = await PostCollection.findById(req.params.postId);
+    commentedPost &&
+      res.status(200).json({ commentedUser: rest, commentedPost });
 
-    res.status(200).json({ commentedUser, commentedPost });
+    const commentedVideo = await VideoCollection.findById(req.params.postId);
+    commentedVideo &&
+      res.status(200).json({ commentedUser: rest, commentedVideo });
   } catch (error) {
     next(error);
   }

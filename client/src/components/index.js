@@ -12,6 +12,7 @@ import DashUsers from "./DashUsers";
 import PostCommentSection from "./PostCommentSection";
 import Comment from "./Comment";
 import PostCard from "./PostCard";
+import VideoCard from "./VideoCard";
 import DashComment from "./DashComment";
 import DashCommentUserDetails from "./DashCommentUserDetails";
 import DashboardComponent from "./DashboardComponent";
@@ -42,6 +43,7 @@ export {
   PostCommentSection,
   Comment,
   PostCard,
+  VideoCard,
   SearchSideBar,
   SearchAllContent,
   SearchPractices,

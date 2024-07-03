@@ -69,7 +69,7 @@ function PostItem() {
         </h1>
         {fetchPostDetails && (
           <Link
-            to={`/search?category=${
+            to={`/search?tab=blogs&category=${
               fetchPostDetails && fetchPostDetails.category
             }`}
           >
@@ -111,7 +111,7 @@ function PostItem() {
 
         <div className="flex flex-col items-center my-5 w-full">
           <h1 className="font-[Inter] text-sm sm:text-base font-medium text-gray-40">
-            Recent Posts
+            More Posts
           </h1>
           {!recentlyAddedPost ? (
             <div className="flex flex-col items-center my-5">

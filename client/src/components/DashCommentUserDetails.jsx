@@ -7,8 +7,6 @@ function DashCommentUserDetails({ eachComment }) {
   const [info, setInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // console.log(info);
-
   useState(() => {
     setIsLoading(true);
     const getUserandPostInfo = async () => {
@@ -34,10 +32,24 @@ function DashCommentUserDetails({ eachComment }) {
         {isLoading ? (
           <BeatLoader size={5} color="#00BCD4" />
         ) : (
-          <Link to={`/post/${info && info.commentedPost.slug}`}>
+          <Link
+            to={`/${info && (info.commentedPost ? "post" : "video")}/${
+              info &&
+              (info.commentedPost
+                ? info.commentedPost.slug
+                : info.commentedVideo.slug)
+            }`}
+          >
             <img
-              src={info && info.commentedPost.blogImage}
-              alt="post image"
+              src={
+                info &&
+                (info.commentedPost
+                  ? info.commentedPost.blogImage
+                  : info.commentedVideo.thumbnailURL)
+              }
+              alt={
+                info && (info.commentedPost ? "blog image" : "video thumbnail")
+              }
               className="w-60 h-12 object-cover bg-gray-500 rounded-lg"
             />
           </Link>
