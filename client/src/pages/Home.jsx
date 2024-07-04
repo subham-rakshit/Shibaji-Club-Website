@@ -11,7 +11,7 @@ function Home() {
   const { currentUser } = useSelector((state) => state.user);
 
   return (
-    <div className="flex flex-col mt-[65px] lg:mt-[75px]">
+    <div className="flex flex-col mt-[65px] lg:mt-[70px]">
       {/* Home Banner Section ----> */}
       <div className="bg-[url('/banner-dark.png')] w-full min-h-screen bg-cover flex justify-center items-center py-[30px] md:py-[50px]">
         <div className="w-[90%] max-w-[1200px] flex flex-col lg:flex-row justify-start lg:justify-between items-start">

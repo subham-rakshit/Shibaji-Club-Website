@@ -6,12 +6,13 @@ import {
   SearchPractices,
   SearchBlogs,
 } from "../components";
+import { useSelector } from "react-redux";
 
 function SearchPage() {
   const location = useLocation();
   const [tab, setTab] = useState("");
-
-  console.log(tab);
+  const { isSearchSlide } = useSelector((state) => state.searchSlider);
+  console.log(isSearchSlide);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -23,16 +24,22 @@ function SearchPage() {
       setTab("");
     }
   }, [location.search]);
+
   return (
-    <div className="min-h-screen mt-[65px] lg:mt-[77px] flex flex-col md:flex-row">
+    <div className="min-h-screen mt-[65px] lg:mt-[70px] relative">
       {/* Dashboard Left Side Bar */}
-      <div className="md:w-56">
+      <div
+        className={`absolute top-0 ${
+          isSearchSlide === "true" ? "left-[-100%]" : "left-0"
+        } transition-all duration-500 shadow-custom-light-dark dark:shadow-custom-dark-light`}
+      >
         <SearchSideBar />
       </div>
+
       {/* Dashboard COntent According to selected tab */}
       {tab === "all" && <SearchAllContent />}
-      {tab === "practices" && <SearchPractices />}
       {tab === "blogs" && <SearchBlogs />}
+      {tab === "practices" && <SearchPractices />}
     </div>
   );
 }

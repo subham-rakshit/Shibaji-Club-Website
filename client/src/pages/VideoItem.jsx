@@ -79,7 +79,7 @@ function VideoItem() {
 
         {fetchVideoDetails && (
           <Link
-            to={`/search?tab=videos&category=${
+            to={`/search?tab=practices&category=${
               fetchVideoDetails && fetchVideoDetails.category
             }`}
           >

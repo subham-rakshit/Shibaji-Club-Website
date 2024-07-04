@@ -21,6 +21,7 @@ import SearchAllContent from "./SearchAllContent";
 import SearchPractices from "./SearchPractices";
 import SearchBlogs from "./SearchBlogs";
 import DashToggleButton from "./DashToggleButton";
+import SearchToggleButton from "./SearchToggleButton";
 import DashVideos from "./DashVideos";
 
 export {
@@ -48,4 +49,5 @@ export {
   SearchAllContent,
   SearchPractices,
   SearchBlogs,
+  SearchToggleButton,
 };

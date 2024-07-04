@@ -49,7 +49,11 @@ function DashSideBar() {
     }
   };
   return (
-    <Sidebar className={`w-full md:w-56 ${isSlide === "false" && "hidden"}`}>
+    <Sidebar
+      className={`w-full md:w-56 ${
+        isSlide === "false" && "hidden"
+      } transition-all duration-500`}
+    >
       <Sidebar.Items>
         <Sidebar.ItemGroup className="flex flex-col gap-2">
           {currentUser && currentUser.isAdmin && (

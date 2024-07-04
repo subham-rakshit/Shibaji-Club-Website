@@ -127,18 +127,18 @@ function Header() {
           color="gray"
           pill
         >
-          <AiOutlineSearch />
+          <AiOutlineSearch size="20" />
         </Button>
       </Popover>
 
       <div className="flex items-center gap-3 md:order-2">
         <Button
-          className="w-12 h-10 hidden sm:inline border-none focus:outline-none focus:ring-0"
+          className="w-[fit-content] h-8 hidden sm:inline border focus:outline-none focus:ring-0"
           color="gray"
           pill
           onClick={() => dispatch(toggleTheme())}
         >
-          {theme === "light" ? <FaMoon /> : <FaSun />}
+          {theme === "light" ? <FaMoon size="13" /> : <FaSun size="13" />}
         </Button>
         {currentUserDetails ? (
           <Dropdown
