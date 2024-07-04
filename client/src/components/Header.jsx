@@ -65,14 +65,14 @@ function Header() {
       <input
         type="text"
         placeholder="Search..."
-        class="flex-1 px-4 py-1 border-none outline-none rounded-l-lg text-xs font-[Inter] bg-transparent focus:border-none focus:outline-none"
+        className="flex-1 px-4 py-1 border-none outline-none rounded-l-lg text-xs font-[Inter] bg-transparent focus:border-none focus:outline-none"
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
         required
         autoComplete="false"
       />
       <button
-        class="px-4 py-2 rounded-r-lg border-none outline-none"
+        className="px-4 py-2 rounded-r-lg border-none outline-none"
         type="submit"
       >
         <AiOutlineSearch />

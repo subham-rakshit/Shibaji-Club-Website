@@ -12,7 +12,7 @@ function SearchPage() {
   const location = useLocation();
   const [tab, setTab] = useState("");
   const { isSearchSlide } = useSelector((state) => state.searchSlider);
-  console.log(isSearchSlide);
+  // console.log(isSearchSlide);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
