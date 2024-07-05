@@ -11,6 +11,7 @@ import cookieParser from "cookie-parser";
 import postRouter from "./router/post-router.js";
 import commentRouter from "./router/comment-router.js";
 import videoRouter from "./router/video-router.js";
+import allContentRouter from "./router/all-content-router.js";
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use("/api/user", userRouter);
 app.use("/api/post", postRouter);
 app.use("/api/video", videoRouter);
 app.use("/api/comments", commentRouter);
+app.use("/api/search", allContentRouter);
 
 app.use(errorMiddleware);
 

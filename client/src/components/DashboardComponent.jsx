@@ -424,7 +424,7 @@ function DashboardComponent() {
                             />
                           </Table.Cell>
 
-                          <Table.Cell className="text-xs">
+                          <Table.Cell className="text-[13px]">
                             {post.title}
                           </Table.Cell>
 
@@ -482,7 +482,7 @@ function DashboardComponent() {
                             />
                           </Table.Cell>
 
-                          <Table.Cell className="text-xs">
+                          <Table.Cell className="text-[13px]">
                             {video.title}
                           </Table.Cell>
 

@@ -78,6 +78,19 @@ export const getPosts = async (req, res, next) => {
   try {
     const startIndex = parseInt(req.query.startIndex) || 0;
     const limit = parseInt(req.query.limit) || 9;
+    const searchItem = req.query.searchItem;
+
+    let regex;
+    try {
+      regex = new RegExp(searchItem, "i");
+    } catch (error) {
+      const regexError = {
+        status: 400,
+        message: "Invalid regular expression!",
+        extraDetails: "Invalid search query. Please correct and try again.",
+      };
+      return next(regexError);
+    }
 
     const posts = await PostCollection.find({
       //? Posts for specific person
@@ -89,12 +102,9 @@ export const getPosts = async (req, res, next) => {
       //? Posts for specific postId (_id)
       ...(req.query.postId && { _id: req.query.postId }),
       //? We extract posts based on seach words if those words present in title or content in a post
-      ...(req.query.searchTerm && {
+      ...(req.query.searchItem && {
         // $or allow use search b/w two places, $regex allows us to search a perticular word by it's letters, $options allows case-insensitive
-        $or: [
-          { title: { $regex: req.query.searchTerm, $options: "i" } },
-          { content: { $regex: req.query.searchTerm, $options: "i" } },
-        ],
+        $or: [{ title: regex }, { content: regex }],
       }),
     })
       .skip(startIndex)
