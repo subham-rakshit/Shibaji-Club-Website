@@ -90,7 +90,7 @@ function Header() {
   }, [location.search]);
 
   return (
-    <Navbar className="fixed top-0 left-0 z-50 w-full flex items-center justify-between gap-1 shadow-lg">
+    <Navbar className="fixed top-0 left-0 z-[100] w-full flex items-center justify-between gap-1 shadow-lg">
       <Link to="/" className="flex items-center gap-1">
         <img
           src="/logo.png"

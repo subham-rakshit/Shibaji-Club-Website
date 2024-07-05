@@ -58,3 +58,7 @@ body::-webkit-scrollbar {
 .post-item-content-style span {
   font-family: "Inter" !important;
 }
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}

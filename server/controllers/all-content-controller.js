@@ -5,8 +5,7 @@ import VideoCollection from "../models/video-model.js";
 
 export const getAllContentSearchPage = async (req, res, next) => {
   try {
-    const tab = req.query.tab;
-    const searchItem = req.query.searchItem;
+    const { tab, searchItem } = req.query;
 
     //? Checking the valid searchItem for handling ["Regular expression is invalid: quantifier does not follow a repeatable item"] this error -->
     //* This error occurs when a quantifier (like *, +, ?, or {n}) is used incorrectly in a regular expression. Quantifiers must follow a repeatable item, such as a character, a group, or a character class. If a quantifier follows an invalid or incomplete item, this error is thrown.
@@ -22,46 +21,57 @@ export const getAllContentSearchPage = async (req, res, next) => {
       return next(regexError);
     }
 
-    const postsList = await PostCollection.find({
-      ...(req.query.searchItem && {
-        // $or allow use search b/w two places, $regex allows us to search a perticular word by it's letters, $options allows case-insensitive
-        $or: [{ title: regex }, { content: regex }],
-      }),
-    });
+    // Construct query object
+    const query = searchItem
+      ? {
+          $or: [{ title: regex }, { content: regex }],
+        }
+      : {};
 
-    const videosList = await VideoCollection.find({
-      ...(req.query.searchItem && {
-        // $or allow use search b/w two places, $regex allows us to search a perticular word by it's letters, $options allows case-insensitive
-        $or: [{ title: regex }, { content: regex }],
-      }),
-    });
+    // Fetch data based on the tab
+    let postsList = [];
+    let videosList = [];
 
-    //? Combine all list's items and shuffle it for all content tab in search page -->
-    const combinedList = [...postsList, ...videosList];
+    if (tab === "all" || tab === "blogs") {
+      postsList = await PostCollection.find(query);
+    }
 
-    //* Method - 1 (Manually)
-    //   for (let i = combinedList.length - 1; i > 0; i--) {
-    //     const j = Math.floor(Math.random() * (i + 1));
-    //     [combinedList[i], combinedList[j]] = [combinedList[j], combinedList[i]];
-    //   }
+    if (tab === "all" || tab === "practices") {
+      videosList = await VideoCollection.find(query);
+    }
 
-    //* Method -2 (shuffle-array npm)
-    const shuffleList = shuffle(combinedList, {
-      copy: true,
-    });
+    // Combine and shuffle results if tab is 'all'
+    if (tab === "all") {
+      const combinedList = [...postsList, ...videosList];
+      const shuffleList = shuffle(combinedList, { copy: true });
 
-    tab === "all" &&
-      res.status(200).json({
+      return res.status(200).json({
         shuffleList,
-        postsList,
-        videosList,
         totalItem: combinedList.length,
       });
+    }
 
-    tab === "blogs" &&
-      res.status(200).json({ postsList, totalItem: postsList.length });
-    tab === "practices" &&
-      res.status(200).json({ videosList, totalItem: videosList.length });
+    // Return results based on the tab
+    if (tab === "blogs") {
+      return res.status(200).json({
+        postsList,
+        totalItem: postsList.length,
+      });
+    }
+
+    if (tab === "practices") {
+      return res.status(200).json({
+        videosList,
+        totalItem: videosList.length,
+      });
+    }
+
+    // If tab is not recognized, return an error
+    return res.status(400).json({
+      status: 400,
+      message: "Invalid tab value!",
+      extraDetails: "Valid tabs are 'all', 'blogs', or 'practices'.",
+    });
   } catch (error) {
     next(error);
   }

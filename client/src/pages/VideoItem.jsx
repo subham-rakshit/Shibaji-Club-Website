@@ -95,7 +95,7 @@ function VideoItem() {
         )}
 
         {/* Practice Vdieo Section */}
-        <div className="w-full h-[500px] max-w-[900px] rounded-md lg:rounded-2xl mt-5 lg:mt-8 relative transition-all duration-500">
+        <div className="w-full h-[300px] sm:h-[500px] max-w-[900px] rounded-md lg:rounded-2xl mt-5 lg:mt-8 relative transition-all duration-500">
           <img
             src={fetchVideoDetails && fetchVideoDetails.thumbnailURL}
             alt={fetchVideoDetails && fetchVideoDetails.title}
@@ -126,7 +126,7 @@ function VideoItem() {
             </div>
           ) : (
             <span
-              className="absolute flex h-[fit-content] w-[fit-content] top-[43%] left-[43%] cursor-pointer hover:scale-[1.2] transition-all duration-300"
+              className="absolute flex h-[fit-content] w-[fit-content] top-[38%] left-[38%] sm:top-[43%] sm:left-[43%] cursor-pointer hover:scale-[1.2] transition-all duration-300"
               onClick={() => setVideoIsVisible(true)}
             >
               <span className="animate-ping absolute h-full w-full rounded-full bg-red-300 opacity-75"></span>
@@ -154,7 +154,7 @@ function VideoItem() {
           <div className="flex flex-col gap-2">
             <FaPeopleGroup size="30" color="#94C120" />
             <p className="text-sm font-[Inter] font-semibold">AGE RANGE</p>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center flex-wrap gap-2">
               {fetchVideoDetails &&
                 fetchVideoDetails.ageRange.map((age) => (
                   <span
@@ -174,7 +174,7 @@ function VideoItem() {
             <p className="text-sm font-[Inter] font-semibold">
               REQUIRED EQUIPMENT
             </p>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center flex-wrap gap-2">
               {fetchVideoDetails &&
                 fetchVideoDetails.requiredEquipments.map((equipment) => {
                   if (equipment === "Footballs") {
@@ -240,7 +240,7 @@ function VideoItem() {
             <p className="text-sm font-[Inter] font-semibold">
               REQUIRED PLAYERS
             </p>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center flex-wrap gap-2">
               {fetchVideoDetails &&
                 fetchVideoDetails.requiredPlayers.map((players) => (
                   <span

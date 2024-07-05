@@ -8,7 +8,11 @@ function SearchToggleButton() {
 
   return (
     <div>
-      <FaSliders size="40" onClick={() => dispatch(toggleSearchPageSilder())} />
+      <FaSliders
+        size="30"
+        className="hover:scale-[1.1] cursor-pointer"
+        onClick={() => dispatch(toggleSearchPageSilder())}
+      />
     </div>
   );
 }

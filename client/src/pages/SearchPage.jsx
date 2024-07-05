@@ -29,9 +29,9 @@ function SearchPage() {
     <div className="min-h-screen mt-[65px] lg:mt-[70px] relative">
       {/* Dashboard Left Side Bar */}
       <div
-        className={`absolute top-0 ${
+        className={`z-50 absolute top-0 ${
           isSearchSlide === "true" ? "left-[-100%]" : "left-0"
-        } transition-all duration-500 shadow-custom-light-dark dark:shadow-custom-dark-light`}
+        } transition-all duration-500 shadow-custom-light-dark dark:shadow-custom-dark-light rounded-tr-lg rounded-br-lg overflow-hidden`}
       >
         <SearchSideBar />
       </div>

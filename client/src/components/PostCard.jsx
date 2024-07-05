@@ -1,16 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 function PostCard({ eachPost }) {
+  const [isClick, setIsClick] = useState(false);
   return (
     <div className="w-full sm:max-w-[300px] border dark:border-gray-600 group relative h-[400px] overflow-hidden rounded-lg transition-all duration-500">
-      <Link to={`/post/${eachPost.slug}`}>
-        <img
-          src={eachPost.blogImage}
-          alt={eachPost.title}
-          className="h-[260px] w-full object-cover group-hover:h-[200px] transition-all duration-500 z-20"
-        />
-      </Link>
+      <img
+        src={eachPost.blogImage}
+        alt={eachPost.title}
+        className={`h-[260px] w-full object-cover group-hover:h-[200px] ${
+          isClick && "h-[200px]"
+        } transition-all duration-500 z-20`}
+        onClick={() => setIsClick((prev) => !prev)}
+      />
+
       <div className="p-3 flex flex-col gap-2">
         <p className="text-sm font-semibold font-[Inter] line-clamp-2">
           {eachPost.title}

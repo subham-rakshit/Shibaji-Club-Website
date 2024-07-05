@@ -24,7 +24,7 @@ function SearchSideBar() {
     const categoryFromUrl = urlParams.get("category");
     const searchItemFromUrl = urlParams.get("searchItem");
 
-    if (tabFromUrl || categoryFromUrl) {
+    if (tabFromUrl || categoryFromUrl || searchItemFromUrl) {
       if (tabFromUrl) {
         setTab(tabFromUrl);
       } else {
@@ -43,11 +43,12 @@ function SearchSideBar() {
     } else {
       setTab("");
       setCategory("");
+      setSearchItem("");
     }
   }, [location.search]);
 
   return (
-    <div className="w-full h-screen sm:w-56 py-5 px-3 flex flex-col justify-between bg-[#F9FAFB] dark:bg-[#1F2937]">
+    <div className="w-full min-h-screen sm:w-56 py-5 px-3 flex flex-col justify-between bg-[#F7F7F7] dark:bg-[#223141]">
       <div>
         <MdClose
           size="25"
@@ -70,11 +71,8 @@ function SearchSideBar() {
                 setPracticeDropdown(false);
               }}
             >
-              <MdOutlineContentPaste
-                size="30"
-                className="text-gray-500 dark:text-gray-400"
-              />
-              <p className="text-md font-[Inter] font-semibold text-gray-600 dark:text-gray-300">
+              <MdOutlineContentPaste className="text-gray-500 dark:text-gray-400 text-lg sm:text-2xl" />
+              <p className="text-xs sm:text-sm font-[Inter] font-semibold text-gray-600 dark:text-gray-300">
                 All Content
               </p>
             </li>
@@ -98,11 +96,8 @@ function SearchSideBar() {
               }}
             >
               <div className="flex items-center gap-5">
-                <HiDocumentText
-                  size="30"
-                  className="text-gray-500 dark:text-gray-400"
-                />
-                <p className="text-md font-[Inter] font-semibold text-gray-600 dark:text-gray-300">
+                <HiDocumentText className="text-gray-500 dark:text-gray-400 text-lg sm:text-2xl" />
+                <p className="text-xs sm:text-sm font-[Inter] font-semibold text-gray-600 dark:text-gray-300">
                   Blogs
                 </p>
               </div>
@@ -119,7 +114,7 @@ function SearchSideBar() {
               blogDropdown || (tab === "blogs" && category)
                 ? "inline"
                 : "hidden"
-            } flex flex-col gap-2 my-2 transition-all duration-300 mx-5`}
+            } flex flex-col gap-2 my-1 transition-all duration-300 mx-5`}
           >
             <Link
               to={`/search?tab=blogs&category=about club${
@@ -127,7 +122,7 @@ function SearchSideBar() {
               }`}
             >
               <p
-                className={`text-sm font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
+                className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
                   category === "about club" &&
                   "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
                 }`}
@@ -141,7 +136,7 @@ function SearchSideBar() {
               }`}
             >
               <p
-                className={`text-sm font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
+                className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
                   category === "matches" &&
                   "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
                 }`}
@@ -155,7 +150,7 @@ function SearchSideBar() {
               }`}
             >
               <p
-                className={`text-sm font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
+                className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
                   category === "practices" &&
                   "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
                 }`}
@@ -169,7 +164,7 @@ function SearchSideBar() {
               }`}
             >
               <p
-                className={`text-sm font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
+                className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
                   category === "others" &&
                   "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
                 }`}
@@ -183,7 +178,7 @@ function SearchSideBar() {
               }`}
             >
               <p
-                className={`text-sm font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
+                className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
                   category === "euro cup 2024" &&
                   "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
                 }`}
@@ -213,11 +208,8 @@ function SearchSideBar() {
               }}
             >
               <div className="flex items-center gap-5">
-                <FaPhotoVideo
-                  size="30"
-                  className="text-gray-500 dark:text-gray-400"
-                />
-                <p className="text-md font-[Inter] font-semibold text-gray-600 dark:text-gray-300">
+                <FaPhotoVideo className="text-gray-500 dark:text-gray-400 text-lg sm:text-2xl" />
+                <p className="text-xs sm:text-sm font-[Inter] font-semibold text-gray-600 dark:text-gray-300">
                   Practices
                 </p>
               </div>
@@ -242,7 +234,7 @@ function SearchSideBar() {
               }`}
             >
               <p
-                className={`text-sm font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
+                className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
                   category === "outfield" &&
                   "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
                 }`}
@@ -256,7 +248,7 @@ function SearchSideBar() {
               }`}
             >
               <p
-                className={`text-sm font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
+                className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
                   category === "one to one" &&
                   "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
                 }`}
@@ -270,7 +262,7 @@ function SearchSideBar() {
               }`}
             >
               <p
-                className={`text-sm font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
+                className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
                   category === "saq" &&
                   "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
                 }`}
@@ -284,7 +276,7 @@ function SearchSideBar() {
               }`}
             >
               <p
-                className={`text-sm font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
+                className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
                   category === "goalkeepers" &&
                   "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
                 }`}
@@ -298,7 +290,7 @@ function SearchSideBar() {
               }`}
             >
               <p
-                className={`text-sm font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
+                className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
                   category === "tutorials" &&
                   "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
                 }`}
@@ -312,7 +304,7 @@ function SearchSideBar() {
               }`}
             >
               <p
-                className={`text-sm font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
+                className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
                   category === "youth curriculums" &&
                   "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
                 }`}
@@ -330,6 +322,7 @@ function SearchSideBar() {
           type="button"
           gradientDuoTone="purpleToPink"
           outline
+          size="xs"
           className="font-[Inter] bg-transparent shadow-custom-light-dark w-full"
           onClick={() => {
             setBlogDropdown(false);
