@@ -220,7 +220,7 @@ function Header() {
         </Navbar.Link>
         <Navbar.Link active={path === "/search"} as={"div"}>
           <Link
-            to="/search?tab=all"
+            to="/search?tab=all&page=1"
             className="text-[16px] font-[Inter] font-semibold"
           >
             Content

@@ -3,9 +3,21 @@ import shuffle from "shuffle-array";
 import PostCollection from "../models/post-model.js";
 import VideoCollection from "../models/video-model.js";
 
+//! Get All Contents API with pagination -->
+
 export const getAllContentSearchPage = async (req, res, next) => {
   try {
-    const { tab, searchItem, category } = req.query;
+    const { tab, searchItem, category, page } = req.query;
+
+    //* Validate the page and limit ->
+    const parsedPage = parseInt(page);
+
+    if (isNaN(parsedPage) || parsedPage < 1) {
+      return res.status(400).json({
+        status: 400,
+        message: "Invalid page or limit parameters!",
+      });
+    }
 
     //? Checking the valid searchItem for handling ["Regular expression is invalid: quantifier does not follow a repeatable item"] this error -->
     //* This error occurs when a quantifier (like *, +, ?, or {n}) is used incorrectly in a regular expression. Quantifiers must follow a repeatable item, such as a character, a group, or a character class. If a quantifier follows an invalid or incomplete item, this error is thrown.
@@ -22,25 +34,44 @@ export const getAllContentSearchPage = async (req, res, next) => {
     }
 
     // Fetch data based on the tab
+    const skip = (parsedPage - 1) * 6;
     let postsList = [];
     let videosList = [];
+    let totalPosts = 0;
+    let totalVideos = 0;
 
     if (tab === "all" || tab === "blogs") {
-      postsList = await PostCollection.find({
+      totalPosts = await PostCollection.countDocuments({
         ...(category && { category }),
         ...(searchItem && {
           $or: [{ title: regex }, { content: regex }],
         }),
       });
+      postsList = await PostCollection.find({
+        ...(category && { category }),
+        ...(searchItem && {
+          $or: [{ title: regex }, { content: regex }],
+        }),
+      })
+        .skip(skip)
+        .limit(6);
     }
 
     if (tab === "all" || tab === "practices") {
+      totalVideos = await VideoCollection.countDocuments({
+        ...(category && { category }),
+        ...(searchItem && {
+          $or: [{ title: regex }, { content: regex }],
+        }),
+      });
       videosList = await VideoCollection.find({
         ...(category && { category: category }),
         ...(searchItem && {
           $or: [{ title: regex }, { content: regex }],
         }),
-      });
+      })
+        .skip(skip)
+        .limit(6);
     }
 
     // Combine and shuffle results if tab is 'all'
@@ -50,7 +81,9 @@ export const getAllContentSearchPage = async (req, res, next) => {
 
       return res.status(200).json({
         shuffleList,
-        totalItem: combinedList.length,
+        totalItem: totalPosts + totalVideos,
+        currentPage: parsedPage,
+        totalPages: Math.ceil((totalPosts + totalVideos) / 12),
       });
     }
 
@@ -58,14 +91,18 @@ export const getAllContentSearchPage = async (req, res, next) => {
     if (tab === "blogs") {
       return res.status(200).json({
         postsList,
-        totalItem: postsList.length,
+        totalItem: totalPosts,
+        currentPage: parsedPage,
+        totalPages: Math.ceil((totalPosts + totalVideos) / 12),
       });
     }
 
     if (tab === "practices") {
       return res.status(200).json({
         videosList,
-        totalItem: videosList.length,
+        totalItem: totalVideos,
+        currentPage: parsedPage,
+        totalPages: Math.ceil((totalPosts + totalVideos) / 12),
       });
     }
 
