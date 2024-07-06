@@ -5,7 +5,7 @@ import VideoCollection from "../models/video-model.js";
 
 export const getAllContentSearchPage = async (req, res, next) => {
   try {
-    const { tab, searchItem } = req.query;
+    const { tab, searchItem, category } = req.query;
 
     //? Checking the valid searchItem for handling ["Regular expression is invalid: quantifier does not follow a repeatable item"] this error -->
     //* This error occurs when a quantifier (like *, +, ?, or {n}) is used incorrectly in a regular expression. Quantifiers must follow a repeatable item, such as a character, a group, or a character class. If a quantifier follows an invalid or incomplete item, this error is thrown.
@@ -21,23 +21,26 @@ export const getAllContentSearchPage = async (req, res, next) => {
       return next(regexError);
     }
 
-    // Construct query object
-    const query = searchItem
-      ? {
-          $or: [{ title: regex }, { content: regex }],
-        }
-      : {};
-
     // Fetch data based on the tab
     let postsList = [];
     let videosList = [];
 
     if (tab === "all" || tab === "blogs") {
-      postsList = await PostCollection.find(query);
+      postsList = await PostCollection.find({
+        ...(category && { category }),
+        ...(searchItem && {
+          $or: [{ title: regex }, { content: regex }],
+        }),
+      });
     }
 
     if (tab === "all" || tab === "practices") {
-      videosList = await VideoCollection.find(query);
+      videosList = await VideoCollection.find({
+        ...(category && { category: category }),
+        ...(searchItem && {
+          $or: [{ title: regex }, { content: regex }],
+        }),
+      });
     }
 
     // Combine and shuffle results if tab is 'all'

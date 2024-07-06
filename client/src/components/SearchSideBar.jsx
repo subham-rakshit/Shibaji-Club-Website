@@ -1,51 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { HiDocumentText } from "react-icons/hi";
 import { FaMinus, FaPhotoVideo } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import { MdClose, MdOutlineContentPaste } from "react-icons/md";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toggleSearchPageSilder } from "../redux-slice/searchSliderSlice";
 import { Button } from "flowbite-react";
 
-function SearchSideBar() {
+function SearchSideBar({ tab, category, searchItem }) {
   const [blogDropdown, setBlogDropdown] = useState(false);
   const [practiceDropdown, setPracticeDropdown] = useState(false);
 
-  const [tab, setTab] = useState("");
-  const [category, setCategory] = useState("");
-  const [searchItem, setSearchItem] = useState("");
-  const location = useLocation();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const urlParams = new URLSearchParams(location.search);
-    const tabFromUrl = urlParams.get("tab");
-    const categoryFromUrl = urlParams.get("category");
-    const searchItemFromUrl = urlParams.get("searchItem");
-
-    if (tabFromUrl || categoryFromUrl || searchItemFromUrl) {
-      if (tabFromUrl) {
-        setTab(tabFromUrl);
-      } else {
-        setTab("");
-      }
-      if (categoryFromUrl) {
-        setCategory(categoryFromUrl);
-      } else {
-        setCategory("");
-      }
-      if (searchItemFromUrl) {
-        setSearchItem(searchItemFromUrl);
-      } else {
-        setSearchItem("");
-      }
-    } else {
-      setTab("");
-      setCategory("");
-      setSearchItem("");
-    }
-  }, [location.search]);
 
   return (
     <div className="w-full min-h-screen sm:w-56 py-5 px-3 flex flex-col justify-between bg-[#F7F7F7] dark:bg-[#223141]">
@@ -59,7 +26,9 @@ function SearchSideBar() {
         <ul className="flex flex-col gap-3 my-5 transition-all duration-500">
           {/* All Content */}
           <Link
-            to={`/search?tab=all${searchItem && `&searchItem=${searchItem}`}`}
+            to={`/search?tab=all${
+              searchItem ? `&searchItem=${searchItem}` : ""
+            }`}
           >
             <li
               className={`flex items-center gap-5 cursor-pointer hover:bg-gray-100 hover:dark:bg-[#374151] py-2 px-2 rounded-lg ${
@@ -81,7 +50,9 @@ function SearchSideBar() {
 
           {/* Blogs Sidebar */}
           <Link
-            to={`/search?tab=blogs${searchItem && `&searchItem=${searchItem}`}`}
+            to={`/search?tab=blogs${
+              searchItem ? `&searchItem=${searchItem}` : ""
+            }`}
           >
             <li
               className={`flex items-center justify-between gap-2 cursor-pointer hover:bg-gray-100 hover:dark:bg-[#374151] py-2 px-2 rounded-lg ${

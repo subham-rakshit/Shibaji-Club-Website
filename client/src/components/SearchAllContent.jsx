@@ -1,27 +1,16 @@
 import React, { useEffect, useState } from "react";
 import SearchToggleButton from "./SearchToggleButton";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { PacmanLoader } from "react-spinners";
 import PostCard from "./PostCard";
 import VideoCard from "./VideoCard";
 import { Button } from "flowbite-react";
 
-function SearchAllContent() {
-  const location = useLocation();
-  const [tab, setTab] = useState("all"); // Default to 'all' since i am fetching 'all' by default
-  const [searchItem, setSearchItem] = useState("");
+function SearchAllContent({ tab, searchItem }) {
   const [allContentData, setAllContentData] = useState(null);
   const [dataFetchError, setDataFetchError] = useState(null);
   const [totalItem, setTotalItem] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const urlParams = new URLSearchParams(location.search);
-    const tabFromUrl = urlParams.get("tab") || "all"; // Default to 'all'
-    const searchFormURL = urlParams.get("searchItem") || "";
-    setTab(tabFromUrl);
-    setSearchItem(searchFormURL);
-  }, [location.search]);
 
   useEffect(() => {
     const getAllData = async () => {
@@ -38,14 +27,13 @@ function SearchAllContent() {
         if (res.ok) {
           setAllContentData(data.shuffleList || []);
           setTotalItem(data.totalItem || 0);
-          setIsLoading(false);
         } else {
           setDataFetchError(data.extraDetails || "Error fetching data");
-          setIsLoading(false);
         }
       } catch (error) {
         console.error(error.message);
         setDataFetchError(error.message);
+      } finally {
         setIsLoading(false);
       }
     };
@@ -56,7 +44,7 @@ function SearchAllContent() {
   return (
     <div
       className={`w-full max-w-[1024px] h-screen mx-auto p-5 overflow-auto hide-scrollbar ${
-        isLoading && "flex justify-center items-center"
+        isLoading ? "flex justify-center items-center" : ""
       }`}
     >
       {isLoading ? (

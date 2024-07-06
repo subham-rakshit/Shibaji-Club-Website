@@ -15,7 +15,6 @@ import { signOutSuccess } from "../redux-slice/userSlice";
 import { useEffect, useState } from "react";
 
 function Header() {
-  const [searchItem, setSearchItem] = useState("");
   const [searchInput, setSearchInput] = useState("");
   const currentUserDetails = useSelector((state) => state.user.currentUser);
   const { theme } = useSelector((state) => state.theme);
@@ -23,6 +22,15 @@ function Header() {
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const searchItemFromURL = urlParams.get("searchItem");
+
+    if (searchItemFromURL) {
+      setSearchInput(searchItemFromURL);
+    }
+  }, [location.search]);
 
   const handleSignOut = async () => {
     try {
@@ -44,21 +52,28 @@ function Header() {
     }
   };
 
+  //* Method - 1 (Preferable)
   const handleSearch = (e) => {
     e.preventDefault();
     const urlParams = new URLSearchParams(location.search);
     const tabURL = urlParams.get("tab");
 
     urlParams.set("searchItem", searchInput);
+
     if (!tabURL) {
       urlParams.set("tab", "all");
     }
 
-    const searchQuery = urlParams.toString();
-
-    navigate(`/search?${searchQuery}`);
+    navigate(`/search?${urlParams.toString()}`);
     setSearchInput("");
   };
+
+  //* Method - 2
+  // const handleSearch = (e) => {
+  //   e.preventDefault();
+  //   navigate(`/search?tab=all&searchItem=${encodeURIComponent(searchInput)}`);
+  //   setSearchInput("");
+  // };
 
   const content = (
     <form onSubmit={handleSearch} className="flex items-center lg:hidden pl-2">
@@ -79,15 +94,6 @@ function Header() {
       </button>
     </form>
   );
-
-  useEffect(() => {
-    const urlParams = new URLSearchParams(location.search);
-    const searchItemFromURL = urlParams.get("searchItem");
-
-    if (searchItemFromURL) {
-      setSearchItem(searchItemFromURL);
-    }
-  }, [location.search]);
 
   return (
     <Navbar className="fixed top-0 left-0 z-[100] w-full flex items-center justify-between gap-1 shadow-lg">

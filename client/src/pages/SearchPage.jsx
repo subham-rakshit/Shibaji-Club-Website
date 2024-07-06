@@ -11,18 +11,19 @@ import { useSelector } from "react-redux";
 function SearchPage() {
   const location = useLocation();
   const [tab, setTab] = useState("");
+  const [category, setCategory] = useState("");
+  const [searchItem, setSearchItem] = useState("");
   const { isSearchSlide } = useSelector((state) => state.searchSlider);
-  // console.log(isSearchSlide);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
-    const tabFromUrl = urlParams.get("tab");
+    const tabFromUrl = urlParams.get("tab") || "";
+    const categoryFromUrl = urlParams.get("category") || "";
+    const searchItemFromUrl = urlParams.get("searchItem") || "";
 
-    if (tabFromUrl) {
-      setTab(tabFromUrl);
-    } else {
-      setTab("");
-    }
+    setTab(tabFromUrl);
+    setCategory(categoryFromUrl);
+    setSearchItem(searchItemFromUrl);
   }, [location.search]);
 
   return (
@@ -33,13 +34,21 @@ function SearchPage() {
           isSearchSlide === "true" ? "left-[-100%]" : "left-0"
         } transition-all duration-500 shadow-custom-light-dark dark:shadow-custom-dark-light rounded-tr-lg rounded-br-lg overflow-hidden`}
       >
-        <SearchSideBar />
+        <SearchSideBar tab={tab} category={category} searchItem={searchItem} />
       </div>
 
       {/* Dashboard COntent According to selected tab */}
-      {tab === "all" && <SearchAllContent />}
-      {tab === "blogs" && <SearchBlogs />}
-      {tab === "practices" && <SearchPractices />}
+      {tab === "all" && <SearchAllContent tab={tab} searchItem={searchItem} />}
+      {tab === "blogs" && (
+        <SearchBlogs tab={tab} category={category} searchItem={searchItem} />
+      )}
+      {tab === "practices" && (
+        <SearchPractices
+          tab={tab}
+          category={category}
+          searchItem={searchItem}
+        />
+      )}
     </div>
   );
 }
