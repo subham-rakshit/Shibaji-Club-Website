@@ -23,6 +23,8 @@ import SearchBlogs from "./SearchBlogs";
 import DashToggleButton from "./DashToggleButton";
 import SearchToggleButton from "./SearchToggleButton";
 import DashVideos from "./DashVideos";
+import Pagination from "./Pagination";
+import HomePageScrolling from "./HomePageScrolling";
 
 export {
   Header,
@@ -50,4 +52,6 @@ export {
   SearchPractices,
   SearchBlogs,
   SearchToggleButton,
+  Pagination,
+  HomePageScrolling,
 };

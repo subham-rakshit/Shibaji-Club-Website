@@ -12,6 +12,11 @@ module.exports = {
           "-5px -5px 15px rgba(255, 255, 255, 0.1), 5px 5px 15px rgba(0, 0, 0, 0.35)",
         "custom-dark-light": "0 4px 6px rgba(255, 255, 255, 0.1)",
       },
+      animation: {
+        "move-x": "move-x 1s ease-in-out infinite",
+        lighting: "lighting 1s infinite",
+        scroll: "scroll 10s linear infinite",
+      },
       keyframes: {
         "move-x": {
           "0%": { transform: "translateX(0)" },
@@ -23,10 +28,10 @@ module.exports = {
           "50%": { opacity: 1, transform: "scaleX(1)" },
           "100%": { opacity: 0, transform: "scaleX(0)" },
         },
-      },
-      animation: {
-        "move-x": "move-x 1s ease-in-out infinite",
-        lighting: "lighting 1s infinite",
+        scroll: {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-100%)" },
+        },
       },
     },
   },

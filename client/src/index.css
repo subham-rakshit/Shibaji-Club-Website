@@ -62,3 +62,28 @@ body::-webkit-scrollbar {
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/* Silde animation in Home page */
+
+@keyframes slide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-slide {
+  animation: slide 30s linear infinite;
+}
+
+.main-slide-container {
+  display: flex !important;
+}
+
+.main-slide-container:hover .animate-slide {
+  animation-play-state: paused;
+}
+
+/* Silde animation in Home page */

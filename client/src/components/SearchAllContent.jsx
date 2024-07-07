@@ -5,10 +5,10 @@ import { PacmanLoader } from "react-spinners";
 import PostCard from "./PostCard";
 import VideoCard from "./VideoCard";
 import { Button } from "flowbite-react";
-import { FaLongArrowAltLeft, FaLongArrowAltRight } from "react-icons/fa";
+import Pagination from "./Pagination";
 
 function SearchAllContent({ tab, searchItem, currentPage, onChangePage }) {
-  const [allContentData, setAllContentData] = useState(null);
+  const [allContentData, setAllContentData] = useState([]);
   const [dataFetchError, setDataFetchError] = useState(null);
   const [totalItem, setTotalItem] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -43,42 +43,6 @@ function SearchAllContent({ tab, searchItem, currentPage, onChangePage }) {
     getAllData();
   }, [tab, searchItem, currentPage]); // Depend on tab, searchItem and currentPage(Pagination) directly
 
-  //* Handle page changes -->
-  const handlePageChange = (page) => {
-    onChangePage(page);
-  };
-
-  //* Pagination buttons -->
-  const renderPaginationButtons = () => {
-    const maxButtons = 5; // Maximum number of buttons to display
-    const startPageIndex = Math.max(1, currentPage - 2);
-    const endPageIndex = Math.min(startPageIndex + maxButtons - 1, totalPages);
-
-    let buttons = [];
-
-    for (
-      let pageIndex = startPageIndex;
-      pageIndex <= endPageIndex;
-      pageIndex++
-    ) {
-      buttons.push(
-        <button
-          type="button"
-          key={pageIndex}
-          onClick={() => handlePageChange(pageIndex)}
-          className={`px-3 py-1 mx-1 rounded-full border font-[Inter] ${
-            currentPage === pageIndex
-              ? "bg-blue-500 text-white shadow-custom-light-dark"
-              : "bg-white text-blue-500 border-blue-500"
-          } hover:bg-blue-400 hover:text-white transition duration-300 ease-in-out`}
-        >
-          {pageIndex}
-        </button>
-      );
-    }
-    return buttons;
-  };
-
   return (
     <div
       className={`w-full max-w-[1024px] h-screen mx-auto p-5 overflow-auto hide-scrollbar transition-all duration-300 ${
@@ -94,7 +58,7 @@ function SearchAllContent({ tab, searchItem, currentPage, onChangePage }) {
             <h1 className="text-lg sm:text-lg font-[Inter] font-bold">
               Total Content
             </h1>
-            <span className="min-w-8 min-h-8 text-center text-sm text-cyan-500 font-[Inter] font-semibold border p-1">
+            <span className="min-w-8 min-h-8 text-center text-sm text-cyan-500 font-[Inter] font-semibold border p-1 shadow-custom-light-dark rounded-full">
               {totalItem}
             </span>
           </div>
@@ -123,7 +87,7 @@ function SearchAllContent({ tab, searchItem, currentPage, onChangePage }) {
             </div>
           ) : (
             <>
-              {allContentData && allContentData.length === 0 ? (
+              {allContentData.length === 0 ? (
                 <div className="min-h-screen flex flex-col justify-center items-center my-5 p-5">
                   <img
                     src="https://firebasestorage.googleapis.com/v0/b/shibaji-website.appspot.com/o/404%20bg%20rmove.png?alt=media&token=d7c415d5-c276-4cc9-8145-92e5bdf58365"
@@ -140,7 +104,7 @@ function SearchAllContent({ tab, searchItem, currentPage, onChangePage }) {
                     looking for. Alternatively, click the 'All Content' button
                     to view everything at once.
                   </p>
-                  <Link to="/search?tab=all&tab=1">
+                  <Link to="/search?tab=all&page=1">
                     <Button
                       type="button"
                       gradientDuoTone="purpleToPink"
@@ -169,39 +133,11 @@ function SearchAllContent({ tab, searchItem, currentPage, onChangePage }) {
                       ))}
                   </ul>
                   {!isLoading && !dataFetchError && (
-                    <div className="flex justify-center items-center mt-4">
-                      <button
-                        type="button"
-                        onClick={() => handlePageChange(currentPage - 1)}
-                        disabled={currentPage === 1}
-                        className={`px-3 py-1 mx-5 rounded-full border border-blue-500 text-blue-500 hover:bg-blue-400 hover:text-white transition duration-300 ease-in-out font-[Inter] font-medium text-sm flex items-center ${
-                          currentPage === 1
-                            ? "cursor-not-allowed line-through"
-                            : ""
-                        }`}
-                      >
-                        {currentPage !== 1 && (
-                          <FaLongArrowAltLeft className="w-4 h-4 inline-block mr-2" />
-                        )}
-                        <span>Previous</span>
-                      </button>
-                      {renderPaginationButtons()}
-                      <button
-                        type="button"
-                        onClick={() => handlePageChange(currentPage + 1)}
-                        disabled={currentPage === totalPages}
-                        className={`px-3 py-1 mx-5 rounded-full border border-blue-500 text-blue-500 hover:bg-blue-400 hover:text-white transition duration-300 ease-in-out font-[Inter] font-medium text-sm flex items-center ${
-                          currentPage === totalPages
-                            ? "cursor-not-allowed line-through"
-                            : ""
-                        }`}
-                      >
-                        <span>Next</span>
-                        {currentPage !== totalPages && (
-                          <FaLongArrowAltRight className="w-4 h-4 inline-block ml-2" />
-                        )}
-                      </button>
-                    </div>
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      onChangePage={onChangePage}
+                    />
                   )}
                 </>
               )}

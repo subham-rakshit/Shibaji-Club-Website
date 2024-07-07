@@ -15,7 +15,7 @@ function SearchSideBar({ tab, category, searchItem }) {
   const dispatch = useDispatch();
 
   return (
-    <div className="w-full min-h-screen sm:w-56 py-5 px-3 flex flex-col justify-between bg-[#F7F7F7] dark:bg-[#223141]">
+    <div className="w-full h-full sm:w-56 py-5 px-3 flex flex-col justify-between bg-[#F7F7F7] dark:bg-[#223141]">
       <div>
         <MdClose
           size="25"
@@ -28,7 +28,7 @@ function SearchSideBar({ tab, category, searchItem }) {
           <Link
             to={`/search?tab=all${
               searchItem ? `&searchItem=${searchItem}` : ""
-            }`}
+            }&page=1`}
           >
             <li
               className={`flex items-center gap-5 cursor-pointer hover:bg-gray-100 hover:dark:bg-[#374151] py-2 px-2 rounded-lg ${
@@ -52,7 +52,7 @@ function SearchSideBar({ tab, category, searchItem }) {
           <Link
             to={`/search?tab=blogs${
               searchItem ? `&searchItem=${searchItem}` : ""
-            }`}
+            }&page=1`}
           >
             <li
               className={`flex items-center justify-between gap-2 cursor-pointer hover:bg-gray-100 hover:dark:bg-[#374151] py-2 px-2 rounded-lg ${
@@ -90,7 +90,7 @@ function SearchSideBar({ tab, category, searchItem }) {
             <Link
               to={`/search?tab=blogs&category=about club${
                 searchItem && `&searchItem=${searchItem}`
-              }`}
+              }&page=1`}
             >
               <p
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
@@ -104,7 +104,7 @@ function SearchSideBar({ tab, category, searchItem }) {
             <Link
               to={`/search?tab=blogs&category=matches${
                 searchItem && `&searchItem=${searchItem}`
-              }`}
+              }&page=1`}
             >
               <p
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
@@ -118,7 +118,7 @@ function SearchSideBar({ tab, category, searchItem }) {
             <Link
               to={`/search?tab=blogs&category=practices${
                 searchItem && `&searchItem=${searchItem}`
-              }`}
+              }&page=1`}
             >
               <p
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
@@ -132,7 +132,7 @@ function SearchSideBar({ tab, category, searchItem }) {
             <Link
               to={`/search?tab=blogs&category=others${
                 searchItem && `&searchItem=${searchItem}`
-              }`}
+              }&page=1`}
             >
               <p
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
@@ -146,7 +146,7 @@ function SearchSideBar({ tab, category, searchItem }) {
             <Link
               to={`/search?tab=blogs&category=euro cup 2024${
                 searchItem && `&searchItem=${searchItem}`
-              }`}
+              }&page=1`}
             >
               <p
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
@@ -164,7 +164,7 @@ function SearchSideBar({ tab, category, searchItem }) {
           <Link
             to={`/search?tab=practices${
               searchItem && `&searchItem=${searchItem}`
-            }`}
+            }&page=1`}
           >
             <li
               className={`flex items-center justify-between gap-2 cursor-pointer hover:bg-gray-100 hover:dark:bg-[#374151] py-2 px-2 rounded-lg ${
@@ -202,7 +202,7 @@ function SearchSideBar({ tab, category, searchItem }) {
             <Link
               to={`/search?tab=practices&category=outfield${
                 searchItem && `&searchItem=${searchItem}`
-              }`}
+              }&page=1`}
             >
               <p
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
@@ -216,7 +216,7 @@ function SearchSideBar({ tab, category, searchItem }) {
             <Link
               to={`/search?tab=practices&category=one to one${
                 searchItem && `&searchItem=${searchItem}`
-              }`}
+              }&page=1`}
             >
               <p
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
@@ -230,7 +230,7 @@ function SearchSideBar({ tab, category, searchItem }) {
             <Link
               to={`/search?tab=practices&category=saq${
                 searchItem && `&searchItem=${searchItem}`
-              }`}
+              }&page=1`}
             >
               <p
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
@@ -244,7 +244,7 @@ function SearchSideBar({ tab, category, searchItem }) {
             <Link
               to={`/search?tab=practices&category=goalkeepers${
                 searchItem && `&searchItem=${searchItem}`
-              }`}
+              }&page=1`}
             >
               <p
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
@@ -258,7 +258,7 @@ function SearchSideBar({ tab, category, searchItem }) {
             <Link
               to={`/search?tab=practices&category=tutorials${
                 searchItem && `&searchItem=${searchItem}`
-              }`}
+              }&page=1`}
             >
               <p
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
@@ -272,7 +272,7 @@ function SearchSideBar({ tab, category, searchItem }) {
             <Link
               to={`/search?tab=practices&category=youth curriculums${
                 searchItem && `&searchItem=${searchItem}`
-              }`}
+              }&page=1`}
             >
               <p
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
@@ -288,7 +288,7 @@ function SearchSideBar({ tab, category, searchItem }) {
         </ul>
       </div>
 
-      <Link to="/search?tab=all">
+      <Link to="/search?tab=all&page=1">
         <Button
           type="button"
           gradientDuoTone="purpleToPink"

@@ -4,12 +4,15 @@ import { Link } from "react-router-dom";
 import { PacmanLoader } from "react-spinners";
 import PostCard from "./PostCard";
 import { Button } from "flowbite-react";
+import Pagination from "./Pagination";
 
-function SearchBlogs({ tab, category, searchItem }) {
+function SearchBlogs({ tab, category, searchItem, currentPage, onChangePage }) {
   const [allContentData, setAllContentData] = useState([]);
   const [dataFetchError, setDataFetchError] = useState(null);
   const [totalItem, setTotalItem] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const getAllData = async () => {
@@ -18,15 +21,14 @@ function SearchBlogs({ tab, category, searchItem }) {
         setDataFetchError(null);
 
         const res = await fetch(
-          `/api/search/allcontent?tab=${tab}${
-            category ? `&category=${category}` : ""
-          }${searchItem ? `&searchItem=${searchItem}` : ""}`
+          `/api/search/allcontent?tab=${tab}&category=${category}&searchItem=${searchItem}&page=${currentPage}`
         );
         const data = await res.json();
 
         if (res.ok) {
           setAllContentData(data.postsList || []);
           setTotalItem(data.totalItem || 0);
+          setTotalPages(data.totalPages || 1);
         } else {
           setDataFetchError(data.extraDetails || "Error fetching data");
         }
@@ -39,11 +41,11 @@ function SearchBlogs({ tab, category, searchItem }) {
     };
 
     getAllData();
-  }, [tab, searchItem, category]); // Depend on tab, searchItem and category directly
+  }, [tab, searchItem, category, currentPage]); // Depend on tab, searchItem and category directly
 
   return (
     <div
-      className={`w-full max-w-[1024px] h-screen mx-auto p-5 overflow-auto hide-scrollbar ${
+      className={`w-full max-w-[1024px] min-h-screen mx-auto p-5 ${
         isLoading && "flex justify-center items-center"
       }`}
     >
@@ -57,7 +59,7 @@ function SearchBlogs({ tab, category, searchItem }) {
             <h1 className="text-lg sm:text-lg font-[Inter] font-bold">
               Total Blogs
             </h1>
-            <span className="min-w-8 min-h-8 text-center text-sm text-cyan-500 font-[Inter] font-semibold border p-1">
+            <span className="min-w-8 min-h-8 text-center text-sm text-cyan-500 font-[Inter] font-semibold border p-1 shadow-custom-light-dark rounded-full">
               {totalItem}
             </span>
           </div>
@@ -73,7 +75,7 @@ function SearchBlogs({ tab, category, searchItem }) {
               <p className="text-sm sm:text-base font-[Inter] font-normal text-center my-5">
                 {dataFetchError}
               </p>
-              <Link to="/search?tab=blogs">
+              <Link to="/search?tab=blogs&page=1">
                 <Button
                   type="button"
                   gradientDuoTone="purpleToPink"
@@ -103,7 +105,7 @@ function SearchBlogs({ tab, category, searchItem }) {
                     looking for. Alternatively, click the 'All Blogs' button to
                     view everything at once.
                   </p>
-                  <Link to="/search?tab=blogs">
+                  <Link to="/search?tab=blogs&page=1">
                     <Button
                       type="button"
                       gradientDuoTone="purpleToPink"
@@ -115,16 +117,25 @@ function SearchBlogs({ tab, category, searchItem }) {
                   </Link>
                 </div>
               ) : (
-                <ul className="flex items-center flex-wrap gap-4 my-5 mx-auto">
-                  {allContentData.map((item) => (
-                    <li
-                      className="shadow-custom-light-dark rounded-lg"
-                      key={item._id}
-                    >
-                      <PostCard eachPost={item} />
-                    </li>
-                  ))}
-                </ul>
+                <>
+                  <ul className="flex items-center flex-wrap gap-4 my-5 mx-auto">
+                    {allContentData.map((item) => (
+                      <li
+                        className="shadow-custom-light-dark rounded-lg"
+                        key={item._id}
+                      >
+                        <PostCard eachPost={item} />
+                      </li>
+                    ))}
+                  </ul>
+                  {!isLoading && !dataFetchError && (
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      onChangePage={onChangePage}
+                    />
+                  )}
+                </>
               )}
             </>
           )}

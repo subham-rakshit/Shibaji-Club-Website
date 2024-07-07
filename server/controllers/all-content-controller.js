@@ -33,8 +33,19 @@ export const getAllContentSearchPage = async (req, res, next) => {
       return next(regexError);
     }
 
+    // Storing limit and skip according to tab -->
+    let limit;
+
+    if (tab === "all") {
+      limit = 6;
+    }
+    if (tab === "blogs" || tab === "practices") {
+      limit = 9;
+    }
+
+    const skip = (parsedPage - 1) * limit;
+
     // Fetch data based on the tab
-    const skip = (parsedPage - 1) * 6;
     let postsList = [];
     let videosList = [];
     let totalPosts = 0;
@@ -54,7 +65,7 @@ export const getAllContentSearchPage = async (req, res, next) => {
         }),
       })
         .skip(skip)
-        .limit(6);
+        .limit(limit);
     }
 
     if (tab === "all" || tab === "practices") {
@@ -71,10 +82,10 @@ export const getAllContentSearchPage = async (req, res, next) => {
         }),
       })
         .skip(skip)
-        .limit(6);
+        .limit(limit);
     }
 
-    // Combine and shuffle results if tab is 'all'
+    // Combine and shuffle results if tab is 'all' and content per page is 12
     if (tab === "all") {
       const combinedList = [...postsList, ...videosList];
       const shuffleList = shuffle(combinedList, { copy: true });
@@ -87,13 +98,13 @@ export const getAllContentSearchPage = async (req, res, next) => {
       });
     }
 
-    // Return results based on the tab
+    // Return results based on the tab and content per page is 9
     if (tab === "blogs") {
       return res.status(200).json({
         postsList,
         totalItem: totalPosts,
         currentPage: parsedPage,
-        totalPages: Math.ceil((totalPosts + totalVideos) / 12),
+        totalPages: Math.ceil((totalPosts + totalVideos) / limit),
       });
     }
 
@@ -102,7 +113,7 @@ export const getAllContentSearchPage = async (req, res, next) => {
         videosList,
         totalItem: totalVideos,
         currentPage: parsedPage,
-        totalPages: Math.ceil((totalPosts + totalVideos) / 12),
+        totalPages: Math.ceil((totalPosts + totalVideos) / limit),
       });
     }
 

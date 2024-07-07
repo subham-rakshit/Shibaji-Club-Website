@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Sidebar } from "flowbite-react";
-import {
-  HiUser,
-  HiArrowSmRight,
-  HiDocumentText,
-  HiChartPie,
-} from "react-icons/hi";
+import { HiArrowSmRight, HiDocumentText, HiUserCircle } from "react-icons/hi";
 import { FaUsersCog, FaComments } from "react-icons/fa";
 import { BiSolidVideos } from "react-icons/bi";
 import { Link, useLocation } from "react-router-dom";
 import { signOutSuccess } from "../redux-slice/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { MdDashboard } from "react-icons/md";
 
 function DashSideBar() {
   const location = useLocation();
@@ -59,7 +55,7 @@ function DashSideBar() {
           {currentUser && currentUser.isAdmin && (
             <Link to="/admin-dashboard?tab=dashboard">
               <Sidebar.Item
-                icon={HiChartPie}
+                icon={MdDashboard}
                 label={tab === "dashboard" && "Admin"}
                 labelColor="dark"
                 className={`font-[Inter] text-xs font-medium ${
@@ -73,7 +69,7 @@ function DashSideBar() {
           )}
           <Link to="/admin-dashboard?tab=profile">
             <Sidebar.Item
-              icon={HiUser}
+              icon={HiUserCircle}
               label={
                 tab === "profile"
                   ? currentUser.isAdmin

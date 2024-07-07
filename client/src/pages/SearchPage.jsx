@@ -32,7 +32,6 @@ function SearchPage() {
   }, [location.search]);
 
   const onChangePage = (page) => {
-    console.log("OnChangePage called");
     setCurrentPage(page);
     const searchParams = new URLSearchParams(location.search);
     searchParams.set("page", page);
@@ -45,7 +44,7 @@ function SearchPage() {
       <div
         className={`z-50 absolute top-0 ${
           isSearchSlide === "true" ? "left-[-100%]" : "left-0"
-        } transition-all duration-500 shadow-custom-light-dark dark:shadow-custom-dark-light rounded-tr-lg rounded-br-lg overflow-hidden`}
+        } transition-all duration-500 shadow-custom-light-dark dark:shadow-custom-dark-light rounded-tr-lg rounded-br-lg overflow-hidden h-full`}
       >
         <SearchSideBar tab={tab} category={category} searchItem={searchItem} />
       </div>
@@ -60,13 +59,21 @@ function SearchPage() {
         />
       )}
       {tab === "blogs" && (
-        <SearchBlogs tab={tab} category={category} searchItem={searchItem} />
+        <SearchBlogs
+          tab={tab}
+          category={category}
+          searchItem={searchItem}
+          currentPage={currentPage}
+          onChangePage={onChangePage}
+        />
       )}
       {tab === "practices" && (
         <SearchPractices
           tab={tab}
           category={category}
           searchItem={searchItem}
+          currentPage={currentPage}
+          onChangePage={onChangePage}
         />
       )}
     </div>
