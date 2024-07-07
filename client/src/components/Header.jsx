@@ -97,18 +97,12 @@ function Header() {
 
   return (
     <Navbar className="fixed top-0 left-0 z-[100] w-full flex items-center justify-between gap-1 shadow-lg">
-      <Link to="/" className="flex items-center gap-1">
+      <Link to="/">
         <img
-          src="/logo.png"
-          className="mr-0 h-6 lg:h-9 rounded-full"
+          src="https://firebasestorage.googleapis.com/v0/b/shibaji-website.appspot.com/o/newLogoShibaji.png?alt=media&token=0db6f9e7-6304-44e2-bc46-3b9a7cfe6540"
+          className="w-[150px] sm:w-[180px] h-6 lg:h-9 rounded-full object-cover"
           alt="Shibaji logo"
         />
-        <p className="self-center whitespace-nowrap text-xs lg:text-sm font-semibold font-[Inter] dark:text-white ml-0 py-1">
-          <span className="px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-md text-white">
-            Shibaji
-          </span>
-          Sangha
-        </p>
       </Link>
 
       {/* SearchBar in Desktop */}

@@ -364,9 +364,9 @@ function Home() {
             of pitch & gym based sessions all on video from our elite
             professional sports scientists.
           </p>
-          <div className="mb-[30px] rounded-full overflow-hidden whitespace-nowrap main-slide-container flex items-center">
+          <div className="mb-[30px] rounded-full overflow-hidden whitespace-nowrap main-slide-container flex items-center py-5">
             <div className="flex items-center gap-2 rounded-full animate-slide">
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-2xl shadow-custom-light-dark cursor-pointer">
+              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
                 <img
                   src="https://footballdna.co.uk/wp-content/uploads/2023/09/ball-mastery.svg"
                   alt="ball mastery"
@@ -377,7 +377,7 @@ function Home() {
                 </p>
               </Card>
 
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-2xl shadow-custom-light-dark cursor-pointer">
+              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
                 <img
                   src="https://footballdna.co.uk/wp-content/uploads/2023/09/1v1.svg"
                   alt="1 v 1 moves"
@@ -388,7 +388,7 @@ function Home() {
                 </p>
               </Card>
 
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-2xl shadow-custom-light-dark cursor-pointer">
+              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
                 <img
                   src="https://footballdna.co.uk/wp-content/uploads/2023/09/juggling-1.svg"
                   alt="juggling"
@@ -399,7 +399,7 @@ function Home() {
                 </p>
               </Card>
 
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-2xl shadow-custom-light-dark cursor-pointer">
+              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
                 <img
                   src="https://footballdna.co.uk/wp-content/uploads/2023/09/dribbling-1.svg"
                   alt="dribbling"
@@ -410,7 +410,7 @@ function Home() {
                 </p>
               </Card>
 
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-2xl shadow-custom-light-dark cursor-pointer">
+              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
                 <img
                   src="https://footballdna.co.uk/wp-content/uploads/2023/09/passing-receiving.svg"
                   alt="passing and receiving"
@@ -421,7 +421,7 @@ function Home() {
                 </p>
               </Card>
 
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-2xl shadow-custom-light-dark cursor-pointer">
+              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
                 <img
                   src="https://footballdna.co.uk/wp-content/uploads/2023/09/finishing-1.svg"
                   alt="finishing"
@@ -433,7 +433,7 @@ function Home() {
               </Card>
             </div>
             <div className="flex items-center gap-2 rounded-full animate-slide ml-2">
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-2xl shadow-custom-light-dark cursor-pointer">
+              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
                 <img
                   src="https://footballdna.co.uk/wp-content/uploads/2023/09/ball-mastery.svg"
                   alt="ball mastery"
@@ -444,7 +444,7 @@ function Home() {
                 </p>
               </Card>
 
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-2xl shadow-custom-light-dark cursor-pointer">
+              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
                 <img
                   src="https://footballdna.co.uk/wp-content/uploads/2023/09/1v1.svg"
                   alt="1 v 1 moves"
@@ -455,7 +455,7 @@ function Home() {
                 </p>
               </Card>
 
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-2xl shadow-custom-light-dark cursor-pointer">
+              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
                 <img
                   src="https://footballdna.co.uk/wp-content/uploads/2023/09/juggling-1.svg"
                   alt="juggling"
@@ -466,7 +466,7 @@ function Home() {
                 </p>
               </Card>
 
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-2xl shadow-custom-light-dark cursor-pointer">
+              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
                 <img
                   src="https://footballdna.co.uk/wp-content/uploads/2023/09/dribbling-1.svg"
                   alt="dribbling"
@@ -477,7 +477,7 @@ function Home() {
                 </p>
               </Card>
 
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-2xl shadow-custom-light-dark cursor-pointer">
+              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
                 <img
                   src="https://footballdna.co.uk/wp-content/uploads/2023/09/passing-receiving.svg"
                   alt="passing and receiving"
@@ -488,7 +488,7 @@ function Home() {
                 </p>
               </Card>
 
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-2xl shadow-custom-light-dark cursor-pointer">
+              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
                 <img
                   src="https://footballdna.co.uk/wp-content/uploads/2023/09/finishing-1.svg"
                   alt="finishing"
@@ -500,7 +500,7 @@ function Home() {
               </Card>
             </div>
             <div className="flex items-center gap-2 rounded-full animate-slide ml-2">
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-2xl shadow-custom-light-dark cursor-pointer">
+              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
                 <img
                   src="https://footballdna.co.uk/wp-content/uploads/2023/09/ball-mastery.svg"
                   alt="ball mastery"
@@ -511,7 +511,7 @@ function Home() {
                 </p>
               </Card>
 
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-2xl shadow-custom-light-dark cursor-pointer">
+              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
                 <img
                   src="https://footballdna.co.uk/wp-content/uploads/2023/09/1v1.svg"
                   alt="1 v 1 moves"
@@ -522,7 +522,7 @@ function Home() {
                 </p>
               </Card>
 
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-2xl shadow-custom-light-dark cursor-pointer">
+              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
                 <img
                   src="https://footballdna.co.uk/wp-content/uploads/2023/09/juggling-1.svg"
                   alt="juggling"
@@ -533,7 +533,7 @@ function Home() {
                 </p>
               </Card>
 
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-2xl shadow-custom-light-dark cursor-pointer">
+              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
                 <img
                   src="https://footballdna.co.uk/wp-content/uploads/2023/09/dribbling-1.svg"
                   alt="dribbling"
@@ -544,7 +544,7 @@ function Home() {
                 </p>
               </Card>
 
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-2xl shadow-custom-light-dark cursor-pointer">
+              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
                 <img
                   src="https://footballdna.co.uk/wp-content/uploads/2023/09/passing-receiving.svg"
                   alt="passing and receiving"
@@ -555,7 +555,7 @@ function Home() {
                 </p>
               </Card>
 
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-2xl shadow-custom-light-dark cursor-pointer">
+              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
                 <img
                   src="https://footballdna.co.uk/wp-content/uploads/2023/09/finishing-1.svg"
                   alt="finishing"
@@ -568,13 +568,15 @@ function Home() {
             </div>
           </div>
           {currentUser ? (
-            <Button
-              type="button"
-              gradientDuoTone="pinkToOrange"
-              className="font-[Inter] w-[fit-content]"
-            >
-              Learn More
-            </Button>
+            <Link to="/search?tab=practices&page=1">
+              <Button
+                type="button"
+                gradientDuoTone="pinkToOrange"
+                className="font-[Inter] w-[fit-content]"
+              >
+                Learn More
+              </Button>
+            </Link>
           ) : (
             <Button
               type="button"
