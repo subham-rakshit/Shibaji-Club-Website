@@ -1,3 +1,7 @@
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 import ReactPlayer from "react-player/youtube";
 import { Button, Card } from "flowbite-react";
 
@@ -11,12 +15,16 @@ import HomePageScrolling from "../components/HomePageScrolling";
 function Home() {
   const { currentUser } = useSelector((state) => state.user);
 
+  useEffect(() => {
+    AOS.init({ duration: 2000 });
+  }, []);
+
   return (
     <div className="flex flex-col mt-[65px] lg:mt-[70px]">
       {/* Home Banner Section ----> */}
       <div className="bg-[url('/banner-dark.png')] w-full min-h-screen bg-cover flex justify-center items-center py-[30px] md:py-[50px]">
         <div className="w-[90%] max-w-[1200px] flex flex-col lg:flex-row justify-start lg:justify-between items-start">
-          <div className="w-full lg:w-[50%]">
+          <div className="w-full lg:w-[50%]" data-aos="fade-right">
             <h1
               className="text-white text-[30px] md:text-[45px] font-[Inter] font-extrabold mb-[20px]"
               style={{ textShadow: "5px 5px 5px #000" }}
@@ -29,11 +37,13 @@ function Home() {
               seasoned coaches. Elevate your game and excel as a player with
               Shibaji Sangha Football Club.
             </p>
+            {/* Desktop Button */}
             {currentUser ? (
               <Button
                 type="button"
                 gradientDuoTone="purpleToPink"
                 className="font-[Inter] hidden lg:inline mt-[30px]"
+                data-aos="flip-left"
               >
                 Book Trial
                 <BiSolidChevronDown
@@ -47,6 +57,7 @@ function Home() {
                   type="button"
                   className="font-[Inter] hidden lg:inline mt-[30px]"
                   gradientDuoTone="purpleToPink"
+                  data-aos="flip-right"
                 >
                   Sign in
                   <BiSolidChevronDown
@@ -56,8 +67,12 @@ function Home() {
                 </Button>
               </Link>
             )}
+            {/* Desktop Button */}
           </div>
-          <div className="w-full lg:w-[40%] h-[300px] rounded-xl md:rounded-3xl overflow-hidden">
+          <div
+            className="w-full lg:w-[40%] h-[300px] rounded-xl md:rounded-3xl overflow-hidden"
+            data-aos="fade-left"
+          >
             <ReactPlayer
               url="https://www.youtube.com/watch?v=zs8o231fe7Y"
               width="100%"
@@ -66,11 +81,13 @@ function Home() {
               muted
             />
           </div>
+          {/* Mobile Button */}
           {currentUser ? (
             <Button
               type="button"
               gradientDuoTone="purpleToPink"
               className="font-[Inter] lg:hidden mt-[30px]"
+              data-aos="flip-right"
             >
               Book Trial
               <BiSolidChevronDown
@@ -84,6 +101,7 @@ function Home() {
                 type="button"
                 className="font-[Inter] lg:hidden mt-[30px]"
                 gradientDuoTone="purpleToPink"
+                data-aos="flip-left"
               >
                 Sign in
                 <BiSolidChevronDown
@@ -93,14 +111,18 @@ function Home() {
               </Button>
             </Link>
           )}
+          {/* Mobile Button */}
         </div>
       </div>
       {/* Home Banner Section ----> */}
 
       {/* Coaching Videos Hub Section ----> */}
-      <div className="w-full min-h-screen flex justify-center items-center py-[30px] md:py-[50px]">
+      <div
+        className="w-full min-h-screen flex justify-center items-center py-[30px] md:py-[50px]"
+        data-aos="fade-up"
+      >
         <div className="w-[90%] max-w-[1200px] flex flex-col lg:flex-row justify-center lg:justify-between items-start lg:items-center">
-          <div className="w-full lg:w-[49%]">
+          <div className="w-full lg:w-[49%]" data-aos="fade-right">
             <h1 className="text-[#95c121] text-[18px] md:text-[25px] font-[Inter] font-extrabold mb-5">
               COACHING VIDEO HUB
             </h1>
@@ -141,7 +163,10 @@ function Home() {
             )}
             {/* Desktop See All Videos button */}
           </div>
-          <ul className="list-none pl-0 w-full lg:w-[49%] flex justify-center flex-wrap gap-[20px] xl:gap-[50px]">
+          <ul
+            className="list-none pl-0 w-full lg:w-[49%] flex justify-center flex-wrap gap-[20px] xl:gap-[50px]"
+            data-aos="fade-left"
+          >
             {/* Outfield */}
             <Link
               to={`${
@@ -302,7 +327,10 @@ function Home() {
       {/* Coaching Videos Hub Section ----> */}
 
       {/* High Quality Video Content Section ----> */}
-      <div className="w-full min-h-screen bg-[url('/video-content-banner-2.jpeg')] bg-cover relative">
+      <div
+        className="w-full min-h-screen bg-[url('/video-content-banner-2.jpeg')] bg-cover relative"
+        data-aos="fade-up"
+      >
         <div className="flex justify-center items-center bg-gradient-to-r from-[#333] via-[#333] to-[transparent]">
           <div className="w-[90%] max-w-[1200px] flex items-center">
             <div
@@ -310,7 +338,10 @@ function Home() {
                 !currentUser ? "justify-center" : ""
               }`}
             >
-              <div className="flex items-center gap-[10px] mb-[30px]">
+              <div
+                className="flex items-center gap-[10px] mb-[30px]"
+                data-aos="fade-down"
+              >
                 <RxDividerVertical className="text-[#95c121] scale-[4] md:scale-[5]" />
                 <h1 className="text-[#fff] text-[30px] md:text-[32px] font-[Inter] font-extrabold">
                   HIGH QUALITY <br />
@@ -350,15 +381,27 @@ function Home() {
       {/* High Quality Video Content Section ----> */}
 
       {/* Individual Skills Sections */}
-      <div className="min-h-screen flex justify-center items-center py-[30px]">
+      <div
+        className="min-h-screen flex justify-center items-center py-[30px]"
+        data-aos="fade-up"
+      >
         <div className="w-[90%] max-w-[1200px] flex flex-col justify-center items-start sm:items-center">
-          <h1 className="text-[#95c121] text-[18px] md:text-[25px] font-[Inter] font-extrabold">
+          <h1
+            className="text-[#95c121] text-[18px] md:text-[25px] font-[Inter] font-extrabold"
+            data-aos="fade-right"
+          >
             SHIBAJI SANGHA FOR PLAYERS
           </h1>
-          <h1 className="text-[25px] md:text-[30px] font-[Inter] font-extrabold mb-[25px] md:mb-[30px]">
+          <h1
+            className="text-[25px] md:text-[30px] font-[Inter] font-extrabold mb-[25px] md:mb-[30px]"
+            data-aos="fade-left"
+          >
             A DEEP DIVE INTO OUR TRAINING REGIMEN
           </h1>
-          <p className="sm:text-center text-[17px] md:text-[20px] font-[Inter] font-normal md:font-medium mb-[25px] md:mb-[30px]">
+          <p
+            className="sm:text-center text-[17px] md:text-[20px] font-[Inter] font-normal md:font-medium mb-[25px] md:mb-[30px]"
+            data-aos="zoom-in"
+          >
             A deep dive into our training regimen reveals the meticulous
             preparation required to excel on the football field. From dawn till
             dusk, our players immerse themselves in a rigorous routine that
@@ -708,6 +751,7 @@ function Home() {
                 type="button"
                 gradientDuoTone="pinkToOrange"
                 className="font-[Inter] w-[fit-content]"
+                data-aos="flip-right"
               >
                 Learn More
               </Button>
@@ -717,6 +761,7 @@ function Home() {
               type="button"
               className="font-[Inter] w-[fit-content]"
               gradientDuoTone="pinkToOrange"
+              data-aos="flip-left"
             >
               <Link to="/login">Sign in</Link>
               <BiSolidChevronDown

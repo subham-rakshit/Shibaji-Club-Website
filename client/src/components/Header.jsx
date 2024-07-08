@@ -1,3 +1,7 @@
+import { useEffect, useState } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Button,
@@ -12,7 +16,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "../redux-slice/themeSlice";
 import { FaMoon, FaSun } from "react-icons/fa";
 import { signOutSuccess } from "../redux-slice/userSlice";
-import { useEffect, useState } from "react";
 
 function Header() {
   const [searchInput, setSearchInput] = useState("");
@@ -22,6 +25,10 @@ function Header() {
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    AOS.init({ duration: 1200 });
+  }, []);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -96,7 +103,10 @@ function Header() {
   );
 
   return (
-    <Navbar className="fixed left-0 z-[100] w-full shadow-lg">
+    <Navbar
+      className="fixed left-0 z-[100] w-full shadow-lg"
+      data-aos="zoom-in"
+    >
       {/* Website Logo */}
       <Link to="/">
         <img
