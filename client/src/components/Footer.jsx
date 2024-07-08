@@ -7,17 +7,17 @@ const Footer = () => {
     <div className="w-full py-[30px] bg-[#F9FAFB] dark:bg-[#1F2937] flex flex-col justify-center items-center z-[60] shadow-custom-light-dark dark:shadow-none font-[Inter]">
       <div className="w-[90%] max-w-[1024px]">
         <div className="flex flex-col md:flex-row justify-between items-start gap-[30px] md:gap-[20px]">
-          <div className="flex md:flex-col items-center">
+          <div className="flex flex-col items-center w-full md:w-[fit-content]">
             <Link to="/">
               <img
-                src="https://firebasestorage.googleapis.com/v0/b/shibaji-website.appspot.com/o/newLogoShibaji.png?alt=media&token=0db6f9e7-6304-44e2-bc46-3b9a7cfe6540"
+                src="https://firebasestorage.googleapis.com/v0/b/shibaji-website.appspot.com/o/bgRemoveWebLogo.png?alt=media&token=4d742d92-7d25-42dd-8835-1951c710c18b"
                 alt="logo"
-                className="cursor-pointer max-w-[250px] object-cover hover:scale-[1.2] transition-all duration-500"
+                className="cursor-pointer w-[180px] md:w-[200px] object-cover hover:scale-[1.2] transition-all duration-500"
               />
             </Link>
-            <ul className="list-none pl-0 flex items-center gap-2 md:gap-[20px] md:mt-[30px]">
+            <ul className="list-none pl-0 flex items-center gap-2 md:gap-[20px] my-2">
               <Link
-                to="https://www.facebook.com/profile.php?id=100006629626082"
+                to="https://www.facebook.com/subham.rakshit.142"
                 target="_blank"
               >
                 <li className="hover:shadow-custom-light-dark dark:shadow-custom-light-dark p-2 rounded-full">
@@ -92,7 +92,7 @@ const Footer = () => {
                   Sport Science
                 </li>
                 <li className="text-[16px] font-semibold cursor-pointer hover:text-[18px] hover:underline transition-all duration-300">
-                  Wellbeing and Nutrition
+                  Nutrition
                 </li>
                 <li className="text-[16px] font-semibold cursor-pointer hover:text-[18px] hover:underline transition-all duration-300">
                   Features

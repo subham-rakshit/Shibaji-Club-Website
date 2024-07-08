@@ -96,11 +96,12 @@ function Header() {
   );
 
   return (
-    <Navbar className="fixed top-0 left-0 z-[100] w-full flex items-center justify-between gap-1 shadow-lg">
+    <Navbar className="fixed left-0 z-[100] w-full shadow-lg">
+      {/* Website Logo */}
       <Link to="/">
         <img
-          src="https://firebasestorage.googleapis.com/v0/b/shibaji-website.appspot.com/o/newLogoShibaji.png?alt=media&token=0db6f9e7-6304-44e2-bc46-3b9a7cfe6540"
-          className="w-[150px] sm:w-[180px] h-6 lg:h-9 rounded-full object-cover"
+          src="https://firebasestorage.googleapis.com/v0/b/shibaji-website.appspot.com/o/bgRemoveWebLogo.png?alt=media&token=4d742d92-7d25-42dd-8835-1951c710c18b"
+          className="w-[120px] sm:w-[160px] h-6 lg:h-9 object-cover"
           alt="Shibaji logo"
         />
       </Link>
@@ -131,6 +132,7 @@ function Header() {
         </Button>
       </Popover>
 
+      {/* Tabs, Theme changer, Toggle Profile */}
       <div className="flex items-center gap-3 md:order-2">
         <Button
           className="w-[fit-content] h-8 hidden sm:inline border focus:outline-none focus:ring-0"

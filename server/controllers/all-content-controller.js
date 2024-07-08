@@ -85,6 +85,42 @@ export const getAllContentSearchPage = async (req, res, next) => {
         .limit(limit);
     }
 
+    // Check if any of postsList and videosList are not full fill the combine 12 posts in each page (Only for if tab is eqal to "all") -->
+    if (tab === "all") {
+      // Check if postsList having less then 6 items, then we are fetching remaining items from videosList.
+      if (postsList.length !== 6) {
+        let newSkip = skip + limit;
+        let newLimit = limit - postsList.length;
+
+        let newVideoList = await VideoCollection.find({
+          ...(searchItem && {
+            $or: [{ title: regex }, { content: regex }],
+          }),
+        })
+          .skip(newSkip)
+          .limit(newLimit);
+
+        let combinedList = [...videosList, ...newVideoList];
+        videosList = combinedList;
+      }
+      // Check if videosList having less then 6 items, then we are fetching remaining items from postsList.
+      if (videosList.length !== 6) {
+        let newSkip = skip + limit;
+        let newLimit = limit - postsList.length;
+
+        let newPostsList = await PostCollection.find({
+          ...(searchItem && {
+            $or: [{ title: regex }, { content: regex }],
+          }),
+        })
+          .skip(newSkip)
+          .limit(newLimit);
+
+        let combinedList = [...postsList, ...newPostsList];
+        postsList = combinedList;
+      }
+    }
+
     // Combine and shuffle results if tab is 'all' and content per page is 12
     if (tab === "all") {
       const combinedList = [...postsList, ...videosList];

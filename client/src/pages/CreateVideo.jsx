@@ -263,6 +263,7 @@ function CreateVideo() {
             <option value="goalkeepers">Goalkeepers</option>
             <option value="tutorials">Tutorials</option>
             <option value="youth curriculums">Youth Curriculums</option>
+            <option value="club insides">Club Insides</option>
           </Select>
           {/* Category Input */}
         </div>
@@ -625,6 +626,8 @@ function CreateVideo() {
             </Modal>
           </>
         )}
+
+        {/* Write Video Description */}
         <JoditEditor
           ref={editor}
           value={videoFormData.content ? videoFormData.content : ""}

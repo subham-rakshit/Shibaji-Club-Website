@@ -45,7 +45,7 @@ function SearchAllContent({ tab, searchItem, currentPage, onChangePage }) {
 
   return (
     <div
-      className={`w-full max-w-[1024px] h-screen mx-auto p-5 overflow-auto hide-scrollbar transition-all duration-300 ${
+      className={`w-full max-w-[1024px] min-h-screen mx-auto p-5 overflow-auto hide-scrollbar transition-all duration-300 ${
         isLoading ? "flex justify-center items-center" : ""
       }`}
     >
@@ -121,7 +121,7 @@ function SearchAllContent({ tab, searchItem, currentPage, onChangePage }) {
                     {allContentData &&
                       allContentData.map((item) => (
                         <li
-                          className="shadow-custom-light-dark rounded-lg mx-auto"
+                          className="shadow-custom-light-dark rounded-lg"
                           key={item._id}
                         >
                           {Object.keys(item).includes("blogImage") ? (

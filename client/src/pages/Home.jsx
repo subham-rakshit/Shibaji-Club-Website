@@ -312,12 +312,12 @@ function Home() {
             >
               <div className="flex items-center gap-[10px] mb-[30px]">
                 <RxDividerVertical className="text-[#95c121] scale-[4] md:scale-[5]" />
-                <h1 className="text-[#fff] text-[30px] md:text-[32px] font-sans font-extrabold">
+                <h1 className="text-[#fff] text-[30px] md:text-[32px] font-[Inter] font-extrabold">
                   HIGH QUALITY <br />
                   VIDEO CONTENT
                 </h1>
               </div>
-              <p className="text-[#fff] text-[17px] md:text-[20px] font-sans font-normal md:font-medium mb-[25px] md:mb-[30px]">
+              <p className="text-[#fff] text-[17px] md:text-[20px] font-[Inter] font-normal md:font-medium mb-[25px] md:mb-[30px]">
                 Watch, use & adapt hundreds of videos to enhance and develop
                 individual games. Develop individuals, groups & teams with our
                 extensive range of content covering all areas of the game. Each
@@ -352,219 +352,354 @@ function Home() {
       {/* Individual Skills Sections */}
       <div className="min-h-screen flex justify-center items-center py-[30px]">
         <div className="w-[90%] max-w-[1200px] flex flex-col justify-center items-start sm:items-center">
-          <h1 className="text-[#95c121] text-[18px] md:text-[25px] font-sans font-extrabold">
+          <h1 className="text-[#95c121] text-[18px] md:text-[25px] font-[Inter] font-extrabold">
             SHIBAJI SANGHA FOR PLAYERS
           </h1>
-          <h1 className="text-[25px] md:text-[30px] font-sans font-extrabold mb-[25px] md:mb-[30px]">
-            INDIVIDUAL SKILLS PROGRAM
+          <h1 className="text-[25px] md:text-[30px] font-[Inter] font-extrabold mb-[25px] md:mb-[30px]">
+            A DEEP DIVE INTO OUR TRAINING REGIMEN
           </h1>
-          <p className="sm:text-center text-[17px] md:text-[20px] font-sans font-normal md:font-medium mb-[25px] md:mb-[30px]">
-            Use the individual skills program to improve technical skills in an
-            interactive format to accelerate player development. Access hundreds
-            of pitch & gym based sessions all on video from our elite
-            professional sports scientists.
+          <p className="sm:text-center text-[17px] md:text-[20px] font-[Inter] font-normal md:font-medium mb-[25px] md:mb-[30px]">
+            A deep dive into our training regimen reveals the meticulous
+            preparation required to excel on the football field. From dawn till
+            dusk, our players immerse themselves in a rigorous routine that
+            combines technical drills, tactical simulations, and physical
+            conditioning. Each session is finely tuned to enhance agility,
+            endurance, and strategic prowess, ensuring every player is primed to
+            perform at peak levels during crucial moments on match day. This
+            commitment to excellence not only fosters individual skill
+            development but also cultivates a cohesive team dynamic that is
+            vital for achieving victory on the pitch.
           </p>
-          <div className="mb-[30px] rounded-full overflow-hidden whitespace-nowrap main-slide-container flex items-center py-5">
-            <div className="flex items-center gap-2 rounded-full animate-slide">
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
-                <img
-                  src="https://footballdna.co.uk/wp-content/uploads/2023/09/ball-mastery.svg"
-                  alt="ball mastery"
-                  className="w-[60px] sm:w-[70px]"
-                />
-                <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
-                  Ball Mastery
-                </p>
-              </Card>
-
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
-                <img
-                  src="https://footballdna.co.uk/wp-content/uploads/2023/09/1v1.svg"
-                  alt="1 v 1 moves"
-                  className="w-[60px] sm:w-[70px]"
-                />
-                <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
-                  1 V 1 MOVES
-                </p>
-              </Card>
-
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
-                <img
-                  src="https://footballdna.co.uk/wp-content/uploads/2023/09/juggling-1.svg"
-                  alt="juggling"
-                  className="w-[60px] sm:w-[70px]"
-                />
-                <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
-                  JUGGLING
-                </p>
-              </Card>
-
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
-                <img
-                  src="https://footballdna.co.uk/wp-content/uploads/2023/09/dribbling-1.svg"
-                  alt="dribbling"
-                  className="w-[60px] sm:w-[70px]"
-                />
-                <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
-                  DRIBBLING
-                </p>
-              </Card>
-
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
-                <img
-                  src="https://footballdna.co.uk/wp-content/uploads/2023/09/passing-receiving.svg"
-                  alt="passing and receiving"
-                  className="w-[60px] sm:w-[70px]"
-                />
-                <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
-                  PASSING
-                </p>
-              </Card>
-
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
-                <img
-                  src="https://footballdna.co.uk/wp-content/uploads/2023/09/finishing-1.svg"
-                  alt="finishing"
-                  className="w-[60px] sm:w-[70px]"
-                />
-                <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
-                  FINISHING
-                </p>
-              </Card>
+          <div className="mb-[30px] rounded-full overflow-hidden whitespace-nowrap main-slide-container-two py-5">
+            <div className="flex items-center gap-2 rounded-full animate-slide-right">
+              <Link
+                to={`${
+                  currentUser
+                    ? "/search?tab=practices&category=club%20insides&searchItem=ball%20mastery&page=1"
+                    : "/login"
+                }`}
+              >
+                <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
+                  <img
+                    src="https://footballdna.co.uk/wp-content/uploads/2023/09/ball-mastery.svg"
+                    alt="ball mastery"
+                    className="w-[60px] sm:w-[70px]"
+                  />
+                  <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
+                    Ball Mastery
+                  </p>
+                </Card>
+              </Link>
+              <Link
+                to={`${
+                  currentUser
+                    ? "/search?tab=practices&category=club%20insides&searchItem=1%20v1%20moves&page=1"
+                    : "/login"
+                }`}
+              >
+                <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
+                  <img
+                    src="https://footballdna.co.uk/wp-content/uploads/2023/09/1v1.svg"
+                    alt="1 v 1 moves"
+                    className="w-[60px] sm:w-[70px]"
+                  />
+                  <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
+                    1 V 1 MOVES
+                  </p>
+                </Card>
+              </Link>
+              <Link
+                to={`${
+                  currentUser
+                    ? "/search?tab=practices&category=club%20insides&searchItem=juggling&page=1"
+                    : "/login"
+                }`}
+              >
+                <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
+                  <img
+                    src="https://footballdna.co.uk/wp-content/uploads/2023/09/juggling-1.svg"
+                    alt="juggling"
+                    className="w-[60px] sm:w-[70px]"
+                  />
+                  <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
+                    JUGGLING
+                  </p>
+                </Card>
+              </Link>
+              <Link
+                to={`${
+                  currentUser
+                    ? "/search?tab=practices&category=club%20insides&searchItem=dribbling&page=1"
+                    : "/login"
+                }`}
+              >
+                <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
+                  <img
+                    src="https://footballdna.co.uk/wp-content/uploads/2023/09/dribbling-1.svg"
+                    alt="dribbling"
+                    className="w-[60px] sm:w-[70px]"
+                  />
+                  <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
+                    DRIBBLING
+                  </p>
+                </Card>
+              </Link>
+              <Link
+                to={`${
+                  currentUser
+                    ? "/search?tab=practices&category=club%20insides&searchItem=passing&page=1"
+                    : "/login"
+                }`}
+              >
+                <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
+                  <img
+                    src="https://footballdna.co.uk/wp-content/uploads/2023/09/passing-receiving.svg"
+                    alt="passing and receiving"
+                    className="w-[60px] sm:w-[70px]"
+                  />
+                  <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
+                    PASSING
+                  </p>
+                </Card>
+              </Link>
+              <Link
+                to={`${
+                  currentUser
+                    ? "/search?tab=practices&category=club%20insides&searchItem=finishing&page=1"
+                    : "/login"
+                }`}
+              >
+                <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
+                  <img
+                    src="https://footballdna.co.uk/wp-content/uploads/2023/09/finishing-1.svg"
+                    alt="finishing"
+                    className="w-[60px] sm:w-[70px]"
+                  />
+                  <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
+                    FINISHING
+                  </p>
+                </Card>
+              </Link>
             </div>
-            <div className="flex items-center gap-2 rounded-full animate-slide ml-2">
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
-                <img
-                  src="https://footballdna.co.uk/wp-content/uploads/2023/09/ball-mastery.svg"
-                  alt="ball mastery"
-                  className="w-[60px] sm:w-[70px]"
-                />
-                <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
-                  Ball Mastery
-                </p>
-              </Card>
-
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
-                <img
-                  src="https://footballdna.co.uk/wp-content/uploads/2023/09/1v1.svg"
-                  alt="1 v 1 moves"
-                  className="w-[60px] sm:w-[70px]"
-                />
-                <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
-                  1 V 1 MOVES
-                </p>
-              </Card>
-
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
-                <img
-                  src="https://footballdna.co.uk/wp-content/uploads/2023/09/juggling-1.svg"
-                  alt="juggling"
-                  className="w-[60px] sm:w-[70px]"
-                />
-                <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
-                  JUGGLING
-                </p>
-              </Card>
-
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
-                <img
-                  src="https://footballdna.co.uk/wp-content/uploads/2023/09/dribbling-1.svg"
-                  alt="dribbling"
-                  className="w-[60px] sm:w-[70px]"
-                />
-                <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
-                  DRIBBLING
-                </p>
-              </Card>
-
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
-                <img
-                  src="https://footballdna.co.uk/wp-content/uploads/2023/09/passing-receiving.svg"
-                  alt="passing and receiving"
-                  className="w-[60px] sm:w-[70px]"
-                />
-                <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
-                  PASSING
-                </p>
-              </Card>
-
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
-                <img
-                  src="https://footballdna.co.uk/wp-content/uploads/2023/09/finishing-1.svg"
-                  alt="finishing"
-                  className="w-[60px] sm:w-[70px]"
-                />
-                <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
-                  FINISHING
-                </p>
-              </Card>
+            <div className="flex items-center gap-2 rounded-full animate-slide-right ml-2">
+              <Link
+                to={`${
+                  currentUser
+                    ? "/search?tab=practices&category=club%20insides&searchItem=ball%20mastery&page=1"
+                    : "/login"
+                }`}
+              >
+                <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
+                  <img
+                    src="https://footballdna.co.uk/wp-content/uploads/2023/09/ball-mastery.svg"
+                    alt="ball mastery"
+                    className="w-[60px] sm:w-[70px]"
+                  />
+                  <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
+                    Ball Mastery
+                  </p>
+                </Card>
+              </Link>
+              <Link
+                to={`${
+                  currentUser
+                    ? "/search?tab=practices&category=club%20insides&searchItem=1%20v1%20moves&page=1"
+                    : "/login"
+                }`}
+              >
+                <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
+                  <img
+                    src="https://footballdna.co.uk/wp-content/uploads/2023/09/1v1.svg"
+                    alt="1 v 1 moves"
+                    className="w-[60px] sm:w-[70px]"
+                  />
+                  <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
+                    1 V 1 MOVES
+                  </p>
+                </Card>
+              </Link>
+              <Link
+                to={`${
+                  currentUser
+                    ? "/search?tab=practices&category=club%20insides&searchItem=juggling&page=1"
+                    : "/login"
+                }`}
+              >
+                <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
+                  <img
+                    src="https://footballdna.co.uk/wp-content/uploads/2023/09/juggling-1.svg"
+                    alt="juggling"
+                    className="w-[60px] sm:w-[70px]"
+                  />
+                  <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
+                    JUGGLING
+                  </p>
+                </Card>
+              </Link>
+              <Link
+                to={`${
+                  currentUser
+                    ? "/search?tab=practices&category=club%20insides&searchItem=dribbling&page=1"
+                    : "/login"
+                }`}
+              >
+                <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
+                  <img
+                    src="https://footballdna.co.uk/wp-content/uploads/2023/09/dribbling-1.svg"
+                    alt="dribbling"
+                    className="w-[60px] sm:w-[70px]"
+                  />
+                  <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
+                    DRIBBLING
+                  </p>
+                </Card>
+              </Link>
+              <Link
+                to={`${
+                  currentUser
+                    ? "/search?tab=practices&category=club%20insides&searchItem=passing&page=1"
+                    : "/login"
+                }`}
+              >
+                <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
+                  <img
+                    src="https://footballdna.co.uk/wp-content/uploads/2023/09/passing-receiving.svg"
+                    alt="passing and receiving"
+                    className="w-[60px] sm:w-[70px]"
+                  />
+                  <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
+                    PASSING
+                  </p>
+                </Card>
+              </Link>
+              <Link
+                to={`${
+                  currentUser
+                    ? "/search?tab=practices&category=club%20insides&searchItem=finishing&page=1"
+                    : "/login"
+                }`}
+              >
+                <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
+                  <img
+                    src="https://footballdna.co.uk/wp-content/uploads/2023/09/finishing-1.svg"
+                    alt="finishing"
+                    className="w-[60px] sm:w-[70px]"
+                  />
+                  <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
+                    FINISHING
+                  </p>
+                </Card>
+              </Link>
             </div>
-            <div className="flex items-center gap-2 rounded-full animate-slide ml-2">
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
-                <img
-                  src="https://footballdna.co.uk/wp-content/uploads/2023/09/ball-mastery.svg"
-                  alt="ball mastery"
-                  className="w-[60px] sm:w-[70px]"
-                />
-                <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
-                  Ball Mastery
-                </p>
-              </Card>
-
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
-                <img
-                  src="https://footballdna.co.uk/wp-content/uploads/2023/09/1v1.svg"
-                  alt="1 v 1 moves"
-                  className="w-[60px] sm:w-[70px]"
-                />
-                <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
-                  1 V 1 MOVES
-                </p>
-              </Card>
-
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
-                <img
-                  src="https://footballdna.co.uk/wp-content/uploads/2023/09/juggling-1.svg"
-                  alt="juggling"
-                  className="w-[60px] sm:w-[70px]"
-                />
-                <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
-                  JUGGLING
-                </p>
-              </Card>
-
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
-                <img
-                  src="https://footballdna.co.uk/wp-content/uploads/2023/09/dribbling-1.svg"
-                  alt="dribbling"
-                  className="w-[60px] sm:w-[70px]"
-                />
-                <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
-                  DRIBBLING
-                </p>
-              </Card>
-
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
-                <img
-                  src="https://footballdna.co.uk/wp-content/uploads/2023/09/passing-receiving.svg"
-                  alt="passing and receiving"
-                  className="w-[60px] sm:w-[70px]"
-                />
-                <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
-                  PASSING
-                </p>
-              </Card>
-
-              <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
-                <img
-                  src="https://footballdna.co.uk/wp-content/uploads/2023/09/finishing-1.svg"
-                  alt="finishing"
-                  className="w-[60px] sm:w-[70px]"
-                />
-                <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
-                  FINISHING
-                </p>
-              </Card>
+            <div className="flex items-center gap-2 rounded-full animate-slide-right ml-2">
+              <Link
+                to={`${
+                  currentUser
+                    ? "/search?tab=practices&category=club%20insides&searchItem=ball%20mastery&page=1"
+                    : "/login"
+                }`}
+              >
+                <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
+                  <img
+                    src="https://footballdna.co.uk/wp-content/uploads/2023/09/ball-mastery.svg"
+                    alt="ball mastery"
+                    className="w-[60px] sm:w-[70px]"
+                  />
+                  <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
+                    Ball Mastery
+                  </p>
+                </Card>
+              </Link>
+              <Link
+                to={`${
+                  currentUser
+                    ? "/search?tab=practices&category=club%20insides&searchItem=1%20v1%20moves&page=1"
+                    : "/login"
+                }`}
+              >
+                <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
+                  <img
+                    src="https://footballdna.co.uk/wp-content/uploads/2023/09/1v1.svg"
+                    alt="1 v 1 moves"
+                    className="w-[60px] sm:w-[70px]"
+                  />
+                  <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
+                    1 V 1 MOVES
+                  </p>
+                </Card>
+              </Link>
+              <Link
+                to={`${
+                  currentUser
+                    ? "/search?tab=practices&category=club%20insides&searchItem=juggling&page=1"
+                    : "/login"
+                }`}
+              >
+                <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
+                  <img
+                    src="https://footballdna.co.uk/wp-content/uploads/2023/09/juggling-1.svg"
+                    alt="juggling"
+                    className="w-[60px] sm:w-[70px]"
+                  />
+                  <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
+                    JUGGLING
+                  </p>
+                </Card>
+              </Link>
+              <Link
+                to={`${
+                  currentUser
+                    ? "/search?tab=practices&category=club%20insides&searchItem=dribbling&page=1"
+                    : "/login"
+                }`}
+              >
+                <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
+                  <img
+                    src="https://footballdna.co.uk/wp-content/uploads/2023/09/dribbling-1.svg"
+                    alt="dribbling"
+                    className="w-[60px] sm:w-[70px]"
+                  />
+                  <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
+                    DRIBBLING
+                  </p>
+                </Card>
+              </Link>
+              <Link
+                to={`${
+                  currentUser
+                    ? "/search?tab=practices&category=club%20insides&searchItem=passing&page=1"
+                    : "/login"
+                }`}
+              >
+                <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
+                  <img
+                    src="https://footballdna.co.uk/wp-content/uploads/2023/09/passing-receiving.svg"
+                    alt="passing and receiving"
+                    className="w-[60px] sm:w-[70px]"
+                  />
+                  <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
+                    PASSING
+                  </p>
+                </Card>
+              </Link>
+              <Link
+                to={`${
+                  currentUser
+                    ? "/search?tab=practices&category=club%20insides&searchItem=finishing&page=1"
+                    : "/login"
+                }`}
+              >
+                <Card className="w-[200px] h-[200px] flex flex-col justify-center items-center rounded-full gap-[10px] p-5 hover:shadow-custom-light-dark cursor-pointer">
+                  <img
+                    src="https://footballdna.co.uk/wp-content/uploads/2023/09/finishing-1.svg"
+                    alt="finishing"
+                    className="w-[60px] sm:w-[70px]"
+                  />
+                  <p className="text-[13px] sm:text-[15px] font-[Inter] font-bold text-center">
+                    FINISHING
+                  </p>
+                </Card>
+              </Link>
             </div>
           </div>
           {currentUser ? (

@@ -51,7 +51,7 @@ function SearchPractices({
 
   return (
     <div
-      className={`w-full max-w-[1024px] h-screen mx-auto p-5 overflow-auto hide-scrollbar ${
+      className={`w-full max-w-[1024px] min-h-screen mx-auto p-5 overflow-auto hide-scrollbar ${
         isLoading && "flex justify-center items-center"
       }`}
     >

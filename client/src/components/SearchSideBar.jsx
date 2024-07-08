@@ -283,6 +283,20 @@ function SearchSideBar({ tab, category, searchItem }) {
                 Youth Curriculums
               </p>
             </Link>
+            <Link
+              to={`/search?tab=practices&category=club%20insides${
+                searchItem && `&searchItem=${searchItem}`
+              }&page=1`}
+            >
+              <p
+                className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
+                  category === "club insides" &&
+                  "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
+                }`}
+              >
+                Club Insides
+              </p>
+            </Link>
           </li>
           {/* Practices Sidebar */}
         </ul>

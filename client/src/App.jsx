@@ -29,7 +29,7 @@ import {
 
 const App = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col w-screen overflow-hidden">
       <BrowserRouter>
         <ScrollToTop />
         <Header />

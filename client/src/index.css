@@ -64,7 +64,7 @@ body::-webkit-scrollbar {
 }
 
 /* Silde animation in Home page */
-
+/* From Right - Left */
 @keyframes slide {
   from {
     transform: translateX(0);
@@ -85,5 +85,30 @@ body::-webkit-scrollbar {
 .main-slide-container:hover .animate-slide {
   animation-play-state: paused;
 }
+/* From Right - Left */
+
+/* From Left - Right */
+@keyframes slideRight {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-right {
+  animation: slideRight 30s linear infinite;
+}
+
+.main-slide-container-two {
+  display: flex !important;
+  align-items: center;
+}
+
+.main-slide-container-two:hover .animate-slide-right {
+  animation-play-state: paused;
+}
+/* From Left - Right */
 
 /* Silde animation in Home page */
