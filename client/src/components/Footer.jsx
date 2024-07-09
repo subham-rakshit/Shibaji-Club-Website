@@ -1,13 +1,25 @@
 import { Link } from "react-router-dom";
+import AOS from "aos";
 
 import { FaFacebookF, FaInstagram, FaGithub, FaLinkedin } from "react-icons/fa";
+import { useEffect } from "react";
 
 const Footer = () => {
+  useEffect(() => {
+    AOS.init({ duration: 1200 });
+  }, []);
+
   return (
-    <div className="w-full py-[30px] bg-[#F9FAFB] dark:bg-[#1F2937] flex flex-col justify-center items-center z-[60] shadow-custom-light-dark dark:shadow-none font-[Inter]">
+    <div
+      className="w-full py-[30px] bg-[#F9FAFB] dark:bg-[#1F2937] flex flex-col justify-center items-center z-[60] shadow-custom-light-dark dark:shadow-none font-[Inter]"
+      data-aos="slide-up"
+    >
       <div className="w-[90%] max-w-[1024px]">
         <div className="flex flex-col md:flex-row justify-between items-start gap-[30px] md:gap-[20px]">
-          <div className="flex flex-col items-center w-full md:w-[fit-content]">
+          <div
+            className="flex flex-col items-center w-full md:w-[fit-content]"
+            data-aos="fade-right"
+          >
             <Link to="/">
               <img
                 src="https://firebasestorage.googleapis.com/v0/b/shibaji-website.appspot.com/o/bgRemoveWebLogo.png?alt=media&token=4d742d92-7d25-42dd-8835-1951c710c18b"
@@ -47,7 +59,10 @@ const Footer = () => {
               </Link>
             </ul>
           </div>
-          <div className="w-full md:w-[45%] max-w-[400px] md:max-w-[500px] flex justify-between gap-[20px]">
+          <div
+            className="w-full md:w-[45%] max-w-[400px] md:max-w-[500px] flex justify-between gap-[20px]"
+            data-aos="fade-left"
+          >
             <div>
               <h1 className="text-[18px] font-bold mb-[15px]">EXPLORER</h1>
               <ul className="list-none pl-0 flex flex-col gap-[10px]">
