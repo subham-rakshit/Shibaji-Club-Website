@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -11,8 +11,11 @@ import { BiSolidChevronDown } from "react-icons/bi";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import HomePageScrolling from "../components/HomePageScrolling";
+import { FaPlay } from "react-icons/fa";
+import { CgCloseR } from "react-icons/cg";
 
 function Home() {
+  const [videoIsVisible, setVideoIsVisible] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
@@ -69,18 +72,54 @@ function Home() {
             )}
             {/* Desktop Button */}
           </div>
+
+          {/* Banner Video */}
           <div
-            className="w-full lg:w-[40%] h-[300px] rounded-xl md:rounded-3xl overflow-hidden"
+            className="w-full md:w-[45%] h-[350px] rounded-md lg:rounded-xl mt-5 md:mt-0 relative transition-all duration-500 shadow-custom-light-dark overflow-hidden"
             data-aos="fade-left"
           >
-            <ReactPlayer
-              url="https://www.youtube.com/watch?v=zs8o231fe7Y"
-              width="100%"
-              height="100%"
-              controls={true}
-              muted
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/shibaji-website.appspot.com/o/Welcome%20Banner%20Thumbnail.jpg?alt=media&token=9b6c0ad9-43e4-425b-9e4b-03ac0f6b21b7"
+              alt="welcome shibaji sangha"
+              className={`w-full h-full object-cover absolute top-0 left-0 right-0 bottom-0 filter ${
+                videoIsVisible ? "blur-[3px]" : "blur-0"
+              }`}
             />
+            {videoIsVisible ? (
+              <div className="absolute w-full h-full flex items-center justify-center">
+                <div className="w-[85%] h-[90%] max-w-[450px] max-h-[300px] flex flex-col gap-3">
+                  <CgCloseR
+                    size="30"
+                    className="self-end cursor-pointer text-white hover:text-red-500 hover:scale-[1.2] transition-all duration-300"
+                    onClick={() => setVideoIsVisible(false)}
+                  />
+                  <div className="w-full h-full rounded-xl overflow-hidden">
+                    <ReactPlayer
+                      url="https://youtu.be/UsZWkvVuz-c"
+                      className="react-player"
+                      playing
+                      controls
+                      width="100%"
+                      height="100%"
+                      onEnded={() => setVideoIsVisible(false)} // Hide video after playback ends
+                    />
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <span
+                className="absolute flex h-[fit-content] w-[fit-content] top-[40%] left-[43%] cursor-pointer hover:scale-[1.2] transition-all duration-300"
+                onClick={() => setVideoIsVisible(true)}
+              >
+                <span className="animate-ping absolute h-full w-full rounded-full bg-red-300 opacity-75"></span>
+                <span className="relative rounded-full h-[fit-content] w-[fit-content] bg-red-300 bg-opacity-50 backdrop-blur-sm p-3 flex items-center justify-center">
+                  <FaPlay size="30" color="red" />
+                </span>
+              </span>
+            )}
           </div>
+          {/* Banner Video */}
+
           {/* Mobile Button */}
           {currentUser ? (
             <Button
