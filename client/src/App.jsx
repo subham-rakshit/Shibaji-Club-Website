@@ -17,6 +17,7 @@ import {
   VideoItem,
   CreateVideo,
   SearchPage,
+  Trials,
 } from "./pages";
 
 import {
@@ -39,6 +40,7 @@ const App = () => {
           <Route path="/practices" element={<Practices />} />
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/contact-us" element={<Contact />} />
+          <Route path="/book-trials" element={<Trials />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/post/:postSlug" element={<PostItem />} />

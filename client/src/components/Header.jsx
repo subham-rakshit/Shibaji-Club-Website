@@ -27,7 +27,7 @@ function Header() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    AOS.init({ duration: 1200 });
+    AOS.init({ duration: 1000 });
   }, []);
 
   useEffect(() => {
@@ -103,16 +103,14 @@ function Header() {
   );
 
   return (
-    <Navbar
-      className="fixed left-0 z-[100] w-full shadow-lg"
-      data-aos="zoom-in"
-    >
+    <Navbar className="fixed left-0 z-[100] w-full shadow-lg">
       {/* Website Logo */}
       <Link to="/">
         <img
           src="https://firebasestorage.googleapis.com/v0/b/shibaji-website.appspot.com/o/bgRemoveWebLogo.png?alt=media&token=4d742d92-7d25-42dd-8835-1951c710c18b"
           className="w-[120px] sm:w-[160px] h-6 lg:h-9 object-cover"
           alt="Shibaji logo"
+          data-aos="fade-right"
         />
       </Link>
 
@@ -143,7 +141,7 @@ function Header() {
       </Popover>
 
       {/* Tabs, Theme changer, Toggle Profile */}
-      <div className="flex items-center gap-3 md:order-2">
+      <div className="flex items-center gap-3 md:order-2" data-aos="fade-left">
         <Button
           className="w-[fit-content] h-8 hidden sm:inline border focus:outline-none focus:ring-0"
           color="gray"

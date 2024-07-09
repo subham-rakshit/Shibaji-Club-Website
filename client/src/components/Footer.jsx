@@ -3,8 +3,11 @@ import AOS from "aos";
 
 import { FaFacebookF, FaInstagram, FaGithub, FaLinkedin } from "react-icons/fa";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const Footer = () => {
+  const { currentUser } = useSelector((state) => state.user);
+
   useEffect(() => {
     AOS.init({ duration: 1200 });
   }, []);
@@ -76,22 +79,24 @@ const Footer = () => {
                     About Us
                   </li>
                 </Link>
-                <Link to="/search?tab=blogs&page=1">
+                <Link
+                  to={`${currentUser ? "/search?tab=blogs&page=1" : "/login"}`}
+                >
                   <li className="text-[16px] font-semibold cursor-pointer hover:text-[18px] hover:underline transition-all duration-300">
                     Blogs
                   </li>
                 </Link>
-                <Link to="/contact-us">
+                <Link to={`${currentUser ? "/contact-us" : "/login"}`}>
                   <li className="text-[16px] font-semibold cursor-pointer hover:text-[18px] hover:underline transition-all duration-300">
                     Contact Us
                   </li>
                 </Link>
 
-                {/* TODO ⛔⛔⛔⛔ */}
-                <li className="text-[16px] font-semibold cursor-pointer hover:text-[18px] hover:underline transition-all duration-300">
-                  Terms and Conditions
-                </li>
-                {/* TODO ⛔⛔⛔⛔ */}
+                <Link to={`${currentUser ? "/book-trials" : "/login"}`}>
+                  <li className="text-[16px] font-semibold cursor-pointer hover:text-[18px] hover:underline transition-all duration-300">
+                    Book Trials
+                  </li>
+                </Link>
               </ul>
             </div>
 
@@ -100,9 +105,15 @@ const Footer = () => {
               <h1 className="text-[18px] font-bold mb-[15px]">INFO</h1>
               {/* TODO ⛔⛔⛔⛔ */}
               <ul className="list-none pl-0 flex flex-col gap-[10px]">
-                <li className="text-[16px] font-semibold cursor-pointer hover:text-[18px] hover:underline transition-all duration-300">
-                  Practices & Sessions
-                </li>
+                <Link
+                  to={`${
+                    currentUser ? "/search?tab=practices&page=1" : "/login"
+                  }`}
+                >
+                  <li className="text-[16px] font-semibold cursor-pointer hover:text-[18px] hover:underline transition-all duration-300">
+                    Practices & Sessions
+                  </li>
+                </Link>
                 <li className="text-[16px] font-semibold cursor-pointer hover:text-[18px] hover:underline transition-all duration-300">
                   Sport Science
                 </li>

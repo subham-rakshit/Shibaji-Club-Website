@@ -13,6 +13,7 @@ import PostItem from "./PostItem";
 import VideoItem from "./VideoItem";
 import CreateVideo from "./CreateVideo";
 import SearchPage from "./SearchPage";
+import Trials from "./Trials";
 
 export {
   Home,
@@ -30,4 +31,5 @@ export {
   VideoItem,
   CreateVideo,
   SearchPage,
+  Trials,
 };

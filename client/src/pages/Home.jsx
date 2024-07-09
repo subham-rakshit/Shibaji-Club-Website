@@ -42,18 +42,20 @@ function Home() {
             </p>
             {/* Desktop Button */}
             {currentUser ? (
-              <Button
-                type="button"
-                gradientDuoTone="purpleToPink"
-                className="font-[Inter] hidden lg:inline mt-[30px]"
-                data-aos="flip-left"
-              >
-                Book Trial
-                <BiSolidChevronDown
-                  className="ml-2 h-5 w-5 animate-bounce"
-                  size="10"
-                />
-              </Button>
+              <Link to="/book-trials">
+                <Button
+                  type="button"
+                  gradientDuoTone="purpleToPink"
+                  className="font-[Inter] hidden lg:inline mt-[30px]"
+                  data-aos="flip-left"
+                >
+                  Book Trial
+                  <BiSolidChevronDown
+                    className="ml-2 h-5 w-5 animate-bounce"
+                    size="10"
+                  />
+                </Button>
+              </Link>
             ) : (
               <Link to="/login">
                 <Button
@@ -122,18 +124,20 @@ function Home() {
 
           {/* Mobile Button */}
           {currentUser ? (
-            <Button
-              type="button"
-              gradientDuoTone="purpleToPink"
-              className="font-[Inter] lg:hidden mt-[30px]"
-              data-aos="flip-right"
-            >
-              Book Trial
-              <BiSolidChevronDown
-                className="ml-2 h-5 w-5 animate-bounce"
-                size="10"
-              />
-            </Button>
+            <Link to="/book-trials">
+              <Button
+                type="button"
+                gradientDuoTone="purpleToPink"
+                className="font-[Inter] lg:hidden mt-[30px]"
+                data-aos="flip-right"
+              >
+                Book Trial
+                <BiSolidChevronDown
+                  className="ml-2 h-5 w-5 animate-bounce"
+                  size="10"
+                />
+              </Button>
+            </Link>
           ) : (
             <Link to="/login">
               <Button
