@@ -21,6 +21,7 @@ export const createTrialDetails = async (req, res, next) => {
     playerEmergencyContactName,
     playerEmergencyContactNumber,
   } = req.body;
+
   try {
     // Authentication checking -->
     if (!req.user.userId) {
@@ -62,6 +63,35 @@ export const createTrialDetails = async (req, res, next) => {
           "Applicant's Full Name must have atleast two characters and not more than 255 characters",
       };
       return next(applicantFullNameError);
+    }
+
+    // Applicant DOB verification. Check if he is >= 10 years or not -->
+    const [year, month, day] = playerDOB.split("-").map(Number);
+    const requestDate = new Date(year, month - 1, day); // months are zero-based in JS Date
+
+    const todayDate = new Date(); // Today's date
+
+    let applicantInitialAge =
+      todayDate.getFullYear() - requestDate.getFullYear(); // Initial age
+    let monthDiff = todayDate.getMonth() - requestDate.getMonth(); // Check Applicant Bday already will be arrived or not
+
+    //* Condition means - If monthDiff is negetive. That means Bday will be arrived so, age will be age - 1. OR . (monthDiff === 0 && todayDate.getDate() < requestDate.getDate()):- means, Checks if the birth month is the same as the current month, but the birth day has not yet occurred. That situation also age - 1.
+
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && todayDate.getDate() < requestDate.getDate())
+    ) {
+      applicantInitialAge--;
+    }
+
+    if (applicantInitialAge < 10) {
+      const ageError = {
+        status: 401,
+        message: "Applicant is less than 10 years old.",
+        extraDetails:
+          "Invalid date of birth. User must be at least 10 years old.",
+      };
+      return next(ageError);
     }
 
     // Applicant's Parent Full Name characters check -->
@@ -173,7 +203,7 @@ export const createTrialDetails = async (req, res, next) => {
     });
 
     try {
-      const saveTrialData = await newTrialData.save();
+      await newTrialData.save();
 
       res.status(201).json({
         message:
