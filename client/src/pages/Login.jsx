@@ -13,6 +13,7 @@ import {
   signInFailure,
   initialRender,
 } from "../redux-slice/userSlice";
+import AOS from "aos";
 
 function Login() {
   const [loginDetails, setLoginDetails] = useState({
@@ -20,13 +21,12 @@ function Login() {
     password: "",
   });
 
-  console.log(loginDetails);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { loading, error, currentUser } = useSelector((state) => state.user);
 
+  // Input Handles
   const handleInputs = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -37,6 +37,7 @@ function Login() {
     });
   };
 
+  // Form Submition
   const submitFormHandle = async (e) => {
     e.preventDefault();
 
@@ -80,96 +81,93 @@ function Login() {
     if (currentUser) {
       navigate("/");
     }
+
+    AOS.init({ duration: 1200 });
   }, []);
 
   return (
-    <div className="w-full min-h-screen py-10 px-5 flex flex-col lg:flex-row justify-center items-center gap-5 md:gap-10 mt-[65px] lg:mt-[76px] font-[Inter]">
-      {/* Desktop Image */}
-      <img
-        src="/login-img-bck-remove.png"
-        className="hidden lg:inline mr-0 w-1/2 max-w-96 rounded-full"
-        alt="Shibaji Register Logo"
-      />
-      {/* Desktop Image */}
+    <div className="w-full min-h-screen py-10 px-5 flex justify-center items-center mt-[65px] lg:mt-[70px] font-[Inter]">
+      <div className="flex flex-col md:flex-row w-full max-w-[1024px] shadow-custom-light-dark rounded-xl overflow-hidden min-h-[600px]">
+        {/* Form Content */}
+        <div
+          className="p-5 lg:p-8 w-full md:w-[50%] order-1 md:order-none flex flex-col justify-center"
+          data-aos="fade-right"
+        >
+          <h1 className="font-extrabold font-[Inter] text-normal text-2xl sm:text-3xl mb-5">
+            Wellcome Back!
+          </h1>
 
-      {/* Form Content */}
-      <div className="p-5 lg:p-8 rounded-2xl shadow-2xl dark:shadow-xl dark:shadow-[#374151] w-full max-w-sm">
-        {/* Form Header */}
-        <div className="w-full max-w-xl flex items-center justify-between mb-2 md:mb-5">
-          {/* Form header Left */}
-          <div className="flex flex-col justify-center">
-            <h1 className="font-bold font-[Inter] text-normal sm:text-2xl mb-2">
-              Wellcome Back!
-            </h1>
-          </div>
-          {/* Form header Left */}
+          {/* Main From */}
+          <form className="w-full" onSubmit={submitFormHandle}>
+            {/* Phone Number input */}
+            <Input
+              placeholder="example@example.com"
+              icon={IoMdMail}
+              labelText="Email"
+              name="email"
+              value={loginDetails.email}
+              onChange={handleInputs}
+            />
 
-          {/* Form header Right */}
-          <p className="self-center whitespace-nowrap text-[12px] sm:text-sm font-semibold font-[Inter] dark:text-white ml-0 py-1 lg:hidden">
-            <span className="px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-md text-white">
-              Shibaji
-            </span>
-            Sangha
-          </p>
+            {/* Address input */}
+            <Input
+              placeholder="********"
+              labelText="Password"
+              type="password"
+              name="password"
+              value={loginDetails.password}
+              onChange={handleInputs}
+            />
 
-          {/* Form header Right */}
-        </div>
-        {/* Form Header */}
+            <Button
+              gradientDuoTone="purpleToPink"
+              outline
+              className="w-full mt-10 font-[Inter]"
+              type="submit"
+            >
+              {loading ? (
+                <>
+                  <Spinner size="sm" />
+                  <span className="pl-3">Loading ....</span>
+                </>
+              ) : (
+                "Sign In"
+              )}
+            </Button>
+            <OAuth />
 
-        {/* Main From */}
-        <form className="w-full" onSubmit={submitFormHandle}>
-          {/* Phone Number input */}
-          <Input
-            placeholder="example@example.com"
-            icon={IoMdMail}
-            labelText="Email"
-            name="email"
-            value={loginDetails.email}
-            onChange={handleInputs}
-          />
-
-          {/* Address input */}
-          <Input
-            placeholder="********"
-            labelText="Password"
-            type="password"
-            name="password"
-            value={loginDetails.password}
-            onChange={handleInputs}
-          />
-
-          <Button
-            gradientDuoTone="purpleToPink"
-            outline
-            className="w-full mt-5 font-[Inter]"
-            type="submit"
-          >
-            {loading ? (
-              <>
-                <Spinner size="sm" />
-                <span className="pl-3">Loading ....</span>
-              </>
-            ) : (
-              "Sign In"
+            {error && (
+              <Alert className="mt-5 font-[Inter] text-xs" color="failure">
+                * {error}
+              </Alert>
             )}
-          </Button>
-          <OAuth />
-          <p className="tex-[#333] font-[Inter] font-[500] text-[14px] mt-2">
-            Don't have an account?{" "}
-            <Link to="/register" className="text-[#f00d49] font-bold">
-              Sign up
-            </Link>
-          </p>
+          </form>
+          {/* Main From */}
+        </div>
+        {/* Form Content */}
 
-          {error && (
-            <Alert className="mt-5 font-[Inter] text-xs" color="failure">
-              * {error}
-            </Alert>
-          )}
-        </form>
-        {/* Main From */}
+        {/* SignUp Content */}
+        <div
+          className="w-full md:w-[50%] p-5 lg:p-8 flex flex-col justify-center items-center border-2 border-red-500 bg-gradient-to-r from-red-500 to-red-700"
+          data-aos="fade-left"
+        >
+          <h1 className="text-white text-center font-extrabold font-[Inter] text-2xl sm:text-3xl mb-3">
+            Hello, Friend!
+          </h1>
+          <p className="text-center text-white font-normal font-[Inter] text-normal text-sm mb-5">
+            Enter your personal details and start journey with us
+          </p>
+          <Link to="/register">
+            <Button
+              gradientDuoTone="pinkToOrange"
+              className="font-bold text-white text-sm shadow-custom-light-dark"
+            >
+              SIGN UP
+            </Button>
+          </Link>
+        </div>
+        {/* SignUp Content */}
       </div>
-      {/* Form Content */}
     </div>
   );
 }

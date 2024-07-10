@@ -15,8 +15,8 @@ import {
   signInFailure,
   initialRender,
 } from "../redux-slice/userSlice";
-
 import Cookies from "js-cookie";
+import AOS from "aos";
 
 function Register() {
   const [newUser, setNewUser] = useState({
@@ -86,130 +86,126 @@ function Register() {
     if (currentUser) {
       navigate("/");
     }
+
+    AOS.init({ duration: 1200 });
   }, []);
 
   return (
-    <div className="w-full min-h-screen py-10 px-5 flex flex-col lg:flex-row justify-center items-center gap-5 lg:gap-20 mt-[65px] lg:mt-[76px] font-[Inter]">
-      {/* Desktop Image */}
-      <img
-        src="/signUp-img-bck-remove.png"
-        className="hidden lg:inline mr-0 w-1/2 max-w-96 rounded-full"
-        alt="Shibaji Register Logo"
-      />
-      {/* Desktop Image */}
-
-      {/* Form Content */}
-      <div className="p-5 lg:p-8 rounded-2xl shadow-2xl dark:shadow-xl dark:shadow-[#374151] w-full max-w-sm">
-        {/* Form Header */}
-        <div className="w-full max-w-xl flex items-center justify-between mb-2 lg:mb-5">
-          {/* Form header Left */}
-
-          <div className="flex flex-col justify-center">
-            <h1 className="font-bold text-xl md:text-2xl mb-2">Let's Start!</h1>
-          </div>
-
-          {/* Form header Left */}
-
-          {/* Form header Right */}
-
-          <p className="self-center whitespace-nowrap text-xs font-semibold  dark:text-white ml-0 py-1 lg:hidden">
-            <span className="px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-md text-white">
-              Shibaji
-            </span>
-            Sangha
+    <div className="w-full min-h-screen py-10 px-5 flex justify-center items-center mt-[65px] lg:mt-[70px] font-[Inter]">
+      <div className="flex flex-col md:flex-row w-full max-w-[1024px] shadow-custom-light-dark rounded-xl overflow-hidden min-h-[600px]">
+        {/* SignIn Content */}
+        <div
+          className="w-full md:w-[50%] p-5 lg:p-8 flex flex-col justify-center items-center border-2 border-red-500 bg-gradient-to-r from-red-500 to-red-700"
+          data-aos="fade-right"
+        >
+          <h1 className="text-white text-center font-extrabold font-[Inter] text-2xl sm:text-3xl mb-3">
+            Welcome Back!
+          </h1>
+          <p className="text-center text-white font-normal font-[Inter] text-normal text-sm mb-5">
+            To keep connected with us please login with your personal info
           </p>
-
-          {/* Form header Right */}
+          <Link to="/login">
+            <Button
+              gradientDuoTone="pinkToOrange"
+              className="font-bold text-white text-sm shadow-custom-light-dark"
+            >
+              SIGN IN
+            </Button>
+          </Link>
         </div>
-        {/* Form Header */}
+        {/* SignIn Content */}
 
-        {/* Main From */}
-        <form className="w-full max-w-lg" onSubmit={signUpSumbitHandle}>
-          <div className="flex flex-col sm:flex-row lg:flex-col items-center gap-2 lg:gap-0 w-full">
-            {/* Full Name input */}
-            <Input
-              placeholder="Enter your name"
-              icon={FaUser}
-              labelText="Full Name"
-              name="username"
-              value={newUser.username}
-              onChange={inputHandler}
-            />
-            {/* Email input */}
-            <Input
-              placeholder="example@example.com"
-              icon={IoMdMail}
-              labelText="Email"
-              name="email"
-              value={newUser.email}
-              onChange={inputHandler}
-            />
-          </div>
+        {/* Form Content */}
+        <div
+          className="p-5 lg:p-8 w-full md:w-[50%] order-1 md:order-none flex flex-col justify-center"
+          data-aos="fade-left"
+        >
+          <h1 className="font-extrabold font-[Inter] text-normal text-2xl sm:text-3xl mb-5">
+            Let's Start!
+          </h1>
 
-          <div className="flex flex-col sm:flex-row lg:flex-col items-center gap-2 lg:gap-0 w-full">
-            {/* Password input */}
-            <Input
-              placeholder="********"
-              labelText="Password"
-              type="password"
-              name="password"
-              value={newUser.password}
-              onChange={inputHandler}
-            />
-
-            {/* Category input */}
-            <div className="w-full">
-              <div className="mb-1 block">
-                <Label
-                  htmlFor="category"
-                  value="Category"
-                  className="font-semibold text-xs"
-                />
-              </div>
-              <Select
-                id="category"
-                value={newUser.category}
+          {/* Main From */}
+          <form className="w-full max-w-lg" onSubmit={signUpSumbitHandle}>
+            <div className="flex flex-col sm:flex-row lg:flex-col items-center gap-2 lg:gap-0 w-full">
+              {/* Full Name input */}
+              <Input
+                placeholder="Enter your name"
+                icon={FaUser}
+                labelText="Full Name"
+                name="username"
+                value={newUser.username}
                 onChange={inputHandler}
-                name="category"
-                required
-              >
-                <option name="Footballer">Footballer</option>
-                <option name="General">General</option>
-              </Select>
+              />
+              {/* Email input */}
+              <Input
+                placeholder="example@example.com"
+                icon={IoMdMail}
+                labelText="Email"
+                name="email"
+                value={newUser.email}
+                onChange={inputHandler}
+              />
             </div>
-          </div>
-          <Button
-            gradientDuoTone="purpleToPink"
-            outline
-            className="w-full mt-5"
-            type="submit"
-          >
-            {loading ? (
-              <>
-                <Spinner size="sm" />
-                <span className="pl-3">Loading ....</span>
-              </>
-            ) : (
-              "Sign Up"
-            )}
-          </Button>
-          <OAuth />
-          <p className="font-[500] text-[14px] mt-2">
-            Have an account?{" "}
-            <Link to="/login" className="text-[#f00d49] font-bold pl-1">
-              Sign in
-            </Link>
-          </p>
 
-          {error && (
-            <Alert className="mt-5 text-xs" color="failure">
-              * {error}
-            </Alert>
-          )}
-        </form>
-        {/* Main From */}
+            <div className="flex flex-col sm:flex-row lg:flex-col items-center gap-2 lg:gap-0 w-full">
+              {/* Password input */}
+              <Input
+                placeholder="********"
+                labelText="Password"
+                type="password"
+                name="password"
+                value={newUser.password}
+                onChange={inputHandler}
+              />
+
+              {/* Category input */}
+              <div className="w-full">
+                <div className="mb-1 block">
+                  <Label
+                    htmlFor="category"
+                    value="Category"
+                    className="font-semibold text-xs"
+                  />
+                </div>
+                <Select
+                  id="category"
+                  value={newUser.category}
+                  onChange={inputHandler}
+                  name="category"
+                  required
+                >
+                  <option name="Footballer">Footballer</option>
+                  <option name="General">General</option>
+                </Select>
+              </div>
+            </div>
+            <Button
+              gradientDuoTone="purpleToPink"
+              outline
+              className="w-full mt-5"
+              type="submit"
+            >
+              {loading ? (
+                <>
+                  <Spinner size="sm" />
+                  <span className="pl-3">Loading ....</span>
+                </>
+              ) : (
+                "Sign Up"
+              )}
+            </Button>
+            <OAuth />
+
+            {error && (
+              <Alert className="mt-5 text-xs" color="failure">
+                * {error}
+              </Alert>
+            )}
+          </form>
+          {/* Main From */}
+        </div>
+        {/* Form Content */}
       </div>
-      {/* Form Content */}
     </div>
   );
 }

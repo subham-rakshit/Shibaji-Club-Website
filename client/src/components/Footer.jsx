@@ -9,7 +9,7 @@ const Footer = () => {
   const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
-    AOS.init({ duration: 1200 });
+    AOS.init({ duration: 900 });
   }, []);
 
   return (

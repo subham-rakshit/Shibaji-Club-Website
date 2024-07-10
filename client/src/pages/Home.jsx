@@ -207,7 +207,7 @@ function Home() {
             {/* Desktop See All Videos button */}
           </div>
           <ul
-            className="list-none pl-0 w-full lg:w-[49%] flex justify-center flex-wrap gap-[20px] xl:gap-[50px]"
+            className="list-none pl-0 w-full lg:w-[49%] flex lg:justify-center flex-wrap gap-[20px] xl:gap-[50px]"
             data-aos="fade-left"
           >
             {/* Outfield */}
