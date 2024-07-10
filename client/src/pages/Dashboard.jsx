@@ -8,6 +8,7 @@ import {
   DashUsers,
   DashComment,
   DashboardComponent,
+  DashTrial,
 } from "../components";
 
 const Dashboard = () => {
@@ -37,6 +38,7 @@ const Dashboard = () => {
       {tab === "videos" && <DashVideos />}
       {tab === "users" && <DashUsers />}
       {tab === "comments" && <DashComment />}
+      {tab === "trials" && <DashTrial />}
     </div>
   );
 };

@@ -96,6 +96,7 @@ export const getVideos = async (req, res, next) => {
   try {
     const startIndex = parseInt(req.query.startIndex) || 0;
     const limit = parseInt(req.query.limit) || 9;
+    const sortDirection = req.query.order === "asc" ? 1 : -1;
     const searchItem = req.query.searchItem;
 
     let regex;
@@ -125,6 +126,7 @@ export const getVideos = async (req, res, next) => {
         $or: [{ title: regex }, { content: regex }],
       }),
     })
+      .sort({ createdAt: sortDirection })
       .skip(startIndex)
       .limit(limit);
 

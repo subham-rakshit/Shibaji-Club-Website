@@ -25,6 +25,7 @@ import SearchToggleButton from "./SearchToggleButton";
 import DashVideos from "./DashVideos";
 import Pagination from "./Pagination";
 import HomePageScrolling from "./HomePageScrolling";
+import DashTrial from "./DashTrial";
 
 export {
   Header,
@@ -54,4 +55,5 @@ export {
   SearchToggleButton,
   Pagination,
   HomePageScrolling,
+  DashTrial,
 };

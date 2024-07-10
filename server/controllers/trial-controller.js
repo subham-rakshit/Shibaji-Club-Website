@@ -1,9 +1,10 @@
 import TrialCollection from "../models/trial-model.js";
 
+// Create new Trial booking data -->
 export const createTrialDetails = async (req, res, next) => {
   const {
-    playerFirstName,
-    playerLastName,
+    playerFullName,
+    playerContactNumber,
     playerDOB,
     playerGender,
     parentFirstName,
@@ -51,16 +52,14 @@ export const createTrialDetails = async (req, res, next) => {
 
     // Applicant Full Name characters check -->
     if (
-      playerFirstName.trim().length < 2 ||
-      playerFirstName.trim().length > 255 ||
-      playerLastName.trim().length < 2 ||
-      playerLastName.trim().length > 255
+      playerFullName.trim().length < 2 ||
+      playerFullName.trim().length > 255
     ) {
       const applicantFullNameError = {
         status: 400,
         message: "Fill the input properly.",
         extraDetails:
-          "Applicant's Full Name must have atleast two characters and not more than 255 characters",
+          "Full Name must have atleast two characters and not more than 255 characters",
       };
       return next(applicantFullNameError);
     }
@@ -135,16 +134,17 @@ export const createTrialDetails = async (req, res, next) => {
       return next(parentEmailError);
     }
 
-    // Applicant's Parent and Emergency phone number check -->
+    // Applicant Contact Number, Applicant's Parent and Emergency phone number check -->
     if (
-      !parentPhoneNumber.trim().match(/^[6-9]\d{9}$/) ||
-      !playerEmergencyContactNumber.trim().match(/^[6-9]\d{9}$/)
+      !playerContactNumber.trim().match(/^\+91\s?[6-9]\d{9}$/) ||
+      !parentPhoneNumber.trim().match(/^\+91\s?[6-9]\d{9}$/) ||
+      !playerEmergencyContactNumber.trim().match(/^\+91\s?[6-9]\d{9}$/)
     ) {
       const phoneNumberError = {
         status: 400,
         message: "Fill the input properly.",
         extraDetails:
-          "Invalid phone number. Please enter a valid 10-digit Indian phone number starting with 6, 7, 8, or 9.",
+          "Invalid contact number. Please enter a valid Indian contact number (e.g., +91 1234567890).",
       };
       return next(phoneNumberError);
     }
@@ -182,8 +182,8 @@ export const createTrialDetails = async (req, res, next) => {
     //* Create a new Trial Data -->
     const newTrialData = new TrialCollection({
       userId: req.user.userId,
-      playerFirstName: playerFirstName.trim(),
-      playerLastName: playerLastName.trim(),
+      playerFullName: playerFullName.trim(),
+      playerContactNumber: playerContactNumber.trim(),
       playerDOB: playerDOB.trim(),
       playerGender: playerGender.trim(),
       parentFirstName: parentFirstName.trim(),
@@ -216,3 +216,80 @@ export const createTrialDetails = async (req, res, next) => {
     next(error);
   }
 };
+
+// Get all booked Trial Data -->
+export const getAllTrialsData = async (req, res, next) => {
+  try {
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const limit = parseInt(req.query.limit) || 9;
+    const sortDirection = req.query.order === "asc" ? 1 : -1;
+
+    const trials = await TrialCollection.find({
+      //? Posts for specific person
+      ...(req.query.userId && { userId: req.query.userId }),
+      //? Posts for specific name
+      ...(req.query.playerFirstName && {
+        playerFirstName: req.query.playerFirstName,
+      }),
+    })
+      .sort({ createdAt: sortDirection })
+      .skip(startIndex)
+      .limit(limit);
+
+    //* Total number of Trials booked -->
+    const totalTrials = await TrialCollection.countDocuments();
+
+    //* Total number of Trials booked in Last Month -->
+    const now = new Date();
+    const oneMonthAgo = new Date(
+      now.getFullYear(),
+      now.getMonth() - 1,
+      now.getDate()
+    );
+
+    const lastMonthTrials = await TrialCollection.countDocuments({
+      createdAt: { $gte: oneMonthAgo },
+    });
+
+    //* Send the response
+    res.status(200).json({
+      trials,
+      totalTrials,
+      lastMonthTrials,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+//* Update to confirm a specific trial -->
+export const updateTrial = async (req, res, next) => {
+  console.log(req.body);
+  if (!req.user.isAdmin) {
+    const authError = {
+      status: 403,
+      message: "Not Authenticated",
+      extraDetails: "You are not allowed to confirm this booked trial!",
+    };
+    return next(authError);
+  }
+  try {
+    const updatedTrialDetails = await TrialCollection.findByIdAndUpdate(
+      req.params.trialId,
+      {
+        $set: {
+          isConfirmed: req.body.isConfirmed,
+        },
+      },
+      { new: true }
+    );
+    res.status(200).json({
+      message: "You have successfully confirmed this trial.",
+      trialDetails: updatedTrialDetails,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteTrial = async (req, res, next) => {};

@@ -164,8 +164,8 @@ function Trials() {
   const { currentUser } = useSelector((state) => state.user);
   const [isOtherChecked, setIsOtherChecked] = useState(false);
   const [trialFormData, setTrialFormData] = useState({
-    playerFirstName: "",
-    playerLastName: "",
+    playerFullName: "",
+    playerContactNumber: "",
     playerDOB: "",
     playerGender: "male",
     parentFirstName: "",
@@ -203,8 +203,8 @@ function Trials() {
       if (res.ok) {
         setTrialBookSuccessMsg(data.message);
         setTrialFormData({
-          playerFirstName: "",
-          playerLastName: "",
+          playerFullName: "",
+          playerContactNumber: "",
           playerDOB: "",
           playerGender: "male",
           parentFirstName: "",
@@ -264,44 +264,56 @@ function Trials() {
           <h1 className="text-lg font-bold mb-8" data-aos="flip-right">
             Applicant Information
           </h1>
-          {/* Full Name */}
-          <div className="mb-5 lg:mb-10" data-aos="fade-right">
-            <h1 className="text-sm font-medium my-3">Full Name</h1>
-            <div className="flex items-center justify-between gap-2 sm:gap-5 lg:gap-10">
-              <div className="flex flex-col gap-2 w-full">
+          {/* Full Name and Phone number */}
+          <div
+            className="flex flex-col sm:flex-row items-center gap-5 lg:gap-10 mb-5 lg:mb-10"
+            data-aos="fade-right"
+          >
+            {/* Applicant Full Name */}
+            <div className="w-full">
+              <h1 className="text-sm font-medium my-3">Full Name</h1>
+
+              <div className="flex flex-col gap-2">
                 <TextInput
                   type="text"
-                  id="trialFirstName"
+                  id="playerFullName"
                   className="text-sm"
-                  value={trialFormData.playerFirstName}
+                  placeholder="Firstname Lastname"
+                  value={trialFormData.playerFullName}
                   onChange={(e) =>
                     setTrialFormData({
                       ...trialFormData,
-                      playerFirstName: e.target.value,
+                      playerFullName: e.target.value,
                     })
                   }
                   required
                 />
-                <Label htmlFor="trialFirstName" className="text-[13px]">
-                  First Name
+                <Label htmlFor="playerFullName" className="text-[13px]">
+                  Please enter your Full Name.
                 </Label>
               </div>
-              <div className="flex flex-col gap-2 w-full">
+            </div>
+            {/* Applicant Phone Number */}
+            <div className="w-full">
+              <h1 className="text-sm font-medium my-3">Phone Number</h1>
+
+              <div className="flex flex-col gap-2">
                 <TextInput
                   type="text"
-                  id="trialLastName"
+                  id="playerPhoneNumber"
                   className="text-sm"
-                  value={trialFormData.playerLastName}
+                  placeholder="+91 1234567890"
+                  value={trialFormData.playerContactNumber}
                   onChange={(e) =>
                     setTrialFormData({
                       ...trialFormData,
-                      playerLastName: e.target.value,
+                      playerContactNumber: e.target.value,
                     })
                   }
                   required
                 />
-                <Label htmlFor="trialLastName" className="text-[13px]">
-                  Last Name
+                <Label htmlFor="playerPhoneNumber" className="text-[13px]">
+                  Please enter a valid phone number.
                 </Label>
               </div>
             </div>
@@ -475,7 +487,7 @@ function Trials() {
                   type="text"
                   id="parentPhoneNumber"
                   className="text-sm"
-                  placeholder="+91 000-000-0000"
+                  placeholder="+91 1234567890"
                   value={trialFormData.parentPhoneNumber}
                   onChange={(e) =>
                     setTrialFormData({
@@ -732,7 +744,7 @@ function Trials() {
                   type="text"
                   id="emergencyPhoneNumber"
                   className="text-sm"
-                  placeholder="+91 000-000-0000"
+                  placeholder="+91 1234567890"
                   value={trialFormData.playerEmergencyContactNumber}
                   onChange={(e) =>
                     setTrialFormData({

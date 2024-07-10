@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Sidebar } from "flowbite-react";
 import { HiArrowSmRight, HiDocumentText, HiUserCircle } from "react-icons/hi";
 import { FaUsersCog, FaComments } from "react-icons/fa";
+import { FaCheckToSlot } from "react-icons/fa6";
 import { BiSolidVideos } from "react-icons/bi";
 import { Link, useLocation } from "react-router-dom";
 import { signOutSuccess } from "../redux-slice/userSlice";
@@ -143,6 +144,21 @@ function DashSideBar() {
                 as="div"
               >
                 Comments
+              </Sidebar.Item>
+            </Link>
+          )}
+          {currentUser.isAdmin && (
+            <Link to="/admin-dashboard?tab=trials">
+              <Sidebar.Item
+                icon={FaCheckToSlot}
+                label={tab === "trials" && "Admin"}
+                labelColor="dark"
+                className={`font-[Inter] text-xs font-medium ${
+                  tab === "trials" && "bg-[#e9e9e9] dark:bg-[#374151]"
+                }`}
+                as="div"
+              >
+                Trials
               </Sidebar.Item>
             </Link>
           )}
