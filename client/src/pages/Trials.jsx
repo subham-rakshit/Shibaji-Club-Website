@@ -1,5 +1,8 @@
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import AOS from "aos";
 import {
+  Alert,
   Button,
   Label,
   Radio,
@@ -7,7 +10,8 @@ import {
   Textarea,
   TextInput,
 } from "flowbite-react";
-import React, { useEffect, useState } from "react";
+import { ClipLoader } from "react-spinners";
+import { useNavigate } from "react-router-dom";
 
 const stateList = [
   {
@@ -157,12 +161,13 @@ const stateList = [
 ];
 
 function Trials() {
+  const { currentUser } = useSelector((state) => state.user);
   const [isOtherChecked, setIsOtherChecked] = useState(false);
   const [trialFormData, setTrialFormData] = useState({
     playerFirstName: "",
     playerLastName: "",
     playerDOB: "",
-    playerGender: "",
+    playerGender: "male",
     parentFirstName: "",
     parentLastName: "",
     parentEmail: "",
@@ -178,13 +183,59 @@ function Trials() {
     playerEmergencyContactName: "",
     playerEmergencyContactNumber: "",
   });
+  const [trialBookSuccessMsg, setTrialBookSuccessMsg] = useState(null);
+  const [trialBookErrorMsg, setTrialBookErrorMsg] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log(trialFormData);
+    try {
+      setIsLoading(true);
+      const res = await fetch("/api/trial/book-trial", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(trialFormData),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setTrialBookSuccessMsg(data.message);
+        setTrialFormData({
+          playerFirstName: "",
+          playerLastName: "",
+          playerDOB: "",
+          playerGender: "male",
+          parentFirstName: "",
+          parentLastName: "",
+          parentEmail: "",
+          parentPhoneNumber: "",
+          playerStreetAddress: "",
+          playerCity: "",
+          playerState: "west bengal",
+          playerPin: "",
+          playerCountry: "india",
+          playerExperience: "",
+          playerPosition: "uncategorized",
+          playerMedical: "",
+          playerEmergencyContactName: "",
+          playerEmergencyContactNumber: "",
+        });
+      } else {
+        setTrialBookErrorMsg(data.extraDetails);
+      }
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
+    if (!currentUser) {
+      navigate("/");
+    }
     AOS.init({ duration: 1200 });
   }, []);
   return (
@@ -276,14 +327,13 @@ function Trials() {
           </div>
           {/* Gender */}
           <div className="mb-5 lg:mb-10" data-aos="fade-right">
-            <h1 className="text-sm font-medium my-3">Gender</h1>
-            <div className="flex max-w-md flex-col gap-4">
+            <fieldset className="flex max-w-md flex-col gap-4">
+              <legend className="text-sm font-medium my-3">Gender</legend>
               <div className="flex items-center gap-2">
                 <Radio
-                  id="genderMale"
-                  name="male"
+                  id="maleGender"
+                  name="playerGender"
                   value="male"
-                  className="cursor-pointer"
                   onChange={(e) => {
                     setTrialFormData({
                       ...trialFormData,
@@ -291,18 +341,15 @@ function Trials() {
                     });
                     setIsOtherChecked(false);
                   }}
-                  checked={setTrialFormData.playerGender === "male"}
+                  defaultChecked
                 />
-                <Label htmlFor="genderMale" className="text-[16px]">
-                  Male
-                </Label>
+                <Label htmlFor="maleGender">Male</Label>
               </div>
               <div className="flex items-center gap-2">
                 <Radio
-                  id="genderFemale"
-                  name="female"
+                  id="femaleGender"
+                  name="playerGender"
                   value="female"
-                  className="cursor-pointer"
                   onChange={(e) => {
                     setTrialFormData({
                       ...trialFormData,
@@ -310,30 +357,23 @@ function Trials() {
                     });
                     setIsOtherChecked(false);
                   }}
-                  checked={setTrialFormData.playerGender === "female"}
                 />
-                <Label htmlFor="genderFemale" className="text-[16px]">
-                  Female
-                </Label>
+                <Label htmlFor="femaleGender">Female</Label>
               </div>
               <div className="flex items-center gap-2">
                 <Radio
-                  id="genderOther"
-                  name="other"
+                  id="otherGender"
+                  name="playerGender"
                   value="other"
-                  className="cursor-pointer"
                   onChange={(e) => {
-                    setIsOtherChecked(true);
                     setTrialFormData({
                       ...trialFormData,
                       playerGender: e.target.value,
                     });
+                    setIsOtherChecked(true);
                   }}
-                  checked={setTrialFormData.playerGender === "other"}
                 />
-                <Label htmlFor="genderOther" className="text-[16px]">
-                  Other
-                </Label>
+                <Label htmlFor="otherGender">Other</Label>
               </div>
               {isOtherChecked && (
                 <TextInput
@@ -348,7 +388,7 @@ function Trials() {
                   }
                 />
               )}
-            </div>
+            </fieldset>
           </div>
           {/* Parent/Guardian's Full Name */}
           <div className="mb-5 lg:mb-10" data-aos="fade-left">
@@ -654,7 +694,7 @@ function Trials() {
             Emergency Contact Information
           </h1>
           {/* Emergency Contact Name & Phone Number */}
-          <div className="flex items-center gap-5 lg:gap-10 mb-5 lg:mb-10">
+          <div className="flex flex-col sm:flex-row items-center gap-5 lg:gap-10 mb-5 lg:mb-10">
             {/* Contact Name */}
             <div className="w-full" data-aos="fade-right">
               <h1 className="text-sm font-medium my-3">
@@ -722,9 +762,38 @@ function Trials() {
             className="mx-auto"
             data-aos="flip-left"
           >
-            Submit
+            {isLoading ? (
+              <>
+                <ClipLoader size={25} color="teal" className="mr-2" />
+                Loading...
+              </>
+            ) : (
+              "Submit"
+            )}
           </Button>
         </form>
+
+        {/* Alert Success Message */}
+        {trialBookSuccessMsg && (
+          <Alert
+            color="success"
+            onDismiss={() => setTrialBookSuccessMsg(null)}
+            className="my-5"
+          >
+            {trialBookSuccessMsg}
+          </Alert>
+        )}
+
+        {/* Alert Failure Message */}
+        {trialBookErrorMsg && (
+          <Alert
+            color="failure"
+            onDismiss={() => setTrialBookErrorMsg(null)}
+            className="my-5"
+          >
+            {trialBookErrorMsg}
+          </Alert>
+        )}
       </div>
     </div>
   );

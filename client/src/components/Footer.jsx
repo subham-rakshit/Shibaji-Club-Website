@@ -32,7 +32,7 @@ const Footer = () => {
             </Link>
             <ul className="list-none pl-0 flex items-center gap-2 md:gap-[20px] my-2">
               <Link
-                to="https://www.facebook.com/subham.rakshit.142"
+                to="https://www.facebook.com/profile.php?id=100006629626082"
                 target="_blank"
               >
                 <li className="hover:shadow-custom-light-dark dark:shadow-custom-light-dark p-2 rounded-full">

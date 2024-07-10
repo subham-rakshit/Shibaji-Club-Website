@@ -12,6 +12,7 @@ import postRouter from "./router/post-router.js";
 import commentRouter from "./router/comment-router.js";
 import videoRouter from "./router/video-router.js";
 import allContentRouter from "./router/all-content-router.js";
+import trailRouter from "./router/trial-router.js";
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use("/api/post", postRouter);
 app.use("/api/video", videoRouter);
 app.use("/api/comments", commentRouter);
 app.use("/api/search", allContentRouter);
+app.use("/api/trial", trailRouter);
 
 app.use(errorMiddleware);
 
