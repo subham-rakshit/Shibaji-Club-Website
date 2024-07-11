@@ -7,6 +7,8 @@ function DashCommentUserDetails({ eachComment }) {
   const [info, setInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  // console.log(info);
+
   useState(() => {
     setIsLoading(true);
     const getUserandPostInfo = async () => {

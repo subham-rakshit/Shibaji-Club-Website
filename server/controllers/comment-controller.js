@@ -166,7 +166,9 @@ export const getAllComments = async (req, res, next) => {
   try {
     const startIndex = parseInt(req.query.startIndex) || 0;
     const limit = parseInt(req.query.limit) || 9;
+    const sortDirection = req.query.order === "asc" ? 1 : -1;
     const commentsList = await UserCommentCollection.find()
+      .sort({ createdAt: sortDirection })
       .skip(startIndex)
       .limit(limit);
     //? usersList gives user's details with their password. We have to remove those password in respond
@@ -198,15 +200,48 @@ export const getAllComments = async (req, res, next) => {
 export const getUserAndPostDetailsOfAComment = async (req, res, next) => {
   try {
     const commentedUser = await UserCollection.findById(req.params.userId);
-    const { password, ...rest } = commentedUser._doc;
+    let existingUserRest;
+
+    if (commentedUser) {
+      let { password, ...rest } = commentedUser._doc;
+      existingUserRest = rest;
+    }
 
     const commentedPost = await PostCollection.findById(req.params.postId);
-    commentedPost &&
-      res.status(200).json({ commentedUser: rest, commentedPost });
+    if (commentedPost && commentedUser) {
+      return res
+        .status(200)
+        .json({ commentedUser: existingUserRest, commentedPost });
+    }
+    if (commentedPost && !commentedUser) {
+      return res.status(200).json({
+        commentedUser: {
+          username: "anonymoususer123",
+          profilePicture:
+            "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
+        },
+        commentedPost,
+      });
+    }
 
     const commentedVideo = await VideoCollection.findById(req.params.postId);
-    commentedVideo &&
-      res.status(200).json({ commentedUser: rest, commentedVideo });
+    if (commentedVideo && commentedUser) {
+      return res
+        .status(200)
+        .json({ commentedUser: existingUserRest, commentedVideo });
+    }
+    if (commentedVideo && !commentedUser) {
+      return res.status(200).json({
+        commentedUser: {
+          username: "anonymoususer123",
+          profilePicture:
+            "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
+        },
+        commentedVideo,
+      });
+    }
+    // commentedVideo &&
+    //   res.status(200).json({ commentedUser: rest, commentedVideo });
   } catch (error) {
     next(error);
   }

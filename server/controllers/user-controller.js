@@ -3,9 +3,6 @@ import bcrypt from "bcryptjs";
 
 //! UPDATE Profile -->
 export const updateUserDetails = async (req, res, next) => {
-  // console.log(req.user);
-  // console.log(req.params);
-
   //? Check if user is Authenticated or not -->
   if (req.user.userId !== req.params.userId) {
     const authError = {
@@ -121,19 +118,18 @@ export const updateUserDetails = async (req, res, next) => {
       { new: true }
     );
     const { password, ...rest } = updateUserDetails._doc;
-    res.status(200).json({
+    return res.status(200).json({
       message: "Details updated successfully",
       userDetails: rest,
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
 //! DELETE Profile -->
 export const deleteUserDetails = async (req, res, next) => {
   //? Make user user is owner of the account.
-  console.log(req.user);
   if (!req.user.isAdmin && req.user.userId !== req.params.userId) {
     const deleteAuthError = {
       status: 403,
@@ -156,18 +152,18 @@ export const deleteUserDetails = async (req, res, next) => {
       });
     }
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
 //! SIGNOUT Profile -->
 export const signOut = async (req, res, next) => {
   try {
-    res.clearCookie("jwt_token").status(200).json({
+    return res.clearCookie("jwt_token").status(200).json({
       message: "User signed out successfully",
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -179,12 +175,16 @@ export const getAllUsers = async (req, res, next) => {
       message: "Not Authenticated!",
       extraDetails: "You're not allowed to access all user details!",
     };
-    next(authError);
+    return next(authError);
   }
   try {
     const startIndex = parseInt(req.query.startIndex) || 0;
     const limit = parseInt(req.query.limit) || 9;
-    const usersList = await UserCollection.find().skip(startIndex).limit(limit);
+    const sortDirection = req.query.order === "asc" ? 1 : -1;
+    const usersList = await UserCollection.find()
+      .sort({ updatedAt: sortDirection })
+      .skip(startIndex)
+      .limit(limit);
     //? usersList gives user's details with their password. We have to remove those password in respond
     const userDetailsWithoutPassword = usersList.map((user) => {
       const { password, ...rest } = user._doc;
@@ -203,13 +203,13 @@ export const getAllUsers = async (req, res, next) => {
       createdAt: { $gte: oneMonthAgo },
     });
 
-    res.status(200).json({
+    return res.status(200).json({
       users: userDetailsWithoutPassword,
       totalUsers: totalNumberOfUsers,
       lastMonthUsers: lastMonthUserDetails,
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
@@ -225,8 +225,8 @@ export const getUserInfo = async (req, res, next) => {
     }
     const { password, ...rest } = userInfo._doc;
 
-    res.status(200).json(rest);
+    return res.status(200).json(rest);
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };

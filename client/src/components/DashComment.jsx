@@ -16,6 +16,8 @@ function DashComment() {
   const [showModel, setShowModel] = useState(false);
   const [selectedCommentId, setSelectedCommentId] = useState(null);
 
+  // console.log(allCommentsData);
+
   //* Fetch All data when ever admin user is changed -->
   useEffect(() => {
     setIsLoading(true);

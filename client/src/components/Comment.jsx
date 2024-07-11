@@ -60,8 +60,12 @@ function Comment({ eachComment, onLikeClick, onEditClick, onDeleteClick }) {
     <div className="flex items-start gap-4 mb-5 border-b border-b-gray-300 pb-3 dark:border-opacity-[0.1]">
       <div>
         <img
-          src={userInfo.profilePicture && userInfo.profilePicture}
-          alt={userInfo.username && userInfo.username}
+          src={
+            userInfo.profilePicture
+              ? userInfo.profilePicture
+              : "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg"
+          }
+          alt={userInfo.username ? userInfo.username : "anonymous user image"}
           className="w-10 h-10 object-cover rounded-full"
         />
       </div>

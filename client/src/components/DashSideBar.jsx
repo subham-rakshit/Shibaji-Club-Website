@@ -49,7 +49,7 @@ function DashSideBar() {
     <Sidebar
       className={`w-full md:w-56 ${
         isSlide === "false" && "hidden"
-      } transition-all duration-500`}
+      } transition-all duration-500 shadow-custom-light-dark`}
     >
       <Sidebar.Items>
         <Sidebar.ItemGroup className="flex flex-col gap-2">
@@ -60,7 +60,8 @@ function DashSideBar() {
                 label={tab === "dashboard" && "Admin"}
                 labelColor="dark"
                 className={`font-[Inter] text-xs font-medium ${
-                  tab === "dashboard" && "bg-[#e9e9e9] dark:bg-[#374151]"
+                  tab === "dashboard" &&
+                  "bg-[#e9e9e9] dark:bg-[#374151] shadow-custom-light-dark"
                 }`}
                 as="div"
               >
@@ -80,7 +81,8 @@ function DashSideBar() {
               }
               labelColor="dark"
               className={`font-[Inter] text-xs font-medium ${
-                tab === "profile" && "bg-[#e9e9e9] dark:bg-[#374151]"
+                tab === "profile" &&
+                "bg-[#e9e9e9] dark:bg-[#374151] shadow-custom-light-dark"
               }`}
               as="div"
             >
@@ -94,7 +96,8 @@ function DashSideBar() {
                 label={tab === "posts" && "Admin"}
                 labelColor="dark"
                 className={`font-[Inter] text-xs font-medium ${
-                  tab === "posts" && "bg-[#e9e9e9] dark:bg-[#374151]"
+                  tab === "posts" &&
+                  "bg-[#e9e9e9] dark:bg-[#374151] shadow-custom-light-dark"
                 }`}
                 as="div"
               >
@@ -109,7 +112,8 @@ function DashSideBar() {
                 label={tab === "videos" && "Admin"}
                 labelColor="dark"
                 className={`font-[Inter] text-xs font-medium ${
-                  tab === "videos" && "bg-[#e9e9e9] dark:bg-[#374151]"
+                  tab === "videos" &&
+                  "bg-[#e9e9e9] dark:bg-[#374151] shadow-custom-light-dark"
                 }`}
                 as="div"
               >
@@ -124,7 +128,8 @@ function DashSideBar() {
                 label={tab === "users" && "Admin"}
                 labelColor="dark"
                 className={`font-[Inter] text-xs font-medium ${
-                  tab === "users" && "bg-[#e9e9e9] dark:bg-[#374151]"
+                  tab === "users" &&
+                  "bg-[#e9e9e9] dark:bg-[#374151] shadow-custom-light-dark"
                 }`}
                 as="div"
               >
@@ -139,7 +144,8 @@ function DashSideBar() {
                 label={tab === "comments" && "Admin"}
                 labelColor="dark"
                 className={`font-[Inter] text-xs font-medium ${
-                  tab === "comments" && "bg-[#e9e9e9] dark:bg-[#374151]"
+                  tab === "comments" &&
+                  "bg-[#e9e9e9] dark:bg-[#374151] shadow-custom-light-dark"
                 }`}
                 as="div"
               >
@@ -154,7 +160,8 @@ function DashSideBar() {
                 label={tab === "trials" && "Admin"}
                 labelColor="dark"
                 className={`font-[Inter] text-xs font-medium ${
-                  tab === "trials" && "bg-[#e9e9e9] dark:bg-[#374151]"
+                  tab === "trials" &&
+                  "bg-[#e9e9e9] dark:bg-[#374151] shadow-custom-light-dark"
                 }`}
                 as="div"
               >
