@@ -17,6 +17,7 @@ import {
 } from "../redux-slice/userSlice";
 import Cookies from "js-cookie";
 import AOS from "aos";
+import { toast } from "react-toastify";
 
 function Register() {
   const [newUser, setNewUser] = useState({
@@ -28,7 +29,7 @@ function Register() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { loading, error, currentUser } = useSelector((state) => state.user);
+  const { loading, currentUser } = useSelector((state) => state.user);
 
   // Input's value handelers
   const inputHandler = (e) => {
@@ -59,12 +60,15 @@ function Register() {
 
       const data = await response.json();
 
-      if (response.ok === true) {
+      if (response.ok) {
         Cookies.set("jwt_token", data.jwt_token, {
           expires: 30,
           path: "/",
         });
-        alert(data.message);
+        toast.success(data.message, {
+          theme: "colored",
+          position: "bottom-center",
+        });
         dispatch(signInSuccess(data.userDetails));
         setNewUser({
           username: "",
@@ -75,9 +79,17 @@ function Register() {
         navigate("/");
       } else {
         dispatch(signInFailure(data.extraDetails));
+        toast.error(data.extraDetails, {
+          theme: "colored",
+          position: "bottom-center",
+        });
       }
     } catch (error) {
       dispatch(signInFailure(data.extraDetails));
+      toast.error(data.extraDetails, {
+        theme: "colored",
+        position: "bottom-center",
+      });
     }
   };
 
@@ -195,12 +207,6 @@ function Register() {
               )}
             </Button>
             <OAuth />
-
-            {error && (
-              <Alert className="mt-5 text-xs" color="failure">
-                * {error}
-              </Alert>
-            )}
           </form>
           {/* Main From */}
         </div>

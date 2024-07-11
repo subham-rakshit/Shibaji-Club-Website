@@ -14,6 +14,7 @@ import {
   initialRender,
 } from "../redux-slice/userSlice";
 import AOS from "aos";
+import { toast } from "react-toastify";
 
 function Login() {
   const [loginDetails, setLoginDetails] = useState({
@@ -24,7 +25,7 @@ function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loading, error, currentUser } = useSelector((state) => state.user);
+  const { loading, currentUser } = useSelector((state) => state.user);
 
   // Input Handles
   const handleInputs = (e) => {
@@ -55,12 +56,15 @@ function Login() {
       const response = await fetch(apiUrl, options);
       const data = await response.json();
 
-      if (response.ok === true) {
+      if (response.ok) {
         Cookies.set("jwt_token", data.jwt_token, {
           expires: 30,
           path: "/",
         });
-        alert(data.message);
+        toast.success(data.message, {
+          theme: "colored",
+          position: "bottom-center",
+        });
         dispatch(signInSuccess(data.userDetails));
         setLoginDetails({
           email: "",
@@ -68,9 +72,17 @@ function Login() {
         });
         navigate("/");
       } else {
+        toast.error(data.extraDetails, {
+          theme: "colored",
+          position: "bottom-center",
+        });
         dispatch(signInFailure(data.extraDetails));
       }
     } catch (error) {
+      toast.error(data.extraDetails, {
+        theme: "colored",
+        position: "bottom-center",
+      });
       dispatch(signInFailure(error.message));
     }
   };
@@ -135,12 +147,6 @@ function Login() {
               )}
             </Button>
             <OAuth />
-
-            {error && (
-              <Alert className="mt-5 font-[Inter] text-xs" color="failure">
-                * {error}
-              </Alert>
-            )}
           </form>
           {/* Main From */}
         </div>

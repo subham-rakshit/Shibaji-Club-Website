@@ -6,12 +6,14 @@ import { app } from "../firebase";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { signInSuccess } from "../redux-slice/userSlice";
+import { toast } from "react-toastify";
 
 function OAuth() {
   //* For authorization we need to get the auth from getAuth() method and pass that app which are created when firbase sdk is initialized. For knowing google who will be requesting in firebase.
   const auth = getAuth(app);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
     //? When you choose one of your google account for authentication, then in other time when you signIn or signUp the popup window will not come. For that we have to create a custom parameter.
@@ -19,10 +21,10 @@ function OAuth() {
     try {
       //* Result from google by a method called signInWithPopup()
       const googleResult = await signInWithPopup(auth, provider);
-      console.log(googleResult);
-      console.log(googleResult.user.displayName);
-      console.log(googleResult.user.email);
-      console.log(googleResult.user.photoURL);
+      // console.log(googleResult);
+      // console.log(googleResult.user.displayName);
+      // console.log(googleResult.user.email);
+      // console.log(googleResult.user.photoURL);
       const apiURL = "/api/auth/google";
       const options = {
         method: "POST",
@@ -36,12 +38,24 @@ function OAuth() {
       const response = await fetch(apiURL, options);
       const data = await response.json();
       if (response.ok) {
-        alert(data.message);
+        toast.success(data.message, {
+          theme: "colored",
+          position: "bottom-center",
+        });
         dispatch(signInSuccess(data.userDetails));
         navigate("/");
+      } else {
+        toast.error(data.extraDetails, {
+          theme: "colored",
+          position: "bottom-center",
+        });
       }
     } catch (error) {
       console.log(error);
+      toast.error(data.extraDetails, {
+        theme: "colored",
+        position: "bottom-center",
+      });
     }
   };
   return (
