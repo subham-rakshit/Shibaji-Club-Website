@@ -24,7 +24,7 @@ function About() {
         {/* Left Side */}
         <div className="w-full md:w-[50%]" data-aos="fade-up">
           <h1 className="text-2xl md:text-4xl font-bold">
-            About Shbaji Sangha
+            About Shibaji Sangha
           </h1>
           <p className="text-sm md:text-[20px] mt-5 leading-6">
             Shbaji Sangha is a community dedicated to nurturing and promoting

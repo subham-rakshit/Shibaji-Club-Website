@@ -157,8 +157,8 @@ export const getRecentPosts = async (req, res, next) => {
 
 //* Delete a specific post -->
 export const deletePost = async (req, res, next) => {
-  //? Check user is an admin or not and also requesting userId is a owner of that posts or not
-  if (!req.user.isAdmin || req.user.userId !== req.params.userId) {
+  //? Check user is an admin or not
+  if (!req.user.isAdmin) {
     const authError = {
       status: 403,
       message: "Not Authenticated",
@@ -178,7 +178,7 @@ export const deletePost = async (req, res, next) => {
 
 //* Update a specific post -->
 export const updatePost = async (req, res, next) => {
-  if (!req.user.isAdmin || req.user.userId !== req.params.userId) {
+  if (!req.user.isAdmin) {
     const authError = {
       status: 403,
       message: "Not Authenticated",

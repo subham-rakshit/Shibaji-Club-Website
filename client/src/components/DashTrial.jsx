@@ -15,7 +15,7 @@ function DashTrial() {
   const [showMoreData, setShowMoreData] = useState(true);
   const [showModel, setShowModel] = useState(false);
   const [confirmedTrialId, setConfirmedTrialId] = useState("");
-  const [isConfirmed, setIsConfirmed] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   //* Fetch All data when ever admin is changed and confirmedTrialId is present -->
   useEffect(() => {
@@ -42,51 +42,21 @@ function DashTrial() {
     }
   }, [currentUser._id, confirmedTrialId]);
 
-  //* Update the trail booking confirmation -->
-  useEffect(() => {
-    setIsLoading(true);
-
-    const updateTrialDetails = async () => {
-      try {
-        const res = await fetch(
-          `/api/trial/confirm-trial/${confirmedTrialId}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ isConfirmed }),
-          }
-        );
-        const data = await res.json();
-
-        if (res.ok) {
-          alert(data.message);
-          // Update the trial data in the UI
-          const updatedTrials = allTrialsData.map((trial) =>
-            trial._id === data.trialDetails._id ? data.trialDetails : trial
-          );
-          setAllTrialsData(updatedTrials);
-          setIsConfirmed(false);
-          setConfirmedTrialId("");
-        } else {
-          alert("Failed to update trial confirmation status");
-        }
-      } catch (error) {
-        console.log(error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  //* Age calculation before till date -->
+  const calculateAge = (dob) => {
+    const [year, month, day] = dob.split("-").map(Number);
+    const birthDate = new Date(year, month - 1, day);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
     if (
-      currentUser.isAdmin &&
-      confirmedTrialId &&
-      confirmedTrialId.length > 0 &&
-      isConfirmed
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
     ) {
-      updateTrialDetails();
+      age--;
     }
-  }, [confirmedTrialId, isConfirmed, currentUser.isAdmin]);
+    return age;
+  };
 
   //* Show more btn functionality -->
   const handleShowMore = async () => {
@@ -137,13 +107,52 @@ function DashTrial() {
     }
   };
 
+  //* Handle trial confirmations -->
+  const handleConfirmTrial = async (trialId) => {
+    setConfirmedTrialId(trialId);
+    setShowConfirmModal(true);
+  };
+
+  //* Handle Update Trail with Trail Confirmations mail -->
+  const confirmTrial = async () => {
+    setShowConfirmModal(false);
+    setIsLoading(true);
+    try {
+      const res = await fetch(`/api/trial/confirm-trial/${confirmedTrialId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ isConfirmed: true }),
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        // Update the trial data in the UI
+        setAllTrialsData((prev) =>
+          prev.map((trial) =>
+            trial._id === data.trialDetails._id ? data.trialDetails : trial
+          )
+        );
+        alert(data.message);
+      } else {
+        alert("Failed to update trial confirmation status");
+      }
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      setIsLoading(false);
+      setConfirmedTrialId("");
+    }
+  };
+
   return (
     <div
       className={`min-h-screen table-auto overflow-x-scroll md:mx-auto px-3 py-5 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500 flex-1 ${
         allTrialsData.length === 0 || isLoading === true
           ? "flex flex-col justify-center"
           : ""
-      } border`}
+      }`}
     >
       {isLoading ? (
         <PacmanLoader color="#36d7b7" className="mx-auto" />
@@ -153,6 +162,7 @@ function DashTrial() {
           <DashToggleButton />
 
           <Table hoverable className="shadow-md font-[Inter]">
+            {/* Table Headers */}
             <Table.Head className="text-[14px]">
               <Table.HeadCell>Date</Table.HeadCell>
               <Table.HeadCell>Name</Table.HeadCell>
@@ -163,33 +173,10 @@ function DashTrial() {
               <Table.HeadCell>Delete</Table.HeadCell>
               <Table.HeadCell>Confirmed</Table.HeadCell>
             </Table.Head>
+            {/* Table Body */}
             <Table.Body className="text-[13px] font-medium">
               {allTrialsData.map((trial, i) => {
-                //! Convert DOB to age before till date [Starts Here] ****
-
-                const [year, month, day] = trial.playerDOB
-                  .split("-")
-                  .map(Number);
-                const requestDate = new Date(year, month - 1, day); // months are zero-based in JS Date
-
-                const todayDate = new Date(); // Today's date
-
-                let applicantAge =
-                  todayDate.getFullYear() - requestDate.getFullYear(); // Initial age
-                let monthDiff = todayDate.getMonth() - requestDate.getMonth(); // Check Applicant Bday already will be arrived or not
-
-                //* Condition means - If monthDiff is negetive. That means Bday will be arrived so, age will be age - 1. OR . (monthDiff === 0 && todayDate.getDate() < requestDate.getDate()):- means, Checks if the birth month is the same as the current month, but the birth day has not yet occurred. That situation also age - 1.
-
-                if (
-                  monthDiff < 0 ||
-                  (monthDiff === 0 &&
-                    todayDate.getDate() < requestDate.getDate())
-                ) {
-                  applicantAge--;
-                }
-
-                //! Convert DOB to age before till date [Ends Here] ****
-
+                // Table Row
                 return (
                   <Table.Row
                     className={`bg-white dark:bg-gray-800 ${
@@ -199,34 +186,35 @@ function DashTrial() {
                     }`}
                     key={trial._id}
                   >
+                    {/* Date */}
                     <Table.Cell className="whitespace-nowrap text-gray-700 dark:text-gray-300 text-[14px]">
                       {new Date(trial.createdAt).toLocaleDateString()}
                     </Table.Cell>
-
+                    {/* Full name */}
                     <Table.Cell className="text-[10px]">
                       {trial.playerFullName}
                     </Table.Cell>
-
+                    {/* Age */}
                     <Table.Cell className="font-bold text-black dark:text-gray-200">
-                      {applicantAge}
+                      {calculateAge(trial.playerDOB)}
                     </Table.Cell>
-
+                    {/* City */}
                     <Table.Cell className="text-[10px]">
                       {trial.playerCity}
                     </Table.Cell>
-
-                    <Table.Cell className="font-bold text-black dark:text-gray-200">
+                    {/* Position */}
+                    <Table.Cell className="text-[10px]">
                       {trial.playerPosition[0].toUpperCase() +
                         trial.playerPosition.slice(
                           1,
                           trial.playerPosition.length + 1
                         )}
                     </Table.Cell>
-
+                    {/* Phone number */}
                     <Table.Cell className="font-bold text-black dark:text-gray-200">
                       {trial.playerContactNumber}
                     </Table.Cell>
-
+                    {/* Delete */}
                     <Table.Cell>
                       <span
                         className="text-red-600 hover:underline dark:text-red-500 cursor-pointer mx-auto"
@@ -238,19 +226,24 @@ function DashTrial() {
                         Delete
                       </span>
                     </Table.Cell>
-
+                    {/* Confirmation */}
                     <Table.Cell>
                       {trial.isConfirmed ? (
-                        <FaCircleCheck size="20" color="green" />
+                        <button
+                          type="button"
+                          className="rounded-full cursor-not-allowed"
+                          onClick={() => alert("Already Confirmed.")}
+                        >
+                          <FaCircleCheck size="20" color="green" />
+                        </button>
                       ) : (
-                        <input
-                          type="checkbox"
+                        <button
+                          type="button"
                           className="rounded-full cursor-pointer"
-                          onChange={() => {
-                            setConfirmedTrialId(trial._id);
-                            setIsConfirmed(true);
-                          }}
-                        />
+                          onClick={() => handleConfirmTrial(trial._id)}
+                        >
+                          <FaCircleCheck size="20" />
+                        </button>
                       )}
                     </Table.Cell>
                   </Table.Row>
@@ -258,6 +251,7 @@ function DashTrial() {
               })}
             </Table.Body>
           </Table>
+          {/* Show more btn */}
           {showMoreData && (
             <button
               type="button"
@@ -280,6 +274,8 @@ function DashTrial() {
           </p>
         </>
       )}
+
+      {/* Model for Delete btn */}
       <Modal
         show={showModel}
         size="md"
@@ -298,6 +294,37 @@ function DashTrial() {
                 Yes, I'm sure
               </Button>
               <Button color="gray" onClick={() => setShowModel(false)}>
+                No, cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
+      {/* Model for Confirmation btn */}
+      <Modal
+        show={showConfirmModal}
+        size="md"
+        onClose={() => setShowConfirmModal(false)}
+        popup
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+              Are you sure you want to confirm this trial?
+            </h3>
+            <div className="flex justify-center gap-4">
+              <Button color="success" onClick={confirmTrial}>
+                Yes, confirm
+              </Button>
+              <Button
+                color="gray"
+                onClick={() => {
+                  setShowConfirmModal(false);
+                  setConfirmedTrialId("");
+                }}
+              >
                 No, cancel
               </Button>
             </div>
