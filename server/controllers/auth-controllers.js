@@ -33,7 +33,9 @@ const authControllerObject = {
       if (userExists) {
         const emailError = {
           status: 400,
-          extraDetails: "Email already exists!",
+          message: "User already registered.",
+          extraDetails:
+            "It looks like you're already registered. Please login to your account.",
         };
         return next(emailError);
       }
@@ -57,7 +59,8 @@ const authControllerObject = {
             expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
           })
           .json({
-            message: "Registration successful!",
+            message:
+              "You have successfully registered. Thank you for joining us!",
             userDetails: rest,
           });
       }
@@ -111,7 +114,7 @@ const authControllerObject = {
               expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30days  (d * h * m * s * ms)
             })
             .json({
-              message: "Login successful!",
+              message: "Welcome back! You have successfully logged in.",
               userDetails: rest,
             });
         } else {
@@ -155,7 +158,7 @@ const authControllerObject = {
             expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30days (d * h * m * s * ms)
           })
           .json({
-            message: "Login successful!",
+            message: "Welcome back! You have successfully logged in.",
             userDetails: rest,
           });
       } else {
@@ -164,7 +167,7 @@ const authControllerObject = {
           Math.random().toString(36).slice(-8);
         const userCreated = await UserCollection.create({
           username:
-            username.toLowerCase().split(" ").join("") +
+            username.trim().toLowerCase().split(" ").join("") +
             Math.random().toString(9).slice(-4),
           email: email.trim(),
           password: generatedPassword,
@@ -180,7 +183,8 @@ const authControllerObject = {
             expires: new Date(Date.now() + 3000), //30days
           })
           .json({
-            message: "Registration successful!",
+            message:
+              "You have successfully registered. Thank you for joining us!",
             userDetails: rest,
           });
       }
