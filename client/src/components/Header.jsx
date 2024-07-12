@@ -19,7 +19,7 @@ import { signOutSuccess } from "../redux-slice/userSlice";
 
 function Header() {
   const [searchInput, setSearchInput] = useState("");
-  const currentUserDetails = useSelector((state) => state.user.currentUser);
+  const { currentUser } = useSelector((state) => state.user);
   const { theme } = useSelector((state) => state.theme);
   const path = useLocation().pathname;
   const location = useLocation();
@@ -150,7 +150,7 @@ function Header() {
         >
           {theme === "light" ? <FaMoon size="13" /> : <FaSun size="13" />}
         </Button>
-        {currentUserDetails ? (
+        {currentUser ? (
           <Dropdown
             label={
               <Avatar
@@ -158,7 +158,7 @@ function Header() {
                 className="text-success font-[Inter] text-sm"
                 size="sm"
                 alt="user"
-                img={currentUserDetails.profilePicture}
+                img={currentUser.profilePicture}
               />
             }
             arrowIcon={true}
@@ -166,13 +166,13 @@ function Header() {
           >
             <Dropdown.Header>
               <span className="block text-xs font-medium font-[Inter">
-                {currentUserDetails.username}
+                {currentUser.username}
               </span>
               <span className="block truncate text-xs font-[Inter] trancate">
-                {currentUserDetails.email}
+                {currentUser.email}
               </span>
             </Dropdown.Header>
-            {currentUserDetails.isAdmin && (
+            {currentUser.isAdmin && (
               <Link to="/admin-dashboard?tab=dashboard">
                 <Dropdown.Item className="text-[14px] font-[Inter]">
                   Dashboard
@@ -224,7 +224,7 @@ function Header() {
         </Navbar.Link>
         <Navbar.Link active={path === "/search"} as={"div"}>
           <Link
-            to="/search?tab=all&page=1"
+            to={`${currentUser ? "/search?tab=all&page=1" : "/login"}`}
             className="text-[16px] font-[Inter] font-semibold"
           >
             Content

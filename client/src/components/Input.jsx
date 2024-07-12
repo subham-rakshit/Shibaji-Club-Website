@@ -8,7 +8,7 @@ const Input = forwardRef(function Input(
 ) {
   const id = useId();
   return (
-    <div className="w-full">
+    <div className="w-full mb-2">
       <div className="mb-1 block">
         <Label
           htmlFor={id}

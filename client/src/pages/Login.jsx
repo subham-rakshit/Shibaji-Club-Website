@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
-import { Alert, Button, Spinner } from "flowbite-react";
+import { Button, Label, Spinner } from "flowbite-react";
 import { Input, OAuth } from "../components";
 import { IoMdMail } from "react-icons/io";
+import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
+import { RiLockPasswordFill } from "react-icons/ri";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -17,15 +19,15 @@ import AOS from "aos";
 import { toast } from "react-toastify";
 
 function Login() {
+  const { loading, currentUser } = useSelector((state) => state.user);
   const [loginDetails, setLoginDetails] = useState({
     email: "",
     password: "",
   });
+  const [isShown, setIsShown] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const { loading, currentUser } = useSelector((state) => state.user);
 
   // Input Handles
   const handleInputs = (e) => {
@@ -111,7 +113,7 @@ function Login() {
 
           {/* Main From */}
           <form className="w-full" onSubmit={submitFormHandle}>
-            {/* Phone Number input */}
+            {/* Email input */}
             <Input
               placeholder="example@example.com"
               icon={IoMdMail}
@@ -121,15 +123,40 @@ function Login() {
               onChange={handleInputs}
             />
 
-            {/* Address input */}
-            <Input
-              placeholder="********"
-              labelText="Password"
-              type="password"
-              name="password"
-              value={loginDetails.password}
-              onChange={handleInputs}
-            />
+            {/* Password input */}
+            <div className="mt-2 block">
+              <Label
+                htmlFor="loginPassword"
+                value="Password"
+                className="font-semibold font-[Inter] text-xs"
+              />
+            </div>
+            <div className="flex items-center gap-2 rounded-lg shadow-sm bg-[#F9FAFB] dark:bg-[#374151]  border border-[#D1D5DB] dark:border-[#4B5563] focus-within:ring-2 focus-within:ring-cyan-500 overflow-hidden px-3 mt-1">
+              <RiLockPasswordFill
+                size="30"
+                className="text-[#6B7280] dark:text-[#9CA3AF]"
+              />
+              <input
+                type={isShown ? "text" : "password"}
+                id="loginPassword"
+                name="password"
+                className="bg-[#F9FAFB] dark:bg-[#374151] border-none outline-none focus:ring-0 w-full text-gray-900 dark:text-white dark:placeholder-gray-400 text-sm px-1 py-[13px]"
+                placeholder="********"
+                value={loginDetails.password}
+                onChange={handleInputs}
+              />
+              {isShown ? (
+                <FaRegEye
+                  className="cursor-pointer"
+                  onClick={() => setIsShown((prev) => !prev)}
+                />
+              ) : (
+                <FaRegEyeSlash
+                  className="cursor-pointer"
+                  onClick={() => setIsShown((prev) => !prev)}
+                />
+              )}
+            </div>
 
             <Button
               gradientDuoTone="purpleToPink"

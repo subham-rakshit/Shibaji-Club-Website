@@ -1,43 +1,53 @@
-//! ******** CREATE USER SCHEMA WITH ZOD VALIDATION ******** !//
+// //! ******** CREATE USER VALIDATION WITH express-validator ******** !//
 
-import { z } from "zod";
+import { check, validationResult } from "express-validator";
 
-const signUpSchema = z.object({
-  username: z
-    .string()
-    .trim()
-    .min(1, { message: "Name is required!" })
-    .max(255, { message: "Name can't be more than 255 characters!" }),
-  email: z
-    .string()
-    .trim()
-    .min(1, { message: "Email is required!" })
-    .email({ message: "Invalid email address!" }),
-  password: z
-    .string()
-    .trim()
-    .min(1, { message: "Password is required!" })
-    .min(8, { message: "Password must be at least 8 characters!" })
-    .max(1024, {
-      message: "Password can't be more than 1024 characters!",
-    }),
-  category: z.string().trim().min(1, { message: "Category is required!" }),
-});
+//* Login Validator middleware -->
+export const validateLoginUser = [
+  check("email").normalizeEmail().isEmail().withMessage("Email is invalid!"),
 
-const loginSchema = z.object({
-  email: z
-    .string()
+  check("password")
     .trim()
-    .min(1, { message: "Email is required!" })
-    .email({ message: "Invalid email address!" }),
-  password: z
-    .string()
-    .trim()
-    .min(1, { message: "Password is required!" })
-    .min(8, { message: "Password must be at least 8 characters!" })
-    .max(1024, {
-      message: "Password can't be more than 1024 characters!",
-    }),
-});
+    .notEmpty()
+    .withMessage("Password is missing!")
+    .isLength({ min: 8, max: 20 })
+    .withMessage("Password must be 8 to 20 characters long!"),
+];
 
-export { signUpSchema, loginSchema };
+//* Registration Validator middleware -->
+export const validateRegisterUser = [
+  check("username")
+    .trim()
+    .notEmpty()
+    .withMessage("Full Name is required!")
+    .isLength({ min: 3, max: 50 })
+    .withMessage("Full Name must be 3 to 50 characters long!"),
+
+  check("email").normalizeEmail().isEmail().withMessage("Email is invalid!"),
+
+  check("password")
+    .trim()
+    .notEmpty()
+    .withMessage("Password is missing!")
+    .isLength({ min: 8, max: 20 })
+    .withMessage("Password must be 8 to 20 characters long!"),
+
+  check("category")
+    .trim()
+    .notEmpty()
+    .withMessage("Category is missing!")
+    .isLength({ min: 3, max: 20 })
+    .withMessage("Category must be 3 to 20 characters long!"),
+];
+
+//* ERROR Handling middleware -->
+export const validateUsers = (req, res, next) => {
+  const errors = validationResult(req);
+  if (errors.isEmpty()) {
+    return next();
+  }
+
+  return res.status(422).json({
+    extraDetails: errors.array()[0].msg,
+  });
+};

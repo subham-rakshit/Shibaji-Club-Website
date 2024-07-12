@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Alert, Button, Label, Select, Spinner } from "flowbite-react";
+import { Button, Label, Select, Spinner } from "flowbite-react";
 import { Input, OAuth } from "../components";
 
-import { FaUser } from "react-icons/fa";
+import { FaRegEye, FaRegEyeSlash, FaUser } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
 import { Link } from "react-router-dom";
 
@@ -18,14 +18,16 @@ import {
 import Cookies from "js-cookie";
 import AOS from "aos";
 import { toast } from "react-toastify";
+import { RiLockPasswordFill } from "react-icons/ri";
 
 function Register() {
   const [newUser, setNewUser] = useState({
     username: "",
     email: "",
     password: "",
-    category: "Footballer",
+    category: "General",
   });
+  const [isShown, setIsShown] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -76,7 +78,7 @@ function Register() {
           password: "",
           category: "Footballer",
         });
-        navigate("/");
+        navigate("/admin-dashboard?tab=profile");
       } else {
         dispatch(signInFailure(data.extraDetails));
         toast.error(data.extraDetails, {
@@ -138,59 +140,81 @@ function Register() {
 
           {/* Main From */}
           <form className="w-full max-w-lg" onSubmit={signUpSumbitHandle}>
-            <div className="flex flex-col sm:flex-row lg:flex-col items-center gap-2 lg:gap-0 w-full">
-              {/* Full Name input */}
-              <Input
-                placeholder="Enter your name"
-                icon={FaUser}
-                labelText="Full Name"
-                name="username"
-                value={newUser.username}
-                onChange={inputHandler}
-              />
-              {/* Email input */}
-              <Input
-                placeholder="example@example.com"
-                icon={IoMdMail}
-                labelText="Email"
-                name="email"
-                value={newUser.email}
-                onChange={inputHandler}
+            {/* Full Name input */}
+            <Input
+              placeholder="Enter your name"
+              icon={FaUser}
+              labelText="Full Name"
+              name="username"
+              value={newUser.username}
+              onChange={inputHandler}
+            />
+            {/* Email input */}
+            <Input
+              placeholder="example@example.com"
+              icon={IoMdMail}
+              labelText="Email"
+              name="email"
+              value={newUser.email}
+              onChange={inputHandler}
+            />
+
+            {/* Password input */}
+            <div className="mt-2 block">
+              <Label
+                htmlFor="loginPassword"
+                value="Password"
+                className="font-semibold font-[Inter] text-xs"
               />
             </div>
-
-            <div className="flex flex-col sm:flex-row lg:flex-col items-center gap-2 lg:gap-0 w-full">
-              {/* Password input */}
-              <Input
-                placeholder="********"
-                labelText="Password"
-                type="password"
+            <div className="flex items-center gap-2 rounded-lg shadow-sm bg-[#F9FAFB] dark:bg-[#374151]  border border-[#D1D5DB] dark:border-[#4B5563] focus-within:ring-2 focus-within:ring-cyan-500 overflow-hidden px-3 mb-2">
+              <RiLockPasswordFill
+                size="30"
+                className="text-[#6B7280] dark:text-[#9CA3AF]"
+              />
+              <input
+                type={isShown ? "text" : "password"}
+                id="loginPassword"
                 name="password"
+                className="bg-[#F9FAFB] dark:bg-[#374151] border-none outline-none focus:ring-0 w-full text-gray-900 dark:text-white dark:placeholder-gray-400 text-sm px-1 py-[13px]"
+                placeholder="********"
                 value={newUser.password}
                 onChange={inputHandler}
               />
-
-              {/* Category input */}
-              <div className="w-full">
-                <div className="mb-1 block">
-                  <Label
-                    htmlFor="category"
-                    value="Category"
-                    className="font-semibold text-xs"
-                  />
-                </div>
-                <Select
-                  id="category"
-                  value={newUser.category}
-                  onChange={inputHandler}
-                  name="category"
-                  required
-                >
-                  <option name="Footballer">Footballer</option>
-                  <option name="General">General</option>
-                </Select>
-              </div>
+              {isShown ? (
+                <FaRegEye
+                  className="cursor-pointer"
+                  onClick={() => setIsShown((prev) => !prev)}
+                />
+              ) : (
+                <FaRegEyeSlash
+                  className="cursor-pointer"
+                  onClick={() => setIsShown((prev) => !prev)}
+                />
+              )}
             </div>
+
+            {/* Category input */}
+            <div className="w-full">
+              <div className="mb-1 block">
+                <Label
+                  htmlFor="category"
+                  value="Category"
+                  className="font-semibold text-xs"
+                />
+              </div>
+              <Select
+                id="category"
+                value={newUser.category}
+                onChange={inputHandler}
+                name="category"
+                required
+              >
+                <option name="Footballer">Footballer</option>
+                <option name="General">General</option>
+              </Select>
+            </div>
+
             <Button
               gradientDuoTone="purpleToPink"
               outline

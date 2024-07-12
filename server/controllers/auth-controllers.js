@@ -1,10 +1,11 @@
 import UserCollection from "../models/user-model.js";
-import jwt from "jsonwebtoken";
 
 const authControllerObject = {
   async homeController(req, res) {
     try {
-      res.status(200).send({ message: "Welcome to Shibaji Sangha Home page!" });
+      return res
+        .status(200)
+        .send({ message: "Welcome to Shibaji Sangha Home page!" });
     } catch (error) {
       console.log(`Error in :: auth-controller.js/HomeController :: ${error}`);
     }
@@ -16,7 +17,16 @@ const authControllerObject = {
       //? Taking requested data from users
       const { username, email, password, category } = req.body;
 
-      //? Checking if user exists in DB with same email id
+      //? Email is valid email or not (By Regex code) -->
+      if (!email.match(/^[a-zA-Z0-9._%+-]+@gmail\.com$/)) {
+        const emailError = {
+          status: 401,
+          extraDetails: "Invalid email address!",
+        };
+        return next(emailError);
+      }
+
+      //? Checking if USER already exists in DB with same email id
       const userExists = await UserCollection.findOne({ email });
 
       //? If user with same email id exists, then simply we return a message "Email already exists"
@@ -25,7 +35,7 @@ const authControllerObject = {
           status: 400,
           extraDetails: "Email already exists!",
         };
-        next(emailError);
+        return next(emailError);
       }
       //? If user with same email id doesn't exists, then we are creating a new user in DB
       else {
@@ -61,25 +71,37 @@ const authControllerObject = {
         status: 500,
         extraDetails: "Internal Server Error",
       };
-      next(catchError);
+      return next(catchError);
     }
   },
 
   //* Login Api Route Controller -->
   async loginController(req, res, next) {
     try {
+      //* Taking request data from req.body -->
       const { email, password } = req.body;
+
+      //* Email is valid email or not (By Regex code) -->
+      if (!email.match(/^[a-zA-Z0-9._%+-]+@gmail\.com$/)) {
+        const emailError = {
+          status: 401,
+          extraDetails: "Invalid email address!",
+        };
+        return next(emailError);
+      }
+
+      //* Check if the user already present in DB with provide email or not -->
       const userExist = await UserCollection.findOne({ email });
 
       if (userExist) {
-        // Compare password is in user-model.js file as a middleware function
+        //? Compare password is in [user-model.js] file as a middleware function
         const isPasswordValid = await userExist.passwordCompare(
           password,
           userExist.password
         );
 
         if (isPasswordValid) {
-          //* We are seperating password field from the userDetails object.
+          //? We are seperating password field from the userDetails object.
           const { password: pass, ...rest } = userExist._doc;
 
           return res
@@ -95,16 +117,17 @@ const authControllerObject = {
         } else {
           const error = {
             status: 401,
-            extraDetails: "Invalid Credentials!",
+            extraDetails: "Invalid email or password. Please try again.",
           };
-          next(error);
+          return next(error);
         }
       } else {
         const loginError = {
           status: 400,
-          extraDetails: "User not found!",
+          extraDetails:
+            "User not found. Please check your email and try again. If you don't have an account, please sign up.",
         };
-        next(loginError);
+        return next(loginError);
       }
     } catch (error) {
       console.log(`Error in :: auth-controller.js/loginController :: `, error);
@@ -112,7 +135,7 @@ const authControllerObject = {
         status: 500,
         extraDetails: "Internal Server Error!",
       };
-      next(catchError);
+      return next(catchError);
     }
   },
 
@@ -162,7 +185,7 @@ const authControllerObject = {
           });
       }
     } catch (error) {
-      next(error);
+      return next(error);
     }
   },
 };
