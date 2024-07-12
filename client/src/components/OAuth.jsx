@@ -1,6 +1,7 @@
 import { Button } from "flowbite-react";
 import React from "react";
 import { AiFillGoogleCircle } from "react-icons/ai";
+import { FaGoogle } from "react-icons/fa";
 import { GoogleAuthProvider, signInWithPopup, getAuth } from "firebase/auth";
 import { app } from "../firebase";
 import { useDispatch } from "react-redux";
@@ -66,8 +67,12 @@ function OAuth() {
       className="w-full mt-3"
       onClick={handleGoogleSignIn}
     >
-      <AiFillGoogleCircle className="w-5 h-5 mr-1" />
-      Continue with Goggle
+      <img
+        src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg"
+        alt="google"
+        className="mr-2"
+      />
+      Goggle
     </Button>
   );
 }
