@@ -4,11 +4,12 @@ import { FaMinus, FaPhotoVideo } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 import { MdClose, MdOutlineContentPaste } from "react-icons/md";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toggleSearchPageSilder } from "../redux-slice/searchSliderSlice";
 import { Button } from "flowbite-react";
 
 function SearchSideBar({ tab, category, searchItem }) {
+  const { currentUser } = useSelector((state) => state.user);
   const [blogDropdown, setBlogDropdown] = useState(false);
   const [practiceDropdown, setPracticeDropdown] = useState(false);
 
@@ -26,9 +27,13 @@ function SearchSideBar({ tab, category, searchItem }) {
         <ul className="flex flex-col gap-3 my-5 transition-all duration-500">
           {/* All Content */}
           <Link
-            to={`/search?tab=all${
-              searchItem ? `&searchItem=${searchItem}` : ""
-            }&page=1`}
+            to={
+              currentUser
+                ? `/search?tab=all${
+                    searchItem ? `&searchItem=${searchItem}` : ""
+                  }&page=1`
+                : "/login"
+            }
           >
             <li
               className={`flex items-center gap-5 cursor-pointer hover:bg-gray-100 hover:dark:bg-[#374151] py-2 px-2 rounded-lg ${
@@ -50,9 +55,13 @@ function SearchSideBar({ tab, category, searchItem }) {
 
           {/* Blogs Sidebar */}
           <Link
-            to={`/search?tab=blogs${
-              searchItem ? `&searchItem=${searchItem}` : ""
-            }&page=1`}
+            to={
+              currentUser
+                ? `/search?tab=blogs${
+                    searchItem ? `&searchItem=${searchItem}` : ""
+                  }&page=1`
+                : "/login"
+            }
           >
             <li
               className={`flex items-center justify-between gap-2 cursor-pointer hover:bg-gray-100 hover:dark:bg-[#374151] py-2 px-2 rounded-lg ${
@@ -88,9 +97,13 @@ function SearchSideBar({ tab, category, searchItem }) {
             } flex flex-col gap-2 my-1 transition-all duration-300 mx-5`}
           >
             <Link
-              to={`/search?tab=blogs&category=about club${
-                searchItem && `&searchItem=${searchItem}`
-              }&page=1`}
+              to={
+                currentUser
+                  ? `/search?tab=blogs&category=about club${
+                      searchItem && `&searchItem=${searchItem}`
+                    }&page=1`
+                  : "/login"
+              }
             >
               <p
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
@@ -102,9 +115,13 @@ function SearchSideBar({ tab, category, searchItem }) {
               </p>
             </Link>
             <Link
-              to={`/search?tab=blogs&category=matches${
-                searchItem && `&searchItem=${searchItem}`
-              }&page=1`}
+              to={
+                currentUser
+                  ? `/search?tab=blogs&category=matches${
+                      searchItem && `&searchItem=${searchItem}`
+                    }&page=1`
+                  : "/login"
+              }
             >
               <p
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
@@ -116,9 +133,13 @@ function SearchSideBar({ tab, category, searchItem }) {
               </p>
             </Link>
             <Link
-              to={`/search?tab=blogs&category=practices${
-                searchItem && `&searchItem=${searchItem}`
-              }&page=1`}
+              to={
+                currentUser
+                  ? `/search?tab=blogs&category=practices${
+                      searchItem && `&searchItem=${searchItem}`
+                    }&page=1`
+                  : "/login"
+              }
             >
               <p
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
@@ -130,9 +151,13 @@ function SearchSideBar({ tab, category, searchItem }) {
               </p>
             </Link>
             <Link
-              to={`/search?tab=blogs&category=others${
-                searchItem && `&searchItem=${searchItem}`
-              }&page=1`}
+              to={
+                currentUser
+                  ? `/search?tab=blogs&category=others${
+                      searchItem && `&searchItem=${searchItem}`
+                    }&page=1`
+                  : "/login"
+              }
             >
               <p
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
@@ -144,9 +169,13 @@ function SearchSideBar({ tab, category, searchItem }) {
               </p>
             </Link>
             <Link
-              to={`/search?tab=blogs&category=euro cup 2024${
-                searchItem && `&searchItem=${searchItem}`
-              }&page=1`}
+              to={
+                currentUser
+                  ? `/search?tab=blogs&category=euro cup 2024${
+                      searchItem && `&searchItem=${searchItem}`
+                    }&page=1`
+                  : "/login"
+              }
             >
               <p
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
@@ -162,9 +191,13 @@ function SearchSideBar({ tab, category, searchItem }) {
 
           {/* Prctices Sidebar */}
           <Link
-            to={`/search?tab=practices${
-              searchItem && `&searchItem=${searchItem}`
-            }&page=1`}
+            to={
+              currentUser
+                ? `/search?tab=practices${
+                    searchItem && `&searchItem=${searchItem}`
+                  }&page=1`
+                : "/login"
+            }
           >
             <li
               className={`flex items-center justify-between gap-2 cursor-pointer hover:bg-gray-100 hover:dark:bg-[#374151] py-2 px-2 rounded-lg ${
@@ -200,9 +233,13 @@ function SearchSideBar({ tab, category, searchItem }) {
             } flex flex-col gap-2 my-2 transition-all duration-500 mx-5`}
           >
             <Link
-              to={`/search?tab=practices&category=outfield${
-                searchItem && `&searchItem=${searchItem}`
-              }&page=1`}
+              to={
+                currentUser
+                  ? `/search?tab=practices&category=outfield${
+                      searchItem && `&searchItem=${searchItem}`
+                    }&page=1`
+                  : "/login"
+              }
             >
               <p
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
@@ -214,9 +251,13 @@ function SearchSideBar({ tab, category, searchItem }) {
               </p>
             </Link>
             <Link
-              to={`/search?tab=practices&category=one to one${
-                searchItem && `&searchItem=${searchItem}`
-              }&page=1`}
+              to={
+                currentUser
+                  ? `/search?tab=practices&category=one to one${
+                      searchItem && `&searchItem=${searchItem}`
+                    }&page=1`
+                  : "/login"
+              }
             >
               <p
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
@@ -228,9 +269,13 @@ function SearchSideBar({ tab, category, searchItem }) {
               </p>
             </Link>
             <Link
-              to={`/search?tab=practices&category=saq${
-                searchItem && `&searchItem=${searchItem}`
-              }&page=1`}
+              to={
+                currentUser
+                  ? `/search?tab=practices&category=saq${
+                      searchItem && `&searchItem=${searchItem}`
+                    }&page=1`
+                  : "/login"
+              }
             >
               <p
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
@@ -242,9 +287,13 @@ function SearchSideBar({ tab, category, searchItem }) {
               </p>
             </Link>
             <Link
-              to={`/search?tab=practices&category=goalkeepers${
-                searchItem && `&searchItem=${searchItem}`
-              }&page=1`}
+              to={
+                currentUser
+                  ? `/search?tab=practices&category=goalkeepers${
+                      searchItem && `&searchItem=${searchItem}`
+                    }&page=1`
+                  : "/login"
+              }
             >
               <p
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
@@ -256,9 +305,13 @@ function SearchSideBar({ tab, category, searchItem }) {
               </p>
             </Link>
             <Link
-              to={`/search?tab=practices&category=tutorials${
-                searchItem && `&searchItem=${searchItem}`
-              }&page=1`}
+              to={
+                currentUser
+                  ? `/search?tab=practices&category=tutorials${
+                      searchItem && `&searchItem=${searchItem}`
+                    }&page=1`
+                  : "/login"
+              }
             >
               <p
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
@@ -270,9 +323,13 @@ function SearchSideBar({ tab, category, searchItem }) {
               </p>
             </Link>
             <Link
-              to={`/search?tab=practices&category=youth curriculums${
-                searchItem && `&searchItem=${searchItem}`
-              }&page=1`}
+              to={
+                currentUser
+                  ? `/search?tab=practices&category=youth curriculums${
+                      searchItem && `&searchItem=${searchItem}`
+                    }&page=1`
+                  : "/login"
+              }
             >
               <p
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
@@ -284,9 +341,13 @@ function SearchSideBar({ tab, category, searchItem }) {
               </p>
             </Link>
             <Link
-              to={`/search?tab=practices&category=club%20insides${
-                searchItem && `&searchItem=${searchItem}`
-              }&page=1`}
+              to={
+                currentUser
+                  ? `/search?tab=practices&category=club%20insides${
+                      searchItem && `&searchItem=${searchItem}`
+                    }&page=1`
+                  : "/login"
+              }
             >
               <p
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
@@ -302,7 +363,7 @@ function SearchSideBar({ tab, category, searchItem }) {
         </ul>
       </div>
 
-      <Link to="/search?tab=all&page=1">
+      <Link to={currentUser ? "/search?tab=all&page=1" : "/login"}>
         <Button
           type="button"
           gradientDuoTone="purpleToPink"

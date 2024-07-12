@@ -36,16 +36,16 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-//! ******** PASSWORD HASHING BEFORE DATA SAVE INTO COLLECTION ******** !//
+//? ******** PASSWORD HASHING BEFORE DATA SAVE INTO COLLECTION ********
 userSchema.pre("save", async function (next) {
   const user = this; // this = user creation data
 
-  // If password is modified then call the next()
+  //* If password is modified then call the next()
   if (!user.isModified("password")) {
     next();
   }
 
-  // If new user comes then password has to be hashed by try and catch
+  //* If new user comes then password has to be hashed by try and catch
   try {
     const hashPasswod = await bcrypt.hash(user.password, 10);
     user.password = hashPasswod;
@@ -54,7 +54,7 @@ userSchema.pre("save", async function (next) {
   }
 });
 
-//! ******** CREATE JWT TOKEN AND RETURN IT FOR REGISTER ******** !//
+//? ******** CREATE JWT TOKEN AND RETURN IT FOR REGISTER ********
 userSchema.methods.generateToken = function () {
   try {
     return jwt.sign(
@@ -65,7 +65,7 @@ userSchema.methods.generateToken = function () {
       },
       JWT_SIGNATURE,
       {
-        expiresIn: "30d",
+        expiresIn: "5d",
       }
     );
   } catch (error) {

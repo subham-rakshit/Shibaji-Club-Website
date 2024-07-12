@@ -16,6 +16,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "../redux-slice/themeSlice";
 import { FaMoon, FaSun } from "react-icons/fa";
 import { signOutSuccess } from "../redux-slice/userSlice";
+import Cookies from "js-cookie";
 
 function Header() {
   const [searchInput, setSearchInput] = useState("");
@@ -29,6 +30,26 @@ function Header() {
   useEffect(() => {
     AOS.init({ duration: 1000 });
   }, []);
+
+  useEffect(() => {
+    const checkTokenStatus = async () => {
+      try {
+        const res = await fetch("/api/auth/check-token");
+        const data = await res.json();
+
+        if (!res.ok && data.status === false) {
+          if (currentUser) {
+            dispatch(signOutSuccess());
+          }
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    if (location.pathname !== "/login" && location.pathname !== "/register") {
+      checkTokenStatus();
+    }
+  }, [location]);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);

@@ -54,7 +54,7 @@ const authControllerObject = {
           .status(201)
           .cookie("jwt_token", await userCreated.generateToken(), {
             httpOnly: true,
-            expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30days
+            expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
           })
           .json({
             message: "Registration successful!",
@@ -108,7 +108,7 @@ const authControllerObject = {
             .status(200)
             .cookie("jwt_token", await userExist.generateToken(), {
               httpOnly: true,
-              expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30days
+              expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30days  (d * h * m * s * ms)
             })
             .json({
               message: "Login successful!",
@@ -152,7 +152,7 @@ const authControllerObject = {
           .status(200)
           .cookie("jwt_token", await user.generateToken(), {
             httpOnly: true,
-            expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), //30days
+            expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30days (d * h * m * s * ms)
           })
           .json({
             message: "Login successful!",
@@ -177,12 +177,32 @@ const authControllerObject = {
           .status(201)
           .cookie("jwt_token", await userCreated.generateToken(), {
             httpOnly: true,
-            expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), //30days
+            expires: new Date(Date.now() + 3000), //30days
           })
           .json({
             message: "Registration successful!",
             userDetails: rest,
           });
+      }
+    } catch (error) {
+      return next(error);
+    }
+  },
+
+  //* Token Check -->
+  async checkRequestingToken(req, res, next) {
+    const jwtToken = req.cookies.jwt_token;
+    try {
+      if (!jwtToken) {
+        return res.status(401).json({
+          status: false,
+          message: "Invalid User",
+          extraDetails: "User Unauthorized!",
+        });
+      } else {
+        return res.status(200).json({
+          status: true,
+        });
       }
     } catch (error) {
       return next(error);

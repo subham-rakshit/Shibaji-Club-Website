@@ -26,7 +26,10 @@ router
   .route("/login")
   .post(validateLoginUser, validateUsers, authControllerObject.loginController);
 
-//? Google Api Route --->
+//? Google Login and Register Api Route --->
 router.route("/google").post(authControllerObject.googleController);
+
+//? Token is present in Browser check API route -->
+router.route("/check-token").get(authControllerObject.checkRequestingToken);
 
 export default router;
