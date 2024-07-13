@@ -28,6 +28,11 @@ const userSchema = new mongoose.Schema(
       default:
         "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
     },
+    verified: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
     isAdmin: {
       type: Boolean,
       default: false,
@@ -65,7 +70,7 @@ userSchema.methods.generateToken = function () {
       },
       JWT_SIGNATURE,
       {
-        expiresIn: "5d",
+        expiresIn: "30d",
       }
     );
   } catch (error) {

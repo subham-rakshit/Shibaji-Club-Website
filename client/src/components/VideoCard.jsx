@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-function VideoCard({ eachVideo, mainHeight, groupHeight, imageHeight }) {
+function VideoCard({ eachVideo, mainHeight, imageHeight }) {
   const [isClick, setIsClick] = useState(false);
   return (
     <div
-      className={`w-full sm:max-w-[300px] border dark:border-gray-600 group relative ${
+      className={`w-full ${
+        mainHeight && "max-w-[300px]"
+      } sm:max-w-[300px] border dark:border-gray-600 group relative ${
         mainHeight ? `${mainHeight}` : "h-[400px]"
       } overflow-hidden rounded-lg transition-all duration-500`}
     >

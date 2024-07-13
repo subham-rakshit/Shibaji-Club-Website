@@ -179,7 +179,7 @@ function CreatePost() {
             <option value="about club">About Club</option>
             <option value="matches">Matches</option>
             <option value="practices">Practices</option>
-            <option value="others">Others</option>
+            <option value="cflpremier24">CFL Premier 2024</option>
             <option value="euro cup 2024">Euro Cup 2024</option>
           </Select>
         </div>

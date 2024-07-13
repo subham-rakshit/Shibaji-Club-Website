@@ -133,7 +133,7 @@ const Footer = () => {
         </div>
       </div>
       <hr className="mt-2 border border-gray-300 dark:border-gray-600 w-full" />
-      <p className="text-[16px] font-semibold cursor-pointer text-center mt-[20px]">
+      <p className="text-[16px] font-semibold cursor-pointer text-center mt-[20px] px-2">
         Copyright © 2024. Shibaji Sangha Football Club. All Rights Reserved.
       </p>
     </div>

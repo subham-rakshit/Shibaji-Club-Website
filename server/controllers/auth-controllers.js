@@ -1,4 +1,13 @@
 import UserCollection from "../models/user-model.js";
+import {
+  generateOTP,
+  generateOTPEmailTemplate,
+  mailTransport,
+  plainEmailTemplate,
+} from "../utils/mail.js";
+import VerificationTokenCollection from "../models/email-verification-token-model.js";
+import { SMTP_MAIL } from "../config/envConfig.js";
+import { isValidObjectId } from "mongoose";
 
 const authControllerObject = {
   async homeController(req, res) {
@@ -39,32 +48,55 @@ const authControllerObject = {
         };
         return next(emailError);
       }
-      //? If user with same email id doesn't exists, then we are creating a new user in DB
-      else {
-        const userCreated = await UserCollection.create({
-          username:
-            username.toLowerCase().split(" ").join("") +
-            Math.random().toString(9).slice(-4),
-          email: email.trim(),
-          password: password.trim(),
-          category,
-        });
-        const { password: pass, ...rest } = userCreated._doc;
 
-        //? We are just send a JSON message with JWT token (which is generated ny [generateToken() middleware in user-model.js file]) and userId for perticular user details to extract data.
-        return res
-          .status(201)
-          .cookie("jwt_token", await userCreated.generateToken(), {
-            httpOnly: true,
-            expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
-          })
-          .json({
-            message:
-              "You have successfully registered. Thank you for joining us!",
-            userDetails: rest,
-          });
-      }
-      //! **NOTE** : While new user data will store in database, before that we are hash the user's password (which is created in user-model.js file)
+      //? If user with same email id doesn't exists, then we are creating a new user in DB
+      const userCreated = new UserCollection({
+        username:
+          username.toLowerCase().split(" ").join("") +
+          Math.random().toString(9).slice(-4),
+        email: email.trim(),
+        password: password.trim(),
+        category,
+      });
+
+      //? Generate an OTP for email verification -->
+      const OTP = generateOTP();
+
+      //? We are calling the VerificationTokenCollection to store the registered user's id and token (before store this token will hashed then store) in DB
+      const verificationToken = new VerificationTokenCollection({
+        owner: userCreated._id, // new user's id
+        token: OTP, // 4 digits OTP as token
+      });
+
+      //? We saving the userId and token in DB for email verification
+      await verificationToken.save();
+
+      //? We are also saving the user info for initial. (Means before email verification)
+      await userCreated.save();
+
+      //? We are sending the OTP in user's provided email address. (mailTransport() and generateOTPEmailTemplate() are in mail.js file)
+      mailTransport().sendMail({
+        from: SMTP_MAIL,
+        to: userCreated.email,
+        subject: "VERIFY YOUR EMAIL ACCOUNT",
+        html: generateOTPEmailTemplate(OTP),
+      });
+
+      //? We are just extracting the user's password and send userinfo with success message
+      const { password: pass, ...rest } = userCreated._doc;
+      return res
+        .status(201)
+        .cookie("jwt_token", await userCreated.generateToken(), {
+          httpOnly: true,
+          expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+        })
+        .json({
+          message:
+            "Your account has been created! An OTP has been sent to your email address.",
+          userDetails: rest,
+        });
+
+      //* NOTE : While new user data will store in database, before that we are hash the user's password (which is created in user-model.js file)
     } catch (error) {
       console.log(
         `Error in :: auth-controllers.js/registerController :: `,
@@ -76,6 +108,115 @@ const authControllerObject = {
       };
       return next(catchError);
     }
+  },
+
+  //* Verify the user's provided OTP for Emial Verification -->
+  async verifyEmail(req, res, next) {
+    const { userId, otp } = req.body;
+
+    // If userId and OTP is not present -
+    if (!userId || !otp.trim()) {
+      const verifyError = {
+        status: 400,
+        message: "Invalid parameters for Varification token collection.",
+        extraDetails: "Invalid request, missing parameters!",
+      };
+
+      return next(verifyError);
+    }
+
+    // Prvided userId is valid MongoDB ObjectId or not. MongoDB ObjectIds are 12-byte identifiers typically represented as 24-character hexadecimal strings.
+    if (!isValidObjectId(userId)) {
+      const verifyError = {
+        status: 400,
+        message: "Invalid userId for Varification token collection.",
+        extraDetails: "Invalid user ID!",
+      };
+
+      return next(verifyError);
+    }
+
+    // If all checks passed successfully then, we are finding the user in UserCollection by the provided id.
+    const user = await UserCollection.findById(userId);
+
+    // If user info not found
+    if (!user) {
+      const notFOundError = {
+        status: 404,
+        message: "User is not present in the UserCollection",
+        extraDetails: "User not found!",
+      };
+
+      return next(notFOundError);
+    }
+
+    // If account verification already done
+    if (user.verified) {
+      const alreadyVerified = {
+        status: 400,
+        message: "User is already verified",
+        extraDetails: "This account is already verified!",
+      };
+      return next(alreadyVerified);
+    }
+
+    // Find the hashed token of the OTP in VerificationTokenCollection for comparison
+    const dbToken = await VerificationTokenCollection.findOne({
+      owner: user._id,
+    });
+
+    // Check the token is present or not. If not that means token has been expired
+    if (!dbToken) {
+      const tokenError = {
+        status: 404,
+        message: "User take more than 1hr to verify.",
+        extraDetails: "User not found!",
+      };
+
+      return next(tokenError);
+    }
+
+    // Lets compare the provided OTP with our stored hashed OTP token
+    const comparisonStatus = await dbToken.compareToken(otp.trim());
+
+    // If provided OTP and stored hashed token is not matched
+    if (!comparisonStatus) {
+      const tokenNotMatched = {
+        status: 403, // Forbidden (Due to authentication or authorization failures, including mismatched tokens.)
+        message: "Token is not matched.",
+        extraDetails: "Invalid OTP. Please provide a valid OTP!",
+      };
+
+      return next(tokenNotMatched);
+    }
+
+    // If all checks are passed, then we modify the use info and save it (verified: false -> verified: true)
+    user.verified = true;
+    await user.save();
+
+    // After verification we are delete the token details inside our DB (VerificationTokenCollection)
+    await VerificationTokenCollection.findByIdAndDelete(dbToken._id);
+
+    // Sending a welcome mail after successfully verification
+    mailTransport().sendMail({
+      from: SMTP_MAIL,
+      to: user.email,
+      subject: "WELCOME EMAIL",
+      html: plainEmailTemplate(
+        "Email Verification Successful",
+        "Congratulations! Your email has been successfully verified. Thank you for verifying your email with us. You can now enjoy all the benefits of our service."
+      ),
+    });
+
+    // Extract the password from the user docs
+    const { password, ...rest } = user._doc;
+
+    // Send the rest user info and success msg as response
+    res.status(201).json({
+      message:
+        "Your email has been successfully verified. You can now access all features.",
+      userDetails: rest,
+    });
   },
 
   //* Login Api Route Controller -->
@@ -144,10 +285,13 @@ const authControllerObject = {
 
   //* Google Api Route Controller -->
   async googleController(req, res, next) {
+    // Destructure username, email and googleProfilePhotoURL from req.body
     const { username, email, googleProfilePhotoURL } = req.body;
     try {
+      // User already exists with provided email address on not
       const user = await UserCollection.findOne({ email });
 
+      // If user already exists then we simply extract the password from user info docs and send response as Login Successfully. As Login feature.
       if (user) {
         const { password: pass, ...rest } = user._doc;
 
@@ -162,10 +306,15 @@ const authControllerObject = {
             userDetails: rest,
           });
       } else {
+        // If user not exist, then simply create a new user. As Registraion feature
+
+        // We initially generate a random password
         const generatedPassword =
           Math.random().toString(36).slice(-8) +
           Math.random().toString(36).slice(-8);
-        const userCreated = await UserCollection.create({
+
+        // We create a new User
+        const userCreated = new UserCollection({
           username:
             username.trim().toLowerCase().split(" ").join("") +
             Math.random().toString(9).slice(-4),
@@ -175,16 +324,40 @@ const authControllerObject = {
           profilePicture: googleProfilePhotoURL,
         });
 
+        // Generate an OTP for email verification -->
+        const OTP = generateOTP();
+
+        // We are calling the VerificationTokenCollection to store the registered user's id and token (before store this token will hashed then store) in DB
+        const verificationToken = new VerificationTokenCollection({
+          owner: userCreated._id, // new user's id
+          token: OTP, // 4 digits OTP as token
+        });
+
+        // We saving the userId and token in DB for email verification
+        await verificationToken.save();
+
+        // We are also saving the user info for initial. (Means before email verification)
+        await userCreated.save();
+
+        // We are sending the OTP in user's provided email address. (mailTransport() and generateOTPEmailTemplate() are in mail.js file)
+        mailTransport().sendMail({
+          from: SMTP_MAIL,
+          to: userCreated.email,
+          subject: "VERIFY YOUR EMAIL ACCOUNT",
+          html: generateOTPEmailTemplate(OTP),
+        });
+
+        // We are just extracting the user's password and send userinfo with success message
         const { password: pass, ...rest } = userCreated._doc;
         return res
           .status(201)
           .cookie("jwt_token", await userCreated.generateToken(), {
             httpOnly: true,
-            expires: new Date(Date.now() + 3000), //30days
+            expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), //30days
           })
           .json({
             message:
-              "You have successfully registered. Thank you for joining us!",
+              "Your account has been created! An OTP has been sent to your email address.",
             userDetails: rest,
           });
       }
@@ -193,15 +366,15 @@ const authControllerObject = {
     }
   },
 
-  //* Token Check -->
+  //* Cookies Token Check -->
   async checkRequestingToken(req, res, next) {
     const jwtToken = req.cookies.jwt_token;
     try {
       if (!jwtToken) {
         return res.status(401).json({
           status: false,
-          message: "Invalid User",
-          extraDetails: "User Unauthorized!",
+          message: "Auth expeired.",
+          extraDetails: "Session expired.",
         });
       } else {
         return res.status(200).json({

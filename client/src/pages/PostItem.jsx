@@ -35,10 +35,7 @@ function PostItem() {
         console.log(error.message);
       }
     };
-    getPostFetchDetails();
-  }, [postSlug]);
 
-  useEffect(() => {
     const getRecentPosts = async () => {
       try {
         const res = await fetch(`/api/post/getRecentPosts`);
@@ -50,8 +47,21 @@ function PostItem() {
         console.log(error.message);
       }
     };
+
+    getPostFetchDetails();
     getRecentPosts();
   }, [postSlug]);
+
+  useEffect(() => {
+    const addBlankTargetToLinks = () => {
+      const links = document.querySelectorAll(".post-item-content-style a");
+      links.forEach((link) => {
+        link.setAttribute("target", "_blank");
+      });
+    };
+
+    addBlankTargetToLinks();
+  }, [fetchPostDetails]);
 
   if (isLoading) {
     return (

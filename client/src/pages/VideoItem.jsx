@@ -22,7 +22,7 @@ function VideoItem() {
   const [videoIsVisible, setVideoIsVisible] = useState(false);
 
   useEffect(() => {
-    const getPostFetchDetails = async () => {
+    const getVideoFetchDetails = async () => {
       try {
         setIsLoading(true);
         setFetchError(false);
@@ -44,11 +44,8 @@ function VideoItem() {
         console.log(error.message);
       }
     };
-    getPostFetchDetails();
-  }, [videoSlug]);
 
-  useEffect(() => {
-    const getRecentPosts = async () => {
+    const getRecentVideos = async () => {
       try {
         const res = await fetch(`/api/video/getRecentVideos`);
         const data = await res.json();
@@ -59,8 +56,21 @@ function VideoItem() {
         console.log(error.message);
       }
     };
-    getRecentPosts();
+
+    getVideoFetchDetails();
+    getRecentVideos();
   }, [videoSlug]);
+
+  useEffect(() => {
+    const addBlankTargetToLinks = () => {
+      const links = document.querySelectorAll(".post-item-content-style a");
+      links.forEach((link) => {
+        link.setAttribute("target", "_blank");
+      });
+    };
+
+    addBlankTargetToLinks();
+  }, [fetchVideoDetails]);
 
   if (isLoading) {
     return (

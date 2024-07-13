@@ -12,6 +12,7 @@ function SearchSideBar({ tab, category, searchItem }) {
   const { currentUser } = useSelector((state) => state.user);
   const [blogDropdown, setBlogDropdown] = useState(false);
   const [practiceDropdown, setPracticeDropdown] = useState(false);
+  const [cflDropdown, setCflDropdown] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -73,6 +74,7 @@ function SearchSideBar({ tab, category, searchItem }) {
                   tab === "blogs" && category && !prev ? prev : !prev
                 );
                 setPracticeDropdown(false);
+                setCflDropdown(false);
               }}
             >
               <div className="flex items-center gap-5">
@@ -88,7 +90,7 @@ function SearchSideBar({ tab, category, searchItem }) {
               )}
             </li>
           </Link>
-
+          {/* Blogs category */}
           <li
             className={`${
               blogDropdown || (tab === "blogs" && category)
@@ -105,14 +107,14 @@ function SearchSideBar({ tab, category, searchItem }) {
                   : "/login"
               }
             >
-              <p
+              <div
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
                   category === "about club" &&
                   "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
                 }`}
               >
                 About Club
-              </p>
+              </div>
             </Link>
             <Link
               to={
@@ -123,14 +125,14 @@ function SearchSideBar({ tab, category, searchItem }) {
                   : "/login"
               }
             >
-              <p
+              <div
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
                   category === "matches" &&
                   "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
                 }`}
               >
                 Matches
-              </p>
+              </div>
             </Link>
             <Link
               to={
@@ -141,32 +143,32 @@ function SearchSideBar({ tab, category, searchItem }) {
                   : "/login"
               }
             >
-              <p
+              <div
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
                   category === "practices" &&
                   "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
                 }`}
               >
                 Practices
-              </p>
+              </div>
             </Link>
             <Link
               to={
                 currentUser
-                  ? `/search?tab=blogs&category=others${
+                  ? `/search?tab=blogs&category=cflpremier24${
                       searchItem && `&searchItem=${searchItem}`
                     }&page=1`
                   : "/login"
               }
             >
-              <p
-                className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
-                  category === "others" &&
+              <div
+                className={`flex items-center justify-between text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
+                  category === "cflpremier24" &&
                   "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
                 }`}
               >
-                Others
-              </p>
+                CFL Premier 2024
+              </div>
             </Link>
             <Link
               to={
@@ -177,14 +179,14 @@ function SearchSideBar({ tab, category, searchItem }) {
                   : "/login"
               }
             >
-              <p
+              <div
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
                   category === "euro cup 2024" &&
                   "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
                 }`}
               >
                 Euro Cup 2024
-              </p>
+              </div>
             </Link>
           </li>
           {/* Blogs Sidebar */}
@@ -224,7 +226,7 @@ function SearchSideBar({ tab, category, searchItem }) {
               )}
             </li>
           </Link>
-
+          {/* Practices category */}
           <li
             className={`${
               practiceDropdown || (tab === "practices" && category)
@@ -241,14 +243,14 @@ function SearchSideBar({ tab, category, searchItem }) {
                   : "/login"
               }
             >
-              <p
+              <div
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
                   category === "outfield" &&
                   "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
                 }`}
               >
                 Outfield
-              </p>
+              </div>
             </Link>
             <Link
               to={
@@ -259,14 +261,14 @@ function SearchSideBar({ tab, category, searchItem }) {
                   : "/login"
               }
             >
-              <p
+              <div
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
                   category === "one to one" &&
                   "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
                 }`}
               >
                 One to One
-              </p>
+              </div>
             </Link>
             <Link
               to={
@@ -277,14 +279,14 @@ function SearchSideBar({ tab, category, searchItem }) {
                   : "/login"
               }
             >
-              <p
+              <div
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
                   category === "saq" &&
                   "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
                 }`}
               >
                 SAQ
-              </p>
+              </div>
             </Link>
             <Link
               to={
@@ -295,14 +297,14 @@ function SearchSideBar({ tab, category, searchItem }) {
                   : "/login"
               }
             >
-              <p
+              <div
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
                   category === "goalkeepers" &&
                   "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
                 }`}
               >
                 Goalkeepers
-              </p>
+              </div>
             </Link>
             <Link
               to={
@@ -313,14 +315,14 @@ function SearchSideBar({ tab, category, searchItem }) {
                   : "/login"
               }
             >
-              <p
+              <div
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
                   category === "tutorials" &&
                   "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
                 }`}
               >
                 Tutorials
-              </p>
+              </div>
             </Link>
             <Link
               to={
@@ -331,14 +333,14 @@ function SearchSideBar({ tab, category, searchItem }) {
                   : "/login"
               }
             >
-              <p
+              <div
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
                   category === "youth curriculums" &&
                   "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
                 }`}
               >
                 Youth Curriculums
-              </p>
+              </div>
             </Link>
             <Link
               to={
@@ -349,14 +351,14 @@ function SearchSideBar({ tab, category, searchItem }) {
                   : "/login"
               }
             >
-              <p
+              <div
                 className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
                   category === "club insides" &&
                   "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
                 }`}
               >
                 Club Insides
-              </p>
+              </div>
             </Link>
           </li>
           {/* Practices Sidebar */}

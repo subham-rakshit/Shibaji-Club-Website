@@ -15,7 +15,6 @@ import {
   signInFailure,
   initialRender,
 } from "../redux-slice/userSlice";
-import Cookies from "js-cookie";
 import AOS from "aos";
 import { toast } from "react-toastify";
 import { RiLockPasswordFill } from "react-icons/ri";
@@ -32,6 +31,8 @@ function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading, currentUser } = useSelector((state) => state.user);
+
+  console.log(currentUser);
 
   // Input's value handelers
   const inputHandler = (e) => {
@@ -63,10 +64,6 @@ function Register() {
       const data = await response.json();
 
       if (response.ok) {
-        Cookies.set("jwt_token", data.jwt_token, {
-          expires: 30,
-          path: "/",
-        });
         toast.success(data.message, {
           theme: "colored",
           position: "bottom-center",

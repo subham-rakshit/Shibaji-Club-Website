@@ -1,12 +1,10 @@
 import { Button } from "flowbite-react";
 import React from "react";
-import { AiFillGoogleCircle } from "react-icons/ai";
-import { FaGoogle } from "react-icons/fa";
 import { GoogleAuthProvider, signInWithPopup, getAuth } from "firebase/auth";
 import { app } from "../firebase";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { signInSuccess } from "../redux-slice/userSlice";
+import { signInSuccess, signInFailure } from "../redux-slice/userSlice";
 import { toast } from "react-toastify";
 
 function OAuth() {
@@ -38,18 +36,20 @@ function OAuth() {
       };
       const response = await fetch(apiURL, options);
       const data = await response.json();
+
       if (response.ok) {
         toast.success(data.message, {
           theme: "colored",
           position: "bottom-center",
         });
         dispatch(signInSuccess(data.userDetails));
-        navigate("/");
+        navigate("/admin-dashboard?tab=profile");
       } else {
         toast.error(data.extraDetails, {
           theme: "colored",
           position: "bottom-center",
         });
+        dispatch(signInFailure(data.extraDetails));
       }
     } catch (error) {
       console.log(error);
@@ -57,6 +57,7 @@ function OAuth() {
         theme: "colored",
         position: "bottom-center",
       });
+      dispatch(signInFailure(data.extraDetails));
     }
   };
   return (

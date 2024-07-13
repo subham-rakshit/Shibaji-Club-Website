@@ -21,6 +21,9 @@ router
     authControllerObject.registerController
   );
 
+//? Verify email address API Route --->
+router.route("/verify-email").post(authControllerObject.verifyEmail);
+
 //? Login Api Route --->
 router
   .route("/login")

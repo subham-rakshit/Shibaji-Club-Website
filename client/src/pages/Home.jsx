@@ -793,6 +793,7 @@ function Home() {
               <Button
                 type="button"
                 gradientDuoTone="pinkToOrange"
+                outline
                 className="font-[Inter] w-[fit-content]"
                 data-aos="flip-right"
               >
@@ -804,6 +805,7 @@ function Home() {
               type="button"
               className="font-[Inter] w-[fit-content]"
               gradientDuoTone="pinkToOrange"
+              outline
               data-aos="flip-left"
             >
               <Link to="/login">Sign in</Link>
