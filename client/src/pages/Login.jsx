@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { Button, Label, Spinner } from "flowbite-react";
-import { Input, OAuth } from "../components";
+import { Input, OAuth, VerifyEmail } from "../components";
 import { IoMdMail } from "react-icons/io";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
@@ -87,7 +87,7 @@ function Login() {
     }
   };
 
-  // Email verification
+  // Email verification API call
   const handleEmailVerification = async () => {
     if (otpNumber.length === 4) {
       try {
@@ -232,75 +232,16 @@ function Login() {
         </div>
         {/* Form Content */}
 
-        {/* SignUp Content */}
-        <div
-          className="w-full md:w-[50%] p-5 lg:p-8 flex flex-col justify-center items-center border-2 border-red-500 bg-gradient-to-r from-red-500 to-red-700"
-          data-aos="fade-left"
-        >
-          <h1 className="text-white text-center font-extrabold font-[Inter] text-2xl sm:text-3xl mb-3">
-            {registeredUser && !registeredUser.verified
-              ? "Verify Email Address"
-              : "Hello, Friend!"}
-          </h1>
-          <p className="text-center text-white font-normal font-[Inter] text-normal text-sm mb-5">
-            {registeredUser && !registeredUser.verified
-              ? `Please enter the OTP we've send to ${registeredUser.email}`
-              : "Enter your personal details and start journey with us"}
-          </p>
-          {registeredUser && !registeredUser.verified && (
-            <div className="flex items-center gap-2 rounded-lg shadow-sm bg-[#F9FAFB] dark:bg-[#374151]  border border-[#D1D5DB] dark:border-[#4B5563] focus-within:ring-2 focus-within:ring-cyan-500 overflow-hidden px-3 my-5">
-              <RiLockPasswordFill
-                size="30"
-                className="text-[#6B7280] dark:text-[#9CA3AF]"
-              />
-              <input
-                type={isShown ? "text" : "password"}
-                id="verifyOTPInLoginPage"
-                name="loginPageOTP"
-                className="bg-[#F9FAFB] dark:bg-[#374151] border-none outline-none focus:ring-0 w-full text-gray-900 dark:text-white dark:placeholder-gray-400 text-sm px-1 py-[13px]"
-                placeholder="****"
-                value={otpNumber}
-                required={true}
-                onChange={(e) => {
-                  const enteredOTP = e.target.value;
-                  if (enteredOTP.length <= 4) {
-                    setOtpNumber(enteredOTP);
-                  }
-                }}
-              />
-              {isShown ? (
-                <FaRegEye
-                  className="cursor-pointer"
-                  onClick={() => setIsShown((prev) => !prev)}
-                />
-              ) : (
-                <FaRegEyeSlash
-                  className="cursor-pointer"
-                  onClick={() => setIsShown((prev) => !prev)}
-                />
-              )}
-            </div>
-          )}
-          {registeredUser && !registeredUser.verified ? (
-            <Button
-              gradientDuoTone="pinkToOrange"
-              className="font-bold text-white text-sm shadow-custom-light-dark"
-              onClick={handleEmailVerification}
-            >
-              Verify
-            </Button>
-          ) : (
-            <Link to="/register">
-              <Button
-                gradientDuoTone="pinkToOrange"
-                className="font-bold text-white text-sm shadow-custom-light-dark"
-              >
-                SIGN UP
-              </Button>
-            </Link>
-          )}
-        </div>
-        {/* SignUp Content */}
+        {/* SignUp Right Content */}
+        <VerifyEmail
+          heading="Hello, Friend!"
+          para="Enter your personal details and start journey with us."
+          btnText="SIGN UP"
+          handleEmailVerification={handleEmailVerification}
+          otpNumber={otpNumber}
+          setOtpNumber={setOtpNumber}
+        />
+        {/* SignUp Right Content */}
       </div>
     </div>
   );

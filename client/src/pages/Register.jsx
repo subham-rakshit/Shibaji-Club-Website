@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Button, Label, Select, Spinner } from "flowbite-react";
-import { Input, OAuth } from "../components";
+import { Input, OAuth, VerifyEmail } from "../components";
 
 import { FaRegEye, FaRegEyeSlash, FaUser } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
@@ -94,6 +94,7 @@ function Register() {
     }
   };
 
+  // Email verification API call
   const handleEmailVerification = async () => {
     if (otpNumber.length === 4) {
       try {
@@ -150,75 +151,16 @@ function Register() {
   return (
     <div className="w-full min-h-screen py-10 px-5 flex justify-center items-center mt-[65px] lg:mt-[70px] font-[Inter]">
       <div className="flex flex-col md:flex-row w-full max-w-[1024px] shadow-custom-light-dark rounded-xl overflow-hidden min-h-[600px]">
-        {/* SignIn Content */}
-        <div
-          className="w-full md:w-[50%] p-5 lg:p-8 flex flex-col justify-center items-center border-2 border-red-500 bg-gradient-to-r from-red-500 to-red-700 transition-all duration-300"
-          data-aos="fade-right"
-        >
-          <h1 className="text-white text-center font-extrabold font-[Inter] text-2xl sm:text-3xl mb-3 transition-all duration-300">
-            {registeredUser && !registeredUser.verified
-              ? "Verify Email Address"
-              : "Welcome Back!"}
-          </h1>
-          <p className="text-center text-white font-normal font-[Inter] text-normal text-sm mb-5 transition-all duration-300">
-            {registeredUser && !registeredUser.verified
-              ? `Please enter the OTP we've send to ${registeredUser.email}`
-              : "To keep connected with us please login with your personal info"}
-          </p>
-          {registeredUser && !registeredUser.verified && (
-            <div className="flex items-center gap-2 rounded-lg shadow-sm bg-[#F9FAFB] dark:bg-[#374151]  border border-[#D1D5DB] dark:border-[#4B5563] focus-within:ring-2 focus-within:ring-cyan-500 overflow-hidden px-3 my-5">
-              <RiLockPasswordFill
-                size="30"
-                className="text-[#6B7280] dark:text-[#9CA3AF]"
-              />
-              <input
-                type={isShown ? "text" : "password"}
-                id="verifyOTP"
-                name="otp"
-                className="bg-[#F9FAFB] dark:bg-[#374151] border-none outline-none focus:ring-0 w-full text-gray-900 dark:text-white dark:placeholder-gray-400 text-sm px-1 py-[13px]"
-                placeholder="****"
-                value={otpNumber}
-                required={true}
-                onChange={(e) => {
-                  const enteredOTP = e.target.value;
-                  if (enteredOTP.length <= 4) {
-                    setOtpNumber(enteredOTP);
-                  }
-                }}
-              />
-              {isShown ? (
-                <FaRegEye
-                  className="cursor-pointer"
-                  onClick={() => setIsShown((prev) => !prev)}
-                />
-              ) : (
-                <FaRegEyeSlash
-                  className="cursor-pointer"
-                  onClick={() => setIsShown((prev) => !prev)}
-                />
-              )}
-            </div>
-          )}
-          {registeredUser && !registeredUser.verified ? (
-            <Button
-              gradientDuoTone="pinkToOrange"
-              className="font-bold text-white text-sm shadow-custom-light-dark"
-              onClick={handleEmailVerification}
-            >
-              Verify
-            </Button>
-          ) : (
-            <Link to="/login">
-              <Button
-                gradientDuoTone="pinkToOrange"
-                className="font-bold text-white text-sm shadow-custom-light-dark"
-              >
-                SIGN IN
-              </Button>
-            </Link>
-          )}
-        </div>
-        {/* SignIn Content */}
+        {/* SignIn Left Content */}
+        <VerifyEmail
+          heading="Welcome Back!"
+          para="To keep connected with us please login with your personal info."
+          btnText="SIGN IN"
+          handleEmailVerification={handleEmailVerification}
+          otpNumber={otpNumber}
+          setOtpNumber={setOtpNumber}
+        />
+        {/* SignIn Left Content */}
 
         {/* Form Content */}
         <div

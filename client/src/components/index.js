@@ -26,6 +26,7 @@ import DashVideos from "./DashVideos";
 import Pagination from "./Pagination";
 import HomePageScrolling from "./HomePageScrolling";
 import DashTrial from "./DashTrial";
+import VerifyEmail from "./VerifyEmail";
 
 export {
   Header,
@@ -56,4 +57,5 @@ export {
   Pagination,
   HomePageScrolling,
   DashTrial,
+  VerifyEmail,
 };
