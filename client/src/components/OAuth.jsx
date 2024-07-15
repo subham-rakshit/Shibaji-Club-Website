@@ -2,16 +2,18 @@ import { Button } from "flowbite-react";
 import React from "react";
 import { GoogleAuthProvider, signInWithPopup, getAuth } from "firebase/auth";
 import { app } from "../firebase";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { signInSuccess, signInFailure } from "../redux-slice/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { signInSuccess } from "../redux-slice/userSlice";
+import { registrationSuccess } from "../redux-slice/registerSlice";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function OAuth() {
   //* For authorization we need to get the auth from getAuth() method and pass that app which are created when firbase sdk is initialized. For knowing google who will be requesting in firebase.
   const auth = getAuth(app);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { registeredUser } = useSelector((state) => state.register);
 
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
@@ -20,10 +22,7 @@ function OAuth() {
     try {
       //* Result from google by a method called signInWithPopup()
       const googleResult = await signInWithPopup(auth, provider);
-      // console.log(googleResult);
-      // console.log(googleResult.user.displayName);
-      // console.log(googleResult.user.email);
-      // console.log(googleResult.user.photoURL);
+
       const apiURL = "/api/auth/google";
       const options = {
         method: "POST",
@@ -42,22 +41,26 @@ function OAuth() {
           theme: "colored",
           position: "bottom-center",
         });
-        dispatch(signInSuccess(data.userDetails));
-        navigate("/admin-dashboard?tab=profile");
+        // If user data already present in DB
+        if (data.userDetails.verified) {
+          dispatch(signInSuccess(data.userDetails));
+          navigate("/");
+        } else {
+          // If new user created
+          dispatch(registrationSuccess(data.userDetails));
+        }
       } else {
         toast.error(data.extraDetails, {
           theme: "colored",
           position: "bottom-center",
         });
-        dispatch(signInFailure(data.extraDetails));
       }
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
       toast.error(data.extraDetails, {
         theme: "colored",
         position: "bottom-center",
       });
-      dispatch(signInFailure(data.extraDetails));
     }
   };
   return (
@@ -67,6 +70,7 @@ function OAuth() {
       outline
       className="w-full mt-3"
       onClick={handleGoogleSignIn}
+      disabled={registeredUser}
     >
       <img
         src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg"

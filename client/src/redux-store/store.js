@@ -1,5 +1,6 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import userReducer from "../redux-slice/userSlice";
+import registrationReducer from "../redux-slice/registerSlice";
 import themeReducer from "../redux-slice/themeSlice";
 import sliderReducer from "../redux-slice/sliderSlice";
 import searchPageSliderReducer from "../redux-slice/searchSliderSlice";
@@ -9,6 +10,7 @@ import storage from "redux-persist/lib/storage";
 // Step1:
 const rootReducer = combineReducers({
   user: userReducer,
+  register: registrationReducer,
   theme: themeReducer,
   slider: sliderReducer,
   searchSlider: searchPageSliderReducer,
