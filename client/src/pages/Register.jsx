@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Button, Label, Select, Spinner } from "flowbite-react";
@@ -6,27 +6,25 @@ import { Input, OAuth, VerifyEmail } from "../components";
 
 import { FaRegEye, FaRegEyeSlash, FaUser } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
-import { Link } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
-import {
-  signInStart,
-  signInSuccess,
-  signInFailure,
-  initialRender,
-} from "../redux-slice/userSlice";
+import { initialRender } from "../redux-slice/userSlice";
 import {
   registrationInitialRender,
   registrationStart,
   registrationSuccess,
   registrationFailure,
-  userVerified,
 } from "../redux-slice/registerSlice";
 import AOS from "aos";
 import { toast } from "react-toastify";
 import { RiLockPasswordFill } from "react-icons/ri";
 
 function Register() {
+  const { currentUser } = useSelector((state) => state.user);
+  const { registrationLoading, registeredUser } = useSelector(
+    (state) => state.register
+  );
+
   const [newUser, setNewUser] = useState({
     username: "",
     email: "",
@@ -34,14 +32,10 @@ function Register() {
     category: "General",
   });
   const [isShown, setIsShown] = useState(false);
-  const [otpNumber, setOtpNumber] = useState("");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { currentUser } = useSelector((state) => state.user);
-  const { registrationLoading, registeredUser } = useSelector(
-    (state) => state.register
-  );
+  const registerRef = useRef();
 
   // Input's value handelers
   const inputHandler = (e) => {
@@ -94,50 +88,6 @@ function Register() {
     }
   };
 
-  // Email verification API call
-  const handleEmailVerification = async () => {
-    if (otpNumber.length === 4) {
-      try {
-        const res = await fetch(`/api/auth/verify-email`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userId: registeredUser._id, otp: otpNumber }),
-        });
-        const data = await res.json();
-
-        if (res.ok) {
-          dispatch(signInSuccess(data.userDetails));
-          dispatch(userVerified());
-          toast.success(data.message, {
-            theme: "colored",
-            position: "bottom-center",
-          });
-          navigate("/");
-        } else {
-          dispatch(registrationFailure(data.extraDetails));
-          toast.error(data.extraDetails, {
-            theme: "colored",
-            position: "bottom-center",
-          });
-        }
-      } catch (error) {
-        dispatch(registrationFailure(data.extraDetails));
-        toast.error(data.extraDetails, {
-          theme: "colored",
-          position: "bottom-center",
-        });
-        console.log(error.message);
-      }
-    } else {
-      toast.error("OTP is required.", {
-        theme: "colored",
-        position: "bottom-center",
-      });
-    }
-  };
-
   useEffect(() => {
     dispatch(initialRender());
     dispatch(registrationInitialRender());
@@ -156,9 +106,7 @@ function Register() {
           heading="Welcome Back!"
           para="To keep connected with us please login with your personal info."
           btnText="SIGN IN"
-          handleEmailVerification={handleEmailVerification}
-          otpNumber={otpNumber}
-          setOtpNumber={setOtpNumber}
+          reference={registerRef}
         />
         {/* SignIn Left Content */}
 

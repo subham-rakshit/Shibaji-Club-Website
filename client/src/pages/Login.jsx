@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { Button, Label, Spinner } from "flowbite-react";
 import { Input, OAuth, VerifyEmail } from "../components";
@@ -14,7 +14,6 @@ import {
   signInFailure,
   initialRender,
 } from "../redux-slice/userSlice";
-import { userVerified } from "../redux-slice/registerSlice";
 import AOS from "aos";
 import { toast } from "react-toastify";
 
@@ -26,7 +25,6 @@ function Login() {
     password: "",
   });
   const [isShown, setIsShown] = useState(false);
-  const [otpNumber, setOtpNumber] = useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -84,50 +82,6 @@ function Login() {
         position: "bottom-center",
       });
       dispatch(signInFailure(error.message));
-    }
-  };
-
-  // Email verification API call
-  const handleEmailVerification = async () => {
-    if (otpNumber.length === 4) {
-      try {
-        const res = await fetch(`/api/auth/verify-email`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userId: registeredUser._id, otp: otpNumber }),
-        });
-        const data = await res.json();
-
-        if (res.ok) {
-          dispatch(signInSuccess(data.userDetails));
-          dispatch(userVerified());
-          toast.success(data.message, {
-            theme: "colored",
-            position: "bottom-center",
-          });
-          navigate("/");
-        } else {
-          dispatch(registrationFailure(data.extraDetails));
-          toast.error(data.extraDetails, {
-            theme: "colored",
-            position: "bottom-center",
-          });
-        }
-      } catch (error) {
-        dispatch(registrationFailure(data.extraDetails));
-        toast.error(data.extraDetails, {
-          theme: "colored",
-          position: "bottom-center",
-        });
-        console.log(error.message);
-      }
-    } else {
-      toast.error("OTP is required.", {
-        theme: "colored",
-        position: "bottom-center",
-      });
     }
   };
 
@@ -237,9 +191,6 @@ function Login() {
           heading="Hello, Friend!"
           para="Enter your personal details and start journey with us."
           btnText="SIGN UP"
-          handleEmailVerification={handleEmailVerification}
-          otpNumber={otpNumber}
-          setOtpNumber={setOtpNumber}
         />
         {/* SignUp Right Content */}
       </div>

@@ -2,19 +2,65 @@ import { Button } from "flowbite-react";
 import React, { useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { signInSuccess } from "../redux-slice/userSlice";
+import {
+  registrationFailure,
+  userVerified,
+} from "../redux-slice/registerSlice";
+import { toast } from "react-toastify";
 
-function VerifyEmail({
-  heading,
-  para,
-  btnText,
-  handleEmailVerification,
-  otpNumber,
-  setOtpNumber,
-}) {
+function VerifyEmail({ heading, para, btnText }) {
   const { registeredUser } = useSelector((state) => state.register);
   const [isShown, setIsShown] = useState(false);
+  const [otpNumber, setOtpNumber] = useState("");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  // Email verification API call
+  const handleEmailVerification = async () => {
+    if (otpNumber.length === 4) {
+      try {
+        const res = await fetch(`/api/auth/verify-email`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: registeredUser._id, otp: otpNumber }),
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+          dispatch(signInSuccess(data.userDetails));
+          dispatch(userVerified());
+          toast.success(data.message, {
+            theme: "colored",
+            position: "bottom-center",
+          });
+          navigate("/");
+        } else {
+          dispatch(registrationFailure(data.extraDetails));
+          toast.error(data.extraDetails, {
+            theme: "colored",
+            position: "bottom-center",
+          });
+        }
+      } catch (error) {
+        dispatch(registrationFailure(data.extraDetails));
+        toast.error(data.extraDetails, {
+          theme: "colored",
+          position: "bottom-center",
+        });
+        console.log(error.message);
+      }
+    } else {
+      toast.error("OTP is required.", {
+        theme: "colored",
+        position: "bottom-center",
+      });
+    }
+  };
 
   return (
     <div
@@ -69,7 +115,7 @@ function VerifyEmail({
         <Button
           gradientDuoTone="pinkToOrange"
           className="font-bold text-white text-sm shadow-custom-light-dark"
-          onClick={() => handleEmailVerification()}
+          onClick={handleEmailVerification}
         >
           Verify
         </Button>
