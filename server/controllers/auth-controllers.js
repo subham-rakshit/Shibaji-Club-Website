@@ -366,6 +366,20 @@ const authControllerObject = {
     }
   },
 
+  //* Provide more than 3 times of valid OTP (We have to remove the user info) -->
+  async removeUser(req, res, next) {
+    const { userId } = req.body;
+
+    await VerificationTokenCollection.deleteOne({ owner: userId });
+    await UserCollection.findByIdAndDelete(userId);
+
+    return res.status(403).json({
+      message: "Too many invalid OTP attempts",
+      extraDetails:
+        "Your account has been reset due to multiple invalid OTP entries. Please register again.",
+    });
+  },
+
   //* Cookies Token Check -->
   async checkRequestingToken(req, res, next) {
     const jwtToken = req.cookies.jwt_token;

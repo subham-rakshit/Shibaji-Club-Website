@@ -35,4 +35,7 @@ router.route("/google").post(authControllerObject.googleController);
 //? Token is present in Browser check API route -->
 router.route("/check-token").get(authControllerObject.checkRequestingToken);
 
+//? Remove user API route -->
+router.route("/remove-user").delete(authControllerObject.removeUser);
+
 export default router;

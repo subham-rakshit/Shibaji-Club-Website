@@ -1,7 +1,5 @@
 import { Button } from "flowbite-react";
-import React, { useState } from "react";
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-import { RiLockPasswordFill } from "react-icons/ri";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { signInSuccess } from "../redux-slice/userSlice";
@@ -10,55 +8,47 @@ import {
   userVerified,
 } from "../redux-slice/registerSlice";
 import { toast } from "react-toastify";
+import OTPInputBox from "./OTPInputBox";
 
 function VerifyEmail({ heading, para, btnText }) {
   const { registeredUser } = useSelector((state) => state.register);
-  const [isShown, setIsShown] = useState(false);
-  const [otpNumber, setOtpNumber] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // Email verification API call
-  const handleEmailVerification = async () => {
-    if (otpNumber.length === 4) {
-      try {
-        const res = await fetch(`/api/auth/verify-email`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userId: registeredUser._id, otp: otpNumber }),
-        });
-        const data = await res.json();
+  // Handle OTP submission
+  const onOTPSubmit = async (otpNumber) => {
+    try {
+      const res = await fetch(`/api/auth/verify-email`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: registeredUser._id, otp: otpNumber }),
+      });
+      const data = await res.json();
 
-        if (res.ok) {
-          dispatch(signInSuccess(data.userDetails));
-          dispatch(userVerified());
-          toast.success(data.message, {
-            theme: "colored",
-            position: "bottom-center",
-          });
-          navigate("/");
-        } else {
-          dispatch(registrationFailure(data.extraDetails));
-          toast.error(data.extraDetails, {
-            theme: "colored",
-            position: "bottom-center",
-          });
-        }
-      } catch (error) {
+      if (res.ok) {
+        dispatch(signInSuccess(data.userDetails));
+        dispatch(userVerified());
+        toast.success(data.message, {
+          theme: "colored",
+          position: "bottom-center",
+        });
+        navigate("/");
+      } else {
         dispatch(registrationFailure(data.extraDetails));
         toast.error(data.extraDetails, {
           theme: "colored",
           position: "bottom-center",
         });
-        console.log(error.message);
       }
-    } else {
-      toast.error("OTP is required.", {
+    } catch (error) {
+      dispatch(registrationFailure(data.extraDetails));
+      toast.error(data.extraDetails, {
         theme: "colored",
         position: "bottom-center",
       });
+      console.log(error.message);
     }
   };
 
@@ -77,49 +67,14 @@ function VerifyEmail({ heading, para, btnText }) {
           ? `Please enter the OTP we've send to ${registeredUser.email}`
           : para}
       </p>
+
+      {/* OTP Input Element */}
       {registeredUser && !registeredUser.verified && (
-        <div className="flex items-center gap-2 rounded-lg shadow-sm bg-[#F9FAFB] dark:bg-[#374151]  border border-[#D1D5DB] dark:border-[#4B5563] focus-within:ring-2 focus-within:ring-cyan-500 overflow-hidden px-3 my-5">
-          <RiLockPasswordFill
-            size="30"
-            className="text-[#6B7280] dark:text-[#9CA3AF]"
-          />
-          <input
-            type={isShown ? "text" : "password"}
-            id="verifyOTP"
-            name="otp"
-            className="bg-[#F9FAFB] dark:bg-[#374151] border-none outline-none focus:ring-0 w-full text-gray-900 dark:text-white dark:placeholder-gray-400 text-sm px-1 py-[13px]"
-            placeholder="****"
-            value={otpNumber}
-            required={true}
-            onChange={(e) => {
-              const enteredOTP = e.target.value;
-              if (enteredOTP.length <= 4) {
-                setOtpNumber(enteredOTP);
-              }
-            }}
-          />
-          {isShown ? (
-            <FaRegEye
-              className="cursor-pointer"
-              onClick={() => setIsShown((prev) => !prev)}
-            />
-          ) : (
-            <FaRegEyeSlash
-              className="cursor-pointer"
-              onClick={() => setIsShown((prev) => !prev)}
-            />
-          )}
-        </div>
+        <OTPInputBox length={4} onOTPSubmit={onOTPSubmit} />
       )}
-      {registeredUser && !registeredUser.verified ? (
-        <Button
-          gradientDuoTone="pinkToOrange"
-          className="font-bold text-white text-sm shadow-custom-light-dark"
-          onClick={handleEmailVerification}
-        >
-          Verify
-        </Button>
-      ) : (
+      {/* OTP Input Element */}
+
+      {!registeredUser && (
         <Link to={btnText === "SIGN UP" ? "/register" : "/login"}>
           <Button
             gradientDuoTone="pinkToOrange"

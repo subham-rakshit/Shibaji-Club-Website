@@ -27,6 +27,7 @@ import Pagination from "./Pagination";
 import HomePageScrolling from "./HomePageScrolling";
 import DashTrial from "./DashTrial";
 import VerifyEmail from "./VerifyEmail";
+import OTPInputBox from "./OTPInputBox";
 
 export {
   Header,
@@ -58,4 +59,5 @@ export {
   HomePageScrolling,
   DashTrial,
   VerifyEmail,
+  OTPInputBox,
 };
