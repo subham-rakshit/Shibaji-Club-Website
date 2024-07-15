@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
 
 import { Button, Label, Spinner } from "flowbite-react";
 import { Input, OAuth } from "../components";
