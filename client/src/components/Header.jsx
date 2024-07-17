@@ -124,7 +124,11 @@ function Header() {
   );
 
   return (
-    <Navbar className="fixed left-0 z-[100] w-full shadow-lg">
+    <Navbar
+      className={`fixed left-0 z-[100] w-full shadow-lg ${
+        location.pathname === "/reset-password" && "hidden"
+      }`}
+    >
       {/* Website Logo */}
       <Link to="/">
         <img

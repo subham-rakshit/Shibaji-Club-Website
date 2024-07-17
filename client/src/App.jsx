@@ -18,6 +18,7 @@ import {
   CreateVideo,
   SearchPage,
   Trials,
+  ResetPassword,
 } from "./pages";
 
 import {
@@ -42,6 +43,7 @@ const App = () => {
 
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
           <Route path="/post/:postSlug" element={<PostItem />} />
           <Route path="/video/:videoSlug" element={<VideoItem />} />

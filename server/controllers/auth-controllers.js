@@ -4,11 +4,14 @@ import {
   generateOTPEmailTemplate,
   mailTransport,
   plainEmailTemplate,
+  resetTokenEmailTemplate,
 } from "../utils/mail.js";
 import VerificationTokenCollection from "../models/email-verification-token-model.js";
-import { SMTP_MAIL } from "../config/envConfig.js";
+import { JWT_SIGNATURE, SMTP_MAIL } from "../config/envConfig.js";
 import { isValidObjectId } from "mongoose";
 import bcrypt from "bcryptjs";
+import ResetPasswordTokenCollection from "../models/reset-password-model.js";
+import jwt from "jsonwebtoken";
 
 const authControllerObject = {
   async homeController(req, res) {
@@ -449,7 +452,94 @@ const authControllerObject = {
     });
   },
 
-  //* Cookies Token Check -->
+  async forgetPassword(req, res, next) {
+    const { email } = req.body;
+    try {
+      //Check if the email is provided or not.
+      if (!email) {
+        const emailError = {
+          status: 401,
+          message: "Email not provided.",
+          extraDetails:
+            "Email address is required. Please enter your email to proceed.",
+        };
+        return next(emailError);
+      }
+
+      // Chek if the email is valid email pattern or not
+      if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+        const emailError = {
+          status: 401,
+          message: "Email pattern not valid",
+          extraDetails:
+            "Email address is invalid. Please enter your valid email to proceed.",
+        };
+        return next(emailError);
+      }
+
+      // Verify the existence of an user with the provided email address
+      const user = await UserCollection.findOne({ email });
+      if (!user) {
+        const userError = {
+          status: 401,
+          message: "User not registered.",
+          extraDetails:
+            "No account found with the provided email address. Please check the email and try again or register for a new account.",
+        };
+        return next(userError);
+      }
+
+      // If token already present, then user can use the token link within 1 hr.
+      const tokenExists = await ResetPasswordTokenCollection.findOne({
+        owner: user._id,
+      });
+      if (tokenExists) {
+        const tokenError = {
+          status: 409, // Duplicate Entries (Conflict)
+          message: "Token already exists.",
+          extraDetails:
+            "A reset password link has already been send to your email address. You can request a new link after one hour.",
+        };
+        return next(tokenError);
+      }
+
+      // Generate a token
+      const token = await jwt.sign(
+        {
+          userId: user._id.toString(),
+          email: user.email,
+          isAdmin: user.isAdmin,
+        },
+        JWT_SIGNATURE,
+        { expiresIn: "1h" }
+      );
+
+      // We are create and save the new reset token in RestTokens collection
+      const newResetToken = new ResetPasswordTokenCollection({
+        owner: user._id,
+        token,
+      });
+      await newResetToken.save();
+
+      await mailTransport().sendMail({
+        from: SMTP_MAIL,
+        to: email,
+        subject: "RESET PASSWORD",
+        html: resetTokenEmailTemplate(
+          `http://localhost:5173/reset-password?token=${token}&id=${user._id}`
+        ),
+      });
+
+      res.status(201).json({
+        message:
+          "A password reset link has been sent to your email. Please check your inbox (and spam folder) for further instructions.",
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  //* Cookies JWT Token Check -->
   async checkRequestingToken(req, res, next) {
     const jwtToken = req.cookies.jwt_token;
     try {

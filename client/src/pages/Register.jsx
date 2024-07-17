@@ -226,6 +226,13 @@ function Register() {
                 "Sign Up"
               )}
             </Button>
+            <div className="flex items-center justify-center gap-3 my-1 md:my-2">
+              <hr className="w-full border border-gray-400 dark:border-gray-700 border-dotted" />
+              <span className="font-[Inter] text-gray-400 dark:text-gray-700 text-sm font-semibold">
+                OR
+              </span>
+              <hr className="w-full border border-gray-400 dark:border-gray-700 border-dotted" />
+            </div>
             <OAuth />
           </form>
           {/* Main From */}

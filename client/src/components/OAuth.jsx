@@ -68,7 +68,7 @@ function OAuth() {
       type="button"
       gradientDuoTone="pinkToOrange"
       outline
-      className="w-full mt-3"
+      className="w-full"
       onClick={handleGoogleSignIn}
       disabled={registeredUser}
     >

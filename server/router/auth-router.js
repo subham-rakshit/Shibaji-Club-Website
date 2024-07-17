@@ -41,4 +41,7 @@ router.route("/remove-user").delete(authControllerObject.removeUser);
 //? Resend OTP API route -->
 router.route("/resend-token").put(authControllerObject.resendToken);
 
+//? Forget Password API route -->
+router.route("/forget-password").post(authControllerObject.forgetPassword);
+
 export default router;

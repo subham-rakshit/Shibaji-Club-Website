@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
-const emailVerificationTokenSchema = new mongoose.Schema({
+const resetPasswordSchema = new mongoose.Schema({
   // Owner = user, [Here we are storing the user IDs]
   owner: {
     type: mongoose.Schema.Types.ObjectId, // This is how we store userIds in mongoDB using mongoose.
@@ -22,13 +22,13 @@ const emailVerificationTokenSchema = new mongoose.Schema({
 });
 
 //? ******** PASSWORD HASHING BEFORE DATA SAVE INTO COLLECTION ********
-emailVerificationTokenSchema.pre("save", async function (next) {
+resetPasswordSchema.pre("save", async function (next) {
   //* If token is modified then call the next()
   if (!this.isModified("token")) {
     next();
   }
 
-  //* If new user comes then token has to be hashed by try and catch
+  //* If new user then token has to be hashed by try and catch
   try {
     const hashToken = await bcrypt.hash(this.token, 10);
     this.token = hashToken;
@@ -38,13 +38,13 @@ emailVerificationTokenSchema.pre("save", async function (next) {
 });
 
 //! ******** COMPARE THE REQUESTED token with EXISTED token ******** !//
-emailVerificationTokenSchema.methods.compareToken = function (comparedToken) {
+resetPasswordSchema.methods.compareToken = function (comparedToken) {
   return bcrypt.compareSync(comparedToken, this.token);
 };
 
-const VerificationTokenCollection = new mongoose.model(
-  "VerificationToken",
-  emailVerificationTokenSchema
+const ResetPasswordTokenCollection = new mongoose.model(
+  "ResetToken",
+  resetPasswordSchema
 );
 
-export default VerificationTokenCollection;
+export default ResetPasswordTokenCollection;

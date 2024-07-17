@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import AOS from "aos";
 
 import { FaFacebookF, FaInstagram, FaGithub, FaLinkedin } from "react-icons/fa";
@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 
 const Footer = () => {
   const { currentUser } = useSelector((state) => state.user);
+  const location = useLocation();
 
   useEffect(() => {
     AOS.init({ duration: 900 });
@@ -14,7 +15,9 @@ const Footer = () => {
 
   return (
     <div
-      className="w-full py-[30px] bg-[#F9FAFB] dark:bg-[#1F2937] flex flex-col justify-center items-center z-[60] shadow-custom-light-dark dark:shadow-none font-[Inter]"
+      className={`w-full py-[30px] bg-[#F9FAFB] dark:bg-[#1F2937] flex flex-col justify-center items-center z-[60] shadow-custom-light-dark dark:shadow-none font-[Inter] ${
+        location.pathname === "/reset-password" && "hidden"
+      }`}
       data-aos="slide-up"
     >
       <div className="w-[90%] max-w-[1024px]">

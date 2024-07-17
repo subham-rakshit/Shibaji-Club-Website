@@ -14,6 +14,7 @@ import VideoItem from "./VideoItem";
 import CreateVideo from "./CreateVideo";
 import SearchPage from "./SearchPage";
 import Trials from "./Trials";
+import ResetPassword from "./ResetPassword";
 
 export {
   Home,
@@ -32,4 +33,5 @@ export {
   CreateVideo,
   SearchPage,
   Trials,
+  ResetPassword,
 };
