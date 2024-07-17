@@ -38,4 +38,7 @@ router.route("/check-token").get(authControllerObject.checkRequestingToken);
 //? Remove user API route -->
 router.route("/remove-user").delete(authControllerObject.removeUser);
 
+//? Resend OTP API route -->
+router.route("/resend-token").put(authControllerObject.resendToken);
+
 export default router;

@@ -6,6 +6,7 @@ import sliderReducer from "../redux-slice/sliderSlice";
 import searchPageSliderReducer from "../redux-slice/searchSliderSlice";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import otpReducer from "../redux-slice/otpSlice";
 
 // Step1:
 const rootReducer = combineReducers({
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   theme: themeReducer,
   slider: sliderReducer,
   searchSlider: searchPageSliderReducer,
+  otp: otpReducer,
 });
 
 // Step3:

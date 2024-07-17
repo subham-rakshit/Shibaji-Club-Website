@@ -58,16 +58,18 @@ function OTPInputBox({ length = 4, onOTPSubmit = () => {} }) {
 
     //? If combinedOTP's length is equal to our passing main length then we call the onOTPSubmit function. For passing the OTP.
     if (combinedOTP.length === length) {
-      onOTPSubmit(combinedOTP);
+      // Call onOTPSubmit function when invalidAttempts is less than 3. (0, 1, 2)
+      if (invalidAttempts < 3) {
+        onOTPSubmit(combinedOTP);
+      }
       setOtp(new Array(length).fill(""));
       inputRefs.current[0].focus();
-      // Count the number of invalid attempts
-      if (
-        registrationError &&
-        registrationError === "Invalid OTP. Please provide a valid OTP!"
-      ) {
-        setInvalidAttempts((prev) => prev + 1);
-      }
+
+      // Count the number of attempts
+      setInvalidAttempts((prevAttempts) => {
+        const newAttempts = prevAttempts + 1;
+        return newAttempts;
+      });
     }
   };
 
@@ -124,7 +126,7 @@ function OTPInputBox({ length = 4, onOTPSubmit = () => {} }) {
         });
       }
     };
-    if (invalidAttempts > 2) {
+    if (invalidAttempts > 3) {
       removeUser();
     }
   }, [invalidAttempts]);

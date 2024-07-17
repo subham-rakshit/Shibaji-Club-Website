@@ -8,6 +8,7 @@ import {
 import VerificationTokenCollection from "../models/email-verification-token-model.js";
 import { SMTP_MAIL } from "../config/envConfig.js";
 import { isValidObjectId } from "mongoose";
+import bcrypt from "bcryptjs";
 
 const authControllerObject = {
   async homeController(req, res) {
@@ -108,115 +109,6 @@ const authControllerObject = {
       };
       return next(catchError);
     }
-  },
-
-  //* Verify the user's provided OTP for Emial Verification -->
-  async verifyEmail(req, res, next) {
-    const { userId, otp } = req.body;
-
-    // If userId and OTP is not present -
-    if (!userId || !otp.trim()) {
-      const verifyError = {
-        status: 400,
-        message: "Invalid parameters for Varification token collection.",
-        extraDetails: "Invalid request, missing parameters!",
-      };
-
-      return next(verifyError);
-    }
-
-    // Prvided userId is valid MongoDB ObjectId or not. MongoDB ObjectIds are 12-byte identifiers typically represented as 24-character hexadecimal strings.
-    if (!isValidObjectId(userId)) {
-      const verifyError = {
-        status: 400,
-        message: "Invalid userId for Varification token collection.",
-        extraDetails: "Invalid user ID!",
-      };
-
-      return next(verifyError);
-    }
-
-    // If all checks passed successfully then, we are finding the user in UserCollection by the provided id.
-    const user = await UserCollection.findById(userId);
-
-    // If user info not found
-    if (!user) {
-      const notFOundError = {
-        status: 404,
-        message: "User is not present in the UserCollection",
-        extraDetails: "User not found!",
-      };
-
-      return next(notFOundError);
-    }
-
-    // If account verification already done
-    if (user.verified) {
-      const alreadyVerified = {
-        status: 400,
-        message: "User is already verified",
-        extraDetails: "This account is already verified!",
-      };
-      return next(alreadyVerified);
-    }
-
-    // Find the hashed token of the OTP in VerificationTokenCollection for comparison
-    const dbToken = await VerificationTokenCollection.findOne({
-      owner: user._id,
-    });
-
-    // Check the token is present or not. If not that means token has been expired
-    if (!dbToken) {
-      const tokenError = {
-        status: 404,
-        message: "User take more than 1hr to verify.",
-        extraDetails: "User not found!",
-      };
-
-      return next(tokenError);
-    }
-
-    // Lets compare the provided OTP with our stored hashed OTP token
-    const comparisonStatus = await dbToken.compareToken(otp.trim());
-
-    // If provided OTP and stored hashed token is not matched
-    if (!comparisonStatus) {
-      const tokenNotMatched = {
-        status: 403, // Forbidden (Due to authentication or authorization failures, including mismatched tokens.)
-        message: "Token is not matched.",
-        extraDetails: "Invalid OTP. Please provide a valid OTP!",
-      };
-
-      return next(tokenNotMatched);
-    }
-
-    // If all checks are passed, then we modify the use info and save it (verified: false -> verified: true)
-    user.verified = true;
-    await user.save();
-
-    // After verification we are delete the token details inside our DB (VerificationTokenCollection)
-    await VerificationTokenCollection.findByIdAndDelete(dbToken._id);
-
-    // Sending a welcome mail after successfully verification
-    mailTransport().sendMail({
-      from: SMTP_MAIL,
-      to: user.email,
-      subject: "WELCOME EMAIL",
-      html: plainEmailTemplate(
-        "Email Verification Successful",
-        "Congratulations! Your email has been successfully verified. Thank you for verifying your email with us. You can now enjoy all the benefits of our service."
-      ),
-    });
-
-    // Extract the password from the user docs
-    const { password, ...rest } = user._doc;
-
-    // Send the rest user info and success msg as response
-    res.status(201).json({
-      message:
-        "Your email has been successfully verified. You can now access all features.",
-      userDetails: rest,
-    });
   },
 
   //* Login Api Route Controller -->
@@ -363,6 +255,183 @@ const authControllerObject = {
       }
     } catch (error) {
       return next(error);
+    }
+  },
+
+  //* Verify the user's provided OTP for Emial Verification -->
+  async verifyEmail(req, res, next) {
+    const { userId, otp } = req.body;
+
+    // If userId and OTP is not present -
+    if (!userId || !otp.trim()) {
+      const verifyError = {
+        status: 400,
+        message: "Invalid parameters for Varification token collection.",
+        extraDetails: "Invalid request, missing parameters!",
+      };
+
+      return next(verifyError);
+    }
+
+    // Prvided userId is valid MongoDB ObjectId or not. MongoDB ObjectIds are 12-byte identifiers typically represented as 24-character hexadecimal strings.
+    if (!isValidObjectId(userId)) {
+      const verifyError = {
+        status: 400,
+        message: "Invalid userId for Varification token collection.",
+        extraDetails: "Invalid user ID!",
+      };
+
+      return next(verifyError);
+    }
+
+    // If all checks passed successfully then, we are finding the user in UserCollection by the provided id.
+    const user = await UserCollection.findById(userId);
+
+    // If user info not found
+    if (!user) {
+      const notFOundError = {
+        status: 404,
+        message: "User is not present in the UserCollection",
+        extraDetails: "User not found!",
+      };
+
+      return next(notFOundError);
+    }
+
+    // If account verification already done
+    if (user.verified) {
+      const alreadyVerified = {
+        status: 400,
+        message: "User is already verified",
+        extraDetails: "This account is already verified!",
+      };
+      return next(alreadyVerified);
+    }
+
+    // Find the hashed token of the OTP in VerificationTokenCollection for comparison
+    const dbToken = await VerificationTokenCollection.findOne({
+      owner: user._id,
+    });
+
+    // Check the token is present or not. If not that means token has been expired
+    if (!dbToken) {
+      await UserCollection.findByIdAndDelete(userId); // We are deleting the existing User info without verified.
+      const tokenError = {
+        status: 404,
+        message: "Token removed.",
+        extraDetails:
+          "We couldn't find your account. Join us now by signing up!",
+      };
+
+      return next(tokenError);
+    }
+
+    // Lets compare the provided OTP with our stored hashed OTP token
+    const comparisonStatus = await dbToken.compareToken(otp.trim());
+
+    // If provided OTP and stored hashed token is not matched
+    if (!comparisonStatus) {
+      const tokenNotMatched = {
+        status: 403, // Forbidden (Due to authentication or authorization failures, including mismatched tokens.)
+        message: "Token is not matched.",
+        extraDetails: "Invalid OTP. Please provide a valid OTP!",
+      };
+
+      return next(tokenNotMatched);
+    }
+
+    // If all checks are passed, then we modify the use info and save it (verified: false -> verified: true)
+    user.verified = true;
+    await user.save();
+
+    // After verification we are delete the token details inside our DB (VerificationTokenCollection)
+    await VerificationTokenCollection.findByIdAndDelete(dbToken._id);
+
+    // Sending a welcome mail after successfully verification
+    mailTransport().sendMail({
+      from: SMTP_MAIL,
+      to: user.email,
+      subject: "WELCOME EMAIL",
+      html: plainEmailTemplate(
+        "Email Verification Successful",
+        "Congratulations! Your email has been successfully verified. Thank you for verifying your email with us. You can now enjoy all the benefits of our service."
+      ),
+    });
+
+    // Extract the password from the user docs
+    const { password, ...rest } = user._doc;
+
+    // Send the rest user info and success msg as response
+    res.status(201).json({
+      message:
+        "Your email has been successfully verified. You can now access all features.",
+      userDetails: rest,
+    });
+  },
+
+  //* Resend OTP in user's email address -->
+  async resendToken(req, res, next) {
+    const { userId, email } = req.body;
+    try {
+      // If userId is not present -
+      if (!userId) {
+        const verifyError = {
+          status: 400,
+          message: "Invalid parameters for Varification token collection.",
+          extraDetails: "Invalid request, missing parameters!",
+        };
+
+        return next(verifyError);
+      }
+
+      const dbToken = await VerificationTokenCollection.findOne({
+        owner: userId,
+      });
+
+      // Check the token is present or not. If not that means token has been expired
+      if (!dbToken) {
+        await UserCollection.findByIdAndDelete(userId); // We are deleting the existing User info without verified.
+        const tokenError = {
+          status: 404,
+          message: "Token removed.",
+          extraDetails:
+            "We couldn't find your account. Join us now by signing up!",
+        };
+
+        return next(tokenError);
+      }
+
+      // Generate a new token
+      const newOTP = generateOTP();
+
+      const hashedToken = await bcrypt.hash(newOTP, 10); // Hashed the newOTP
+
+      // Update the token in VerificaitonTokenCollection
+      await VerificationTokenCollection.updateOne(
+        { owner: userId },
+        {
+          $set: {
+            token: hashedToken,
+          },
+        },
+        { new: true }
+      );
+
+      // We are sending the OTP in user's provided email address. (mailTransport() and generateOTPEmailTemplate() are in mail.js file)
+      mailTransport().sendMail({
+        from: SMTP_MAIL,
+        to: email,
+        subject: "RESEND OTP REQUEST: VERIFY YOUR EMAIL ADDRESS",
+        html: generateOTPEmailTemplate(newOTP),
+      });
+
+      // Resond
+      res.status(200).json({
+        message:
+          "We've resent the OTP. Please check your email and enter it to complete verification.",
+      });
+    } catch (error) {
+      next(error);
     }
   },
 

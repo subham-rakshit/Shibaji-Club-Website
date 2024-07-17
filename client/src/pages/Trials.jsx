@@ -239,7 +239,7 @@ function Trials() {
     AOS.init({ duration: 1200 });
   }, []);
   return (
-    <div className="w-screen min-h-screen mt-[65px] lg:mt-[70px]">
+    <div className="w-screen min-h-screen mt-[65px] lg:mt-[70px] py-5">
       <div className="w-[95%] max-w-[900px] min-h-screen mx-auto my-5 font-[Inter]">
         <h1
           className="text-2xl lg:text-3xl font-bold lg:text-center"
@@ -248,7 +248,7 @@ function Trials() {
           Football Trial Application Form
         </h1>
         <p
-          className="text-sm font-normal mt-3 lg:text-center"
+          className="text-sm font-normal mt-5 lg:text-center"
           data-aos="zoom-in"
         >
           We're excited to have you join our football trials! Please fill out

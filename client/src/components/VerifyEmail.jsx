@@ -1,5 +1,5 @@
 import { Button } from "flowbite-react";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { signInSuccess } from "../redux-slice/userSlice";
@@ -9,13 +9,20 @@ import {
 } from "../redux-slice/registerSlice";
 import { toast } from "react-toastify";
 import OTPInputBox from "./OTPInputBox";
+import {
+  decrementExpirationTime,
+  resetExpirationTime,
+  restartExpirationTime,
+  setExpirationTime,
+} from "../redux-slice/otpSlice";
 
 function VerifyEmail({ heading, para, btnText }) {
   const { registeredUser } = useSelector((state) => state.register);
+  const { expirationTime } = useSelector((state) => state.otp);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // Handle OTP submission
+  // Handle OTP Submission API
   const onOTPSubmit = async (otpNumber) => {
     try {
       const res = await fetch(`/api/auth/verify-email`, {
@@ -36,6 +43,14 @@ function VerifyEmail({ heading, para, btnText }) {
         });
         navigate("/");
       } else {
+        if (data.message === "Token removed.") {
+          dispatch(userVerified());
+          toast.error(data.extraDetails, {
+            theme: "colored",
+            position: "bottom-center",
+          });
+          return;
+        }
         dispatch(registrationFailure(data.extraDetails));
         toast.error(data.extraDetails, {
           theme: "colored",
@@ -51,6 +66,68 @@ function VerifyEmail({ heading, para, btnText }) {
       console.log(error.message);
     }
   };
+
+  // Handle Resend OTP API
+  const handleResendOTP = async () => {
+    console.log("Resend");
+    try {
+      const res = await fetch(`/api/auth/resend-token`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: registeredUser._id,
+          email: registeredUser.email,
+        }),
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        toast.success(data.message, {
+          theme: "colored",
+          position: "bottom-center",
+        });
+      } else {
+        if (data.message === "Token removed.") {
+          dispatch(userVerified());
+          toast.error(data.extraDetails, {
+            theme: "colored",
+            position: "bottom-center",
+          });
+          return;
+        }
+        toast.error(data.extraDetails, {
+          theme: "colored",
+          position: "bottom-center",
+        });
+      }
+    } catch (error) {
+      console.log(error.message);
+      toast.error(error.message, {
+        theme: "colored",
+        position: "bottom-center",
+      });
+    }
+  };
+
+  // Resend OTP Countdown
+  useEffect(() => {
+    let interval;
+
+    if (registeredUser) {
+      if (expirationTime > 0) {
+        interval = setInterval(() => {
+          dispatch(decrementExpirationTime());
+        }, 1000);
+      } else {
+        dispatch(resetExpirationTime());
+      }
+    } else {
+      dispatch(restartExpirationTime());
+    }
+    return () => clearInterval(interval);
+  }, [expirationTime, dispatch, registeredUser]);
 
   return (
     <div
@@ -73,6 +150,28 @@ function VerifyEmail({ heading, para, btnText }) {
         <OTPInputBox length={4} onOTPSubmit={onOTPSubmit} />
       )}
       {/* OTP Input Element */}
+
+      {/* Resend OTP Btn */}
+      {registeredUser && (
+        <Button
+          type="button"
+          gradientDuoTone="pinkToOrange"
+          disabled={expirationTime > 0}
+          onClick={() => {
+            dispatch(restartExpirationTime());
+            {
+              handleResendOTP();
+            }
+          }}
+        >
+          {expirationTime > 0
+            ? `00:${
+                expirationTime < 10 ? `0${expirationTime}` : expirationTime
+              }`
+            : "Resend OTP"}
+        </Button>
+      )}
+      {/* Resend OTP Btn */}
 
       {!registeredUser && (
         <Link to={btnText === "SIGN UP" ? "/register" : "/login"}>
