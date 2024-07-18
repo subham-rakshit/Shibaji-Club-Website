@@ -18,10 +18,10 @@ const Footer = () => {
       className={`w-full py-[30px] bg-[#F9FAFB] dark:bg-[#1F2937] flex flex-col justify-center items-center z-[60] shadow-custom-light-dark dark:shadow-none font-[Inter] ${
         location.pathname === "/reset-password" && "hidden"
       }`}
-      data-aos="slide-up"
     >
       <div className="w-[90%] max-w-[1024px]">
         <div className="flex flex-col md:flex-row justify-between items-start gap-[30px] md:gap-[20px]">
+          {/* Footer Logo and Socials */}
           <div
             className="flex flex-col items-center w-full md:w-[fit-content]"
             data-aos="fade-right"
@@ -65,10 +65,14 @@ const Footer = () => {
               </Link>
             </ul>
           </div>
+          {/* Footer Logo and Socials */}
+
+          {/* Explore & Info Sections */}
           <div
             className="w-full md:w-[45%] max-w-[400px] md:max-w-[500px] flex justify-between gap-[20px]"
             data-aos="fade-left"
           >
+            {/* Explore */}
             <div>
               <h1 className="text-[18px] font-bold mb-[15px]">EXPLORER</h1>
               <ul className="list-none pl-0 flex flex-col gap-[10px]">
@@ -102,11 +106,11 @@ const Footer = () => {
                 </Link>
               </ul>
             </div>
+            {/* Explore */}
 
-            {/* TODO ⛔⛔⛔⛔ */}
+            {/* Info */}
             <div>
               <h1 className="text-[18px] font-bold mb-[15px]">INFO</h1>
-              {/* TODO ⛔⛔⛔⛔ */}
               <ul className="list-none pl-0 flex flex-col gap-[10px]">
                 <Link
                   to={`${
@@ -128,9 +132,11 @@ const Footer = () => {
                     Matches
                   </li>
                 </Link>
+                {/* 🖐️ TODO */}
                 <li className="text-[16px] font-semibold cursor-pointer hover:text-[18px] hover:underline transition-all duration-300">
                   Nutrition
                 </li>
+                {/* 🖐️ TODO */}
                 <Link
                   to={`${
                     currentUser
@@ -145,7 +151,9 @@ const Footer = () => {
               </ul>
               {/* TODO ⛔⛔⛔⛔ */}
             </div>
+            {/* Info */}
           </div>
+          {/* Explore & Info Sections */}
         </div>
       </div>
       <hr className="mt-2 border border-gray-300 dark:border-gray-600 w-full" />

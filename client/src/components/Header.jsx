@@ -20,6 +20,7 @@ import Cookies from "js-cookie";
 
 function Header() {
   const [searchInput, setSearchInput] = useState("");
+  const [isSearchFromSearchBox, setIsSearchFromSearchBox] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
   const { theme } = useSelector((state) => state.theme);
   const path = useLocation().pathname;
@@ -94,6 +95,7 @@ function Header() {
 
     navigate(`/search?${urlParams.toString()}`);
     setSearchInput("");
+    setIsSearchFromSearchBox(false);
   };
 
   //* Method - 2
@@ -146,11 +148,12 @@ function Header() {
           type="text"
           placeholder="Search ..."
           rightIcon={AiOutlineSearch}
-          value={searchInput}
+          value={isSearchFromSearchBox ? searchInput : ""}
           sizing="sm"
           required
           className="font-[Inter] text-xs"
           onChange={(e) => setSearchInput(e.target.value)}
+          onClick={() => setIsSearchFromSearchBox(true)}
         />
       </form>
 
