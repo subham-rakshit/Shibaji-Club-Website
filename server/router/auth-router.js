@@ -44,4 +44,7 @@ router.route("/resend-token").put(authControllerObject.resendToken);
 //? Forget Password API route -->
 router.route("/forget-password").post(authControllerObject.forgetPassword);
 
+//? Reset password API route -->
+router.route("/reset-password").post(authControllerObject.resetPassword);
+
 export default router;

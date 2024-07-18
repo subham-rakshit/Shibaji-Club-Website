@@ -1,5 +1,6 @@
 import { Button, Label } from "flowbite-react";
 import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -10,8 +11,10 @@ function ResetPassword() {
     confirmPassword: "",
   });
   const [isShown, setIsShown] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  console.log(newUser);
   // Input's value handelers
   const inputHandler = (e) => {
     const targetName = e.target.name;
@@ -23,8 +26,12 @@ function ResetPassword() {
   };
 
   // Handle on submit
-  const handleResetPasswordSubmit = (e) => {
+  const handleResetPasswordSubmit = async (e) => {
     e.preventDefault();
+    const urlParams = new URLSearchParams(location.search);
+    const tokenURL = urlParams.get("token");
+    const idURL = urlParams.get("id");
+
     if (!newUser.password || !newUser.confirmPassword) {
       return toast.error("Fill the input properly!", {
         theme: "colored",
@@ -37,19 +44,66 @@ function ResetPassword() {
         position: "top-right",
       });
     }
-    if (newUser.password.length < 8) {
-      return toast.error("Password must be at least 8 characters long!", {
+    if (
+      newUser.password.trim().length < 8 ||
+      newUser.password.trim().length > 20
+    ) {
+      return toast.error("Password must be at least 8 to 20 characters long!", {
         theme: "colored",
         position: "top-right",
       });
     }
 
     // Handle the actual password reset logic here
+    try {
+      setIsLoading(true);
+      const res = await fetch(
+        `/api/auth/reset-password?token=${tokenURL}&id=${idURL}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ confirmPassword: newUser.confirmPassword }),
+        }
+      );
 
-    toast.success("Password has been reset successfully!", {
-      theme: "colored",
-      position: "top-right",
-    });
+      const data = await res.json();
+
+      if (res.ok) {
+        toast.success(data.message, {
+          theme: "colored",
+          position: "top-right",
+        });
+        navigate("/login");
+      } else {
+        if (
+          data.message === "Token expired or not register yet" ||
+          data.message === "Invalid token" ||
+          data.message === "User not authenticated" ||
+          data.message === "Invalid user ID"
+        ) {
+          toast.error(data.extraDetails, {
+            theme: "colored",
+            position: "top-right",
+          });
+          navigate("/login");
+        } else {
+          toast.error(data.extraDetails, {
+            theme: "colored",
+            position: "top-right",
+          });
+        }
+      }
+    } catch (error) {
+      console.log(error.message);
+      toast.error(error.message, {
+        theme: "colored",
+        position: "top-right",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

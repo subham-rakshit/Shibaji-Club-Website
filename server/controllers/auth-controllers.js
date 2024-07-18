@@ -452,6 +452,7 @@ const authControllerObject = {
     });
   },
 
+  //* Forget Password controller -->
   async forgetPassword(req, res, next) {
     const { email } = req.body;
     try {
@@ -533,6 +534,104 @@ const authControllerObject = {
       res.status(201).json({
         message:
           "A password reset link has been sent to your email. Please check your inbox (and spam folder) for further instructions.",
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  //* Reset password controller -->
+  async resetPassword(req, res, next) {
+    const { token, id } = req.query;
+    const { confirmPassword } = req.body;
+
+    try {
+      // Check the token, id and password are present
+      if (!token || !id || !confirmPassword) {
+        const payloadError = {
+          status: 400,
+          message: "Token, id and password are required",
+          extraDetails: "Invalid request payload!",
+        };
+
+        return next(payloadError);
+      }
+
+      // Check the id is valid
+      if (!isValidObjectId(id)) {
+        const userIdError = {
+          status: 401,
+          message: "Invalid user ID",
+          extraDetails: "Invalid user ID!",
+        };
+
+        return next(userIdError);
+      }
+
+      // Check the user info is present of the provided userID
+      const user = await UserCollection.findById(id);
+      if (!user) {
+        const userError = {
+          status: 401,
+          message: "User not authenticated",
+          extraDetails:
+            "We couldn't find your account. Join us now by signing up!",
+        };
+        return next(userError);
+      }
+
+      // Check the token is expired or not
+      const resetDbToken = await ResetPasswordTokenCollection.findOne({
+        owner: user._id,
+      });
+      if (!resetDbToken) {
+        const tokenExpired = {
+          status: 401,
+          message: "Token expired or not register yet",
+          extraDetails:
+            "Invalid or expired token. Please request a new password reset link.",
+        };
+
+        return next(tokenExpired);
+      }
+
+      // Compare the provided token with the dbToken
+      const tokenCompareStatus = await resetDbToken.compareToken(token);
+      if (!tokenCompareStatus) {
+        const tokenError = {
+          status: 401,
+          message: "Invalid token",
+          extraDetails: "Invalid token!",
+        };
+
+        return next(tokenError);
+      }
+
+      // Check if user provided his old password or not
+      const isSamePassword = await user.passwordCompare(
+        user.password,
+        confirmPassword
+      );
+      if (isSamePassword) {
+        const samePassError = {
+          status: 400,
+          message: "New and Old password is same.",
+          extraDetails: "New password cannot be the same as the old password!",
+        };
+
+        return next(samePassError);
+      }
+
+      // If all checks are successful then we change the user's password
+      user.password = confirmPassword;
+      await user.save();
+
+      // Remove the resetDBToken from ResetPasswordTokenCollection
+      await ResetPasswordTokenCollection.findByIdAndDelete(resetDbToken._id);
+
+      res.status(200).json({
+        message:
+          "Your password has been successfully changed. Please sign in again to continue.",
       });
     } catch (error) {
       next(error);

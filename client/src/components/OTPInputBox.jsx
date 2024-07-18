@@ -143,7 +143,7 @@ function OTPInputBox({ length = 4, onOTPSubmit = () => {} }) {
             onChange={(e) => handleInputValueChange(e, index)} //* ---------- 3
             onKeyDown={(e) => handleKeyDown(index, e)} //* ------------------ 4
             onClick={() => handleInputBoxClick(index)} //* ----------------- 5
-            className="w-10 h-10 rounded-lg text-center"
+            className="w-10 h-10 rounded-lg text-center text-black"
           />
         );
       })}
