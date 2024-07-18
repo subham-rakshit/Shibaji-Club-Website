@@ -155,24 +155,6 @@ function SearchSideBar({ tab, category, searchItem }) {
             <Link
               to={
                 currentUser
-                  ? `/search?tab=blogs&category=cflpremier24${
-                      searchItem && `&searchItem=${searchItem}`
-                    }&page=1`
-                  : "/login"
-              }
-            >
-              <div
-                className={`flex items-center justify-between text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
-                  category === "cflpremier24" &&
-                  "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
-                }`}
-              >
-                CFL Premier 2024
-              </div>
-            </Link>
-            <Link
-              to={
-                currentUser
                   ? `/search?tab=blogs&category=euro cup 2024${
                       searchItem && `&searchItem=${searchItem}`
                     }&page=1`
@@ -358,6 +340,25 @@ function SearchSideBar({ tab, category, searchItem }) {
                 }`}
               >
                 Club Insides
+              </div>
+            </Link>
+
+            <Link
+              to={
+                currentUser
+                  ? `/search?tab=practices&category=matches${
+                      searchItem && `&searchItem=${searchItem}`
+                    }&page=1`
+                  : "/login"
+              }
+            >
+              <div
+                className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
+                  category === "matches" &&
+                  "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
+                }`}
+              >
+                Matches
               </div>
             </Link>
           </li>

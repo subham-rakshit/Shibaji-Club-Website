@@ -149,24 +149,26 @@ function VideoItem() {
         {/* Practice Vdieo Section */}
 
         {/* Video related items */}
-        <div className="w-full max-w-[900px] my-5 flex flex-col sm:flex-row sm:items-center gap-5 flex-wrap">
+        <div className="w-full max-w-[900px] my-5 flex sm:items-center gap-5 flex-wrap">
           {/* Duration */}
-          <div className="flex flex-col gap-2">
-            <FaClock size="30" color="#94C120" />
-            <p className="text-sm font-[Inter] font-semibold">DURATION</p>
-            <span className="bg-[#F5F5F5] dark:bg-[#374151] p-2 rounded-lg text-xs font-[Inter] w-[fit-content]">
-              {fetchVideoDetails && fetchVideoDetails.videoDuration} Minutes
-            </span>
-          </div>
+          {fetchVideoDetails && fetchVideoDetails.videoDuration && (
+            <div className="flex flex-col gap-2">
+              <FaClock size="30" color="#94C120" />
+              <p className="text-sm font-[Inter] font-semibold">DURATION</p>
+              <span className="bg-[#F5F5F5] dark:bg-[#374151] p-2 rounded-lg text-xs font-[Inter] w-[fit-content]">
+                {fetchVideoDetails.videoDuration} Minutes
+              </span>
+            </div>
+          )}
           {/* Duration */}
 
           {/* Age Range */}
-          <div className="flex flex-col gap-2">
-            <FaPeopleGroup size="30" color="#94C120" />
-            <p className="text-sm font-[Inter] font-semibold">AGE RANGE</p>
-            <div className="flex items-center flex-wrap gap-2">
-              {fetchVideoDetails &&
-                fetchVideoDetails.ageRange.map((age) => (
+          {fetchVideoDetails && fetchVideoDetails.ageRange.length > 0 && (
+            <div className="flex flex-col gap-2">
+              <FaPeopleGroup size="30" color="#94C120" />
+              <p className="text-sm font-[Inter] font-semibold">AGE RANGE</p>
+              <div className="flex items-center flex-wrap gap-2">
+                {fetchVideoDetails.ageRange.map((age) => (
                   <span
                     className="bg-[#F5F5F5] dark:bg-[#374151] p-2 rounded-lg text-xs font-[Inter] w-[fit-content]"
                     key={age}
@@ -174,94 +176,99 @@ function VideoItem() {
                     {age}
                   </span>
                 ))}
+              </div>
             </div>
-          </div>
+          )}
           {/* Age Range */}
 
           {/* Required Equipment */}
-          <div className="flex flex-col gap-2">
-            <LuCheckSquare size="30" color="#94C120" />
-            <p className="text-sm font-[Inter] font-semibold">
-              REQUIRED EQUIPMENT
-            </p>
-            <div className="flex items-center flex-wrap gap-2">
-              {fetchVideoDetails &&
-                fetchVideoDetails.requiredEquipments.map((equipment) => {
-                  if (equipment === "Footballs") {
-                    return (
-                      <span
-                        className="bg-[#F5F5F5] dark:bg-[#374151] p-2 rounded-lg text-xs font-[Inter] flex items-center gap-1 w-[fit-content]"
-                        key={equipment}
-                      >
-                        <IoFootball size="20" color="#94C120" />
-                        <span className="text-xs font-[Inter]">
-                          {equipment}
+          {fetchVideoDetails &&
+            fetchVideoDetails.requiredEquipments.length > 0 && (
+              <div className="flex flex-col gap-2">
+                <LuCheckSquare size="30" color="#94C120" />
+                <p className="text-sm font-[Inter] font-semibold">
+                  REQUIRED EQUIPMENT
+                </p>
+                <div className="flex items-center flex-wrap gap-2">
+                  {fetchVideoDetails.requiredEquipments.map((equipment) => {
+                    if (equipment === "Footballs") {
+                      return (
+                        <span
+                          className="bg-[#F5F5F5] dark:bg-[#374151] p-2 rounded-lg text-xs font-[Inter] flex items-center gap-1 w-[fit-content]"
+                          key={equipment}
+                        >
+                          <IoFootball size="20" color="#94C120" />
+                          <span className="text-xs font-[Inter]">
+                            {equipment}
+                          </span>
                         </span>
-                      </span>
-                    );
-                  }
-                  if (equipment === "Bibs") {
-                    return (
-                      <span
-                        className="bg-[#F5F5F5] dark:bg-[#374151] p-2 rounded-lg text-xs font-[Inter] flex items-center gap-1 w-[fit-content]"
-                        key={equipment}
-                      >
-                        <CiShirt size="20" color="#94C120" />
-                        <span className="text-xs font-[Inter]">
-                          {equipment}
+                      );
+                    }
+                    if (equipment === "Bibs") {
+                      return (
+                        <span
+                          className="bg-[#F5F5F5] dark:bg-[#374151] p-2 rounded-lg text-xs font-[Inter] flex items-center gap-1 w-[fit-content]"
+                          key={equipment}
+                        >
+                          <CiShirt size="20" color="#94C120" />
+                          <span className="text-xs font-[Inter]">
+                            {equipment}
+                          </span>
                         </span>
-                      </span>
-                    );
-                  }
-                  if (equipment === "Cones") {
-                    return (
-                      <span
-                        className="bg-[#F5F5F5] dark:bg-[#374151] p-2 rounded-lg text-xs font-[Inter] flex items-center gap-1 w-[fit-content]"
-                        key={equipment}
-                      >
-                        <BsConeStriped size="20" color="#94C120" />
-                        <span className="text-xs font-[Inter]">
-                          {equipment}
+                      );
+                    }
+                    if (equipment === "Cones") {
+                      return (
+                        <span
+                          className="bg-[#F5F5F5] dark:bg-[#374151] p-2 rounded-lg text-xs font-[Inter] flex items-center gap-1 w-[fit-content]"
+                          key={equipment}
+                        >
+                          <BsConeStriped size="20" color="#94C120" />
+                          <span className="text-xs font-[Inter]">
+                            {equipment}
+                          </span>
                         </span>
-                      </span>
-                    );
-                  }
-                  if (equipment === "Goals") {
-                    return (
-                      <span
-                        className="bg-[#F5F5F5] dark:bg-[#374151] p-2 rounded-lg text-xs font-[Inter] flex items-center gap-1 w-[fit-content]"
-                        key={equipment}
-                      >
-                        <GiGoalKeeper size="20" color="#94C120" />
-                        <span className="text-xs font-[Inter]">
-                          {equipment}
+                      );
+                    }
+                    if (equipment === "Goals") {
+                      return (
+                        <span
+                          className="bg-[#F5F5F5] dark:bg-[#374151] p-2 rounded-lg text-xs font-[Inter] flex items-center gap-1 w-[fit-content]"
+                          key={equipment}
+                        >
+                          <GiGoalKeeper size="20" color="#94C120" />
+                          <span className="text-xs font-[Inter]">
+                            {equipment}
+                          </span>
                         </span>
-                      </span>
-                    );
-                  }
-                })}
-            </div>
-          </div>
+                      );
+                    }
+                  })}
+                </div>
+              </div>
+            )}
           {/* Required Equipment */}
 
           {/* Required Players */}
-          <div className="flex flex-col gap-2">
-            <FaPeopleGroup size="30" color="#94C120" />
-            <p className="text-sm font-[Inter] font-semibold">
-              REQUIRED PLAYERS
-            </p>
-            <div className="flex items-center flex-wrap gap-2">
-              {fetchVideoDetails &&
-                fetchVideoDetails.requiredPlayers.map((players) => (
-                  <span
-                    className="bg-[#F5F5F5] dark:bg-[#374151] p-2 rounded-lg text-xs font-[Inter] w-[fit-content]"
-                    key={players}
-                  >
-                    {players} {parseInt(players) < 2 ? "Player" : "Players"}
-                  </span>
-                ))}
-            </div>
-          </div>
+          {fetchVideoDetails &&
+            fetchVideoDetails.requiredPlayers.length > 0 && (
+              <div className="flex flex-col gap-2">
+                <FaPeopleGroup size="30" color="#94C120" />
+                <p className="text-sm font-[Inter] font-semibold">
+                  REQUIRED PLAYERS
+                </p>
+                <div className="flex items-center flex-wrap gap-2">
+                  {fetchVideoDetails.requiredPlayers.map((players) => (
+                    <span
+                      className="bg-[#F5F5F5] dark:bg-[#374151] p-2 rounded-lg text-xs font-[Inter] w-[fit-content]"
+                      key={players}
+                    >
+                      {players} {parseInt(players) < 2 ? "Player" : "Players"}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
           {/* Required Players */}
         </div>
         {/* Video related items */}

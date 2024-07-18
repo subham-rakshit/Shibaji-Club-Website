@@ -117,18 +117,31 @@ const Footer = () => {
                     Practices & Sessions
                   </li>
                 </Link>
-                <li className="text-[16px] font-semibold cursor-pointer hover:text-[18px] hover:underline transition-all duration-300">
-                  Sport Science
-                </li>
+                <Link
+                  to={`${
+                    currentUser
+                      ? "/search?tab=practices&category=matches&page=1"
+                      : "/login"
+                  }`}
+                >
+                  <li className="text-[16px] font-semibold cursor-pointer hover:text-[18px] hover:underline transition-all duration-300">
+                    Matches
+                  </li>
+                </Link>
                 <li className="text-[16px] font-semibold cursor-pointer hover:text-[18px] hover:underline transition-all duration-300">
                   Nutrition
                 </li>
-                <li className="text-[16px] font-semibold cursor-pointer hover:text-[18px] hover:underline transition-all duration-300">
-                  Features
-                </li>
-                <li className="text-[16px] font-semibold cursor-pointer hover:text-[18px] hover:underline transition-all duration-300">
-                  Individual Skills Program
-                </li>
+                <Link
+                  to={`${
+                    currentUser
+                      ? "/search?tab=practices&category=club%20insides&page=1"
+                      : "/login"
+                  }`}
+                >
+                  <li className="text-[16px] font-semibold cursor-pointer hover:text-[18px] hover:underline transition-all duration-300">
+                    Individual Skills Program
+                  </li>
+                </Link>
               </ul>
               {/* TODO ⛔⛔⛔⛔ */}
             </div>

@@ -292,6 +292,8 @@ function UpdateVideo() {
                 <option value="goalkeepers">Goalkeepers</option>
                 <option value="tutorials">Tutorials</option>
                 <option value="youth curriculums">Youth Curriculums</option>
+                <option value="club insides">Club Insides</option>
+                <option value="matches">Matches</option>
               </Select>
               {/* Category Input */}
             </div>
@@ -327,7 +329,6 @@ function UpdateVideo() {
                       id="image-upload"
                       onChange={handleImageFileChange}
                       className="w-full"
-                      required
                     />
                     {/* Desktop view Upload button */}
                     <Button

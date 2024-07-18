@@ -220,7 +220,6 @@ function UpdatePost() {
                 <option value="about club">About Club</option>
                 <option value="matches">Matches</option>
                 <option value="practices">Practices</option>
-                <option value="others">Others</option>
                 <option value="euro cup 2024">Euro Cup 2024</option>
               </Select>
             </div>
