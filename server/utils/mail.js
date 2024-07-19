@@ -81,7 +81,7 @@ export const plainEmailTemplate = (heading, message) => {
   `;
 };
 
-// Reset token email tamplate
+// Reset token email template
 export const resetTokenEmailTemplate = (url) => {
   return `
     <!DOCTYPE html>
@@ -99,6 +99,42 @@ export const resetTokenEmailTemplate = (url) => {
           <p>This link will expire in one hour.</p>
           <p>If you did not request a password reset, please ignore this email.</p>
           <p>Thank you!</p>
+      </div>
+    </body>
+    </html>
+  `;
+};
+
+// Contact query email template
+export const contactQueryEmailTemplate = (
+  firstName,
+  lastName,
+  email,
+  phone,
+  address,
+  message
+) => {
+  return `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Contact Form Submission</title>
+    </head>
+    <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; color: #333;">
+      <div style="background-color: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); max-width: 600px; margin: auto;">
+        <h2 style="text-align: center; color: #4CAF50;">Contact Form Submission</h2>
+        <p><strong>First Name:</strong> ${firstName}</p>
+        <p><strong>Last Name:</strong> ${lastName}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phone}</p>
+        <p><strong>Address:</strong> ${address}</p>
+        <p><strong>Message:</strong></p>
+        <p>${message}</p>
+        <footer style="text-align: center; margin-top: 20px; font-size: 0.9em; color: #888;">
+          <p>&copy; 2024 Your Company. All rights reserved.</p>
+        </footer>
       </div>
     </body>
     </html>

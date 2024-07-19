@@ -1,52 +1,58 @@
-import ContactCollection from "../models/contact-form-model.js";
+import { SMTP_MAIL } from "../config/envConfig.js";
+import { contactQueryEmailTemplate, mailTransport } from "../utils/mail.js";
 
 const contactController = async (req, res, next) => {
   try {
     const { firstName, lastName, email, phone, address, message } = req.body;
 
-    //? User can contact without registration. But if user already present in contact collection then we just add the new query in message array. Else we are creating a new contact details.
-    const userExistInContactSchema = await ContactCollection.findOne({
-      email,
-    });
-    if (userExistInContactSchema) {
-      //* If message present in message list then we are send a respond like Your message is already exists!
-      if (userExistInContactSchema.message.includes(message)) {
-        const messageSimilarError = {
-          status: 400,
-          extraDetails: "Your message is already exists!",
-        };
-        next(messageSimilarError);
-      } else {
-        //* If user's message is new one the we just push that new message into message list.
-        await ContactCollection.findOneAndUpdate(
-          { email },
-          { $push: { message } },
-          { useFindAndModify: false }
-        );
-        res.status(201).json({
-          message: "Congratulations! Your message has been sent successfully.",
-        });
-      }
-    } else {
-      const createContactDetails = await ContactCollection.create({
-        firstName: firstName.trim(),
-        lastName: lastName.trim(),
-        email: email.trim(),
-        phone: phone.trim(),
-        address: address.trim(),
-        message: message.trim(),
-      });
-
-      res.status(201).json({
-        message: "Congratulations! Your message has been sent successfully.",
-      });
+    if (
+      firstName.length < 3 ||
+      firstName.length > 30 ||
+      lastName.length < 3 ||
+      lastName.length > 30
+    ) {
+      const nameError = {
+        status: 400,
+        message: "Fistname Or Lastname invalid",
+        extraDetails: "Fistname or Lastname must be 4 to 30 characters long",
+      };
+      return next(nameError);
     }
-  } catch (err) {
-    const catchError = {
-      status: 500,
-      extraDetails: "Internal Server Error",
-    };
-    next(catchError);
+
+    // Valid phone number
+    if (
+      !phone.match(
+        /^\+?(?:\d{1,4})?[-.\s]?(?:\(?\d{1,4}\)?[-.\s]?)?(?:\d{1,4}[-.\s]?){1,4}\d{1,9}$/
+      )
+    ) {
+      const phoneError = {
+        status: 400,
+        message: "Invalid phone number",
+        extraDetails: "Please provide a valid phone number",
+      };
+      return next(phoneError);
+    }
+
+    // We are sending these details to my email address
+    mailTransport().sendMail({
+      from: email,
+      to: SMTP_MAIL,
+      subject: "CONTACT QUERY FROM SHIBAJI WEBSITE",
+      html: contactQueryEmailTemplate(
+        firstName,
+        lastName,
+        email,
+        phone,
+        address,
+        message
+      ),
+    });
+
+    res.status(201).json({
+      message: "Congratulations! Your message has been sent successfully.",
+    });
+  } catch (error) {
+    return next(error);
   }
 };
 

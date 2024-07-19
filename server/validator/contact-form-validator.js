@@ -35,7 +35,7 @@ const contactSchema = z.object({
     .string()
     .trim()
     .min(1, { message: "Query is required!" })
-    .max(1024, { message: "Query can't be more than 1024 characters!" }),
+    .max(255, { message: "Query can't be more than 255 characters!" }),
 });
 
 export default contactSchema;

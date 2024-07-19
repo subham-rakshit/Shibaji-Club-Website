@@ -38,7 +38,7 @@ const Footer = () => {
                 to="https://www.facebook.com/profile.php?id=100006629626082"
                 target="_blank"
               >
-                <li className="hover:shadow-custom-light-dark dark:shadow-custom-light-dark p-2 rounded-full">
+                <li className="hover:shadow-custom-light-dark p-2 rounded-full">
                   <FaFacebookF size="25" style={{ cursor: "pointer" }} />
                 </li>
               </Link>
@@ -46,7 +46,7 @@ const Footer = () => {
                 to="https://www.instagram.com/subham_rakshit_1/"
                 target="_blank"
               >
-                <li className="hover:shadow-custom-light-dark dark:shadow-custom-light-dark p-2 rounded-full">
+                <li className="hover:shadow-custom-light-dark p-2 rounded-full">
                   <FaInstagram size="25" style={{ cursor: "pointer" }} />
                 </li>
               </Link>
@@ -54,12 +54,12 @@ const Footer = () => {
                 to="https://www.linkedin.com/in/subhamjitu97/"
                 target="_blank"
               >
-                <li className="hover:shadow-custom-light-dark dark:shadow-custom-light-dark p-2 rounded-full">
+                <li className="hover:shadow-custom-light-dark p-2 rounded-full">
                   <FaLinkedin size="25" style={{ cursor: "pointer" }} />
                 </li>
               </Link>
               <Link to="https://github.com/subham-rakshit" target="_blank">
-                <li className="hover:shadow-custom-light-dark dark:shadow-custom-light-dark p-2 rounded-full">
+                <li className="hover:shadow-custom-light-dark p-2 rounded-full">
                   <FaGithub size="25" style={{ cursor: "pointer" }} />
                 </li>
               </Link>

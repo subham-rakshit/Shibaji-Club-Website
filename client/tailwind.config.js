@@ -11,6 +11,8 @@ module.exports = {
         "custom-light-dark":
           "-5px -5px 15px rgba(255, 255, 255, 0.1), 5px 5px 15px rgba(0, 0, 0, 0.35)",
         "custom-dark-light": "0 4px 6px rgba(255, 255, 255, 0.1)",
+        "custom-inset":
+          "inset 8px 8px 8px #cbced1, inset -8px -8px 8px #ffffff",
       },
       animation: {
         "move-x": "move-x 1s ease-in-out infinite",
