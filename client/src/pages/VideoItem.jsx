@@ -118,7 +118,7 @@ function VideoItem() {
               <div className="w-[95%] h-[90%] max-w-[600px] max-h-[400px] flex flex-col gap-3">
                 <CgCloseR
                   size="30"
-                  className="self-end cursor-pointer text-white hover:text-red-500 hover:scale-[1.2] transition-all duration-300"
+                  className="self-end cursor-pointer text-gray-500 hover:text-red-500 hover:scale-[1.2] transition-all duration-300"
                   onClick={() => setVideoIsVisible(false)}
                 />
                 <div className="w-full h-full rounded-xl overflow-hidden">

@@ -292,6 +292,8 @@ function UpdateVideo() {
                 <option value="goalkeepers">Goalkeepers</option>
                 <option value="tutorials">Tutorials</option>
                 <option value="youth curriculums">Youth Curriculums</option>
+                <option value="fit challenge">Fit Challenge</option>
+                <option value="strength training">Strength Training</option>
                 <option value="club insides">Club Insides</option>
                 <option value="matches">Matches</option>
               </Select>

@@ -4,6 +4,7 @@ import "aos/dist/aos.css";
 
 import ReactPlayer from "react-player/youtube";
 import { Button, Card } from "flowbite-react";
+import { Typewriter } from "react-simple-typewriter";
 
 import { IoIosArrowForward } from "react-icons/io";
 import { RxDividerVertical } from "react-icons/rx";
@@ -29,11 +30,30 @@ function Home() {
         <div className="w-[90%] max-w-[1200px] flex flex-col lg:flex-row justify-start lg:justify-between items-start">
           <div className="w-full lg:w-[50%]" data-aos="fade-right">
             <h1
-              className="text-white text-[30px] md:text-[45px] font-[Inter] font-extrabold mb-[20px]"
+              className="text-white text-[30px] md:text-[35px] font-[Inter] font-extrabold mb-[20px]"
               style={{ textShadow: "5px 5px 5px #000" }}
             >
-              HELPING <span className="text-[#95c121]">FOOTBALL PLAYERS</span>{" "}
-              WORLDWIDE
+              HELPING{" "}
+              <span className="text-[#95c121] text-[35px] md:text-[38px]">
+                <Typewriter
+                  words={[
+                    "GLOBAL TALENT",
+                    "SOCCER STARS",
+                    "SKILLFUL ATHLETES",
+                    "FUTURE STARS",
+                    "FOOTBALL PLAYERS",
+                    "GAME CHANGERS",
+                    "RISING TALENT",
+                  ]}
+                  loop={0}
+                  cursor
+                  cursorStyle="_"
+                  cursorColor="white"
+                  typeSpeed={70}
+                  deleteSpeed={50}
+                  delaySpeed={1000}
+                />
+              </span>
             </h1>
             <p className="text-white text-[17px] md:text-[20px] font-[Inter] font-medium mb-[20px] leading-6">
               Discover Shibaji Sangha Football Club exclusive content curated by
@@ -77,7 +97,7 @@ function Home() {
 
           {/* Banner Video */}
           <div
-            className="w-full md:w-[45%] h-[350px] rounded-md lg:rounded-xl mt-5 md:mt-0 relative transition-all duration-500 shadow-custom-light-dark overflow-hidden"
+            className="w-full lg:w-[45%] h-[350px] rounded-md lg:rounded-xl mt-5 md:mt-0 relative transition-all duration-500 shadow-custom-light-dark overflow-hidden"
             data-aos="fade-left"
           >
             <img

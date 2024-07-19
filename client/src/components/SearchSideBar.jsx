@@ -12,12 +12,11 @@ function SearchSideBar({ tab, category, searchItem }) {
   const { currentUser } = useSelector((state) => state.user);
   const [blogDropdown, setBlogDropdown] = useState(false);
   const [practiceDropdown, setPracticeDropdown] = useState(false);
-  const [cflDropdown, setCflDropdown] = useState(false);
 
   const dispatch = useDispatch();
 
   return (
-    <div className="w-full h-full sm:w-56 py-5 px-3 flex flex-col justify-between bg-[#F7F7F7] dark:bg-[#223141]">
+    <div className="w-full min-h-full sm:w-56 py-5 px-3 flex flex-col justify-between bg-[#F7F7F7] dark:bg-[#223141]">
       <div>
         <MdClose
           size="25"
@@ -26,7 +25,7 @@ function SearchSideBar({ tab, category, searchItem }) {
         />
 
         <ul className="flex flex-col gap-3 my-5 transition-all duration-500">
-          {/* All Content */}
+          {/* All Content Tab */}
           <Link
             to={
               currentUser
@@ -52,9 +51,9 @@ function SearchSideBar({ tab, category, searchItem }) {
               </p>
             </li>
           </Link>
-          {/* All Content */}
+          {/* All Content Tab */}
 
-          {/* Blogs Sidebar */}
+          {/* Blogs Tab */}
           <Link
             to={
               currentUser
@@ -74,7 +73,6 @@ function SearchSideBar({ tab, category, searchItem }) {
                   tab === "blogs" && category && !prev ? prev : !prev
                 );
                 setPracticeDropdown(false);
-                setCflDropdown(false);
               }}
             >
               <div className="flex items-center gap-5">
@@ -96,7 +94,7 @@ function SearchSideBar({ tab, category, searchItem }) {
               blogDropdown || (tab === "blogs" && category)
                 ? "inline"
                 : "hidden"
-            } flex flex-col gap-2 my-1 transition-all duration-300 mx-5`}
+            } flex flex-col gap-1 my-1 transition-all duration-300 mx-5`}
           >
             <Link
               to={
@@ -171,9 +169,9 @@ function SearchSideBar({ tab, category, searchItem }) {
               </div>
             </Link>
           </li>
-          {/* Blogs Sidebar */}
+          {/* Blogs Tab */}
 
-          {/* Prctices Sidebar */}
+          {/* Prctices Tab */}
           <Link
             to={
               currentUser
@@ -214,8 +212,9 @@ function SearchSideBar({ tab, category, searchItem }) {
               practiceDropdown || (tab === "practices" && category)
                 ? "inline"
                 : "hidden"
-            } flex flex-col gap-2 my-2 transition-all duration-500 mx-5`}
+            } flex flex-col gap-1 my-2 transition-all duration-500 mx-5`}
           >
+            {/* Outfield */}
             <Link
               to={
                 currentUser
@@ -234,6 +233,8 @@ function SearchSideBar({ tab, category, searchItem }) {
                 Outfield
               </div>
             </Link>
+
+            {/* One to One */}
             <Link
               to={
                 currentUser
@@ -252,6 +253,8 @@ function SearchSideBar({ tab, category, searchItem }) {
                 One to One
               </div>
             </Link>
+
+            {/* SAQ */}
             <Link
               to={
                 currentUser
@@ -270,6 +273,8 @@ function SearchSideBar({ tab, category, searchItem }) {
                 SAQ
               </div>
             </Link>
+
+            {/* Goalkeepers */}
             <Link
               to={
                 currentUser
@@ -288,6 +293,8 @@ function SearchSideBar({ tab, category, searchItem }) {
                 Goalkeepers
               </div>
             </Link>
+
+            {/* Tutorials */}
             <Link
               to={
                 currentUser
@@ -306,6 +313,8 @@ function SearchSideBar({ tab, category, searchItem }) {
                 Tutorials
               </div>
             </Link>
+
+            {/* Yout Curriculums */}
             <Link
               to={
                 currentUser
@@ -324,6 +333,48 @@ function SearchSideBar({ tab, category, searchItem }) {
                 Youth Curriculums
               </div>
             </Link>
+
+            {/* Fit Challenge */}
+            <Link
+              to={
+                currentUser
+                  ? `/search?tab=practices&category=fit challenge${
+                      searchItem && `&searchItem=${searchItem}`
+                    }&page=1`
+                  : "/login"
+              }
+            >
+              <div
+                className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
+                  category === "fit challenge" &&
+                  "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
+                }`}
+              >
+                Fit Challenge
+              </div>
+            </Link>
+
+            {/* Strength Training */}
+            <Link
+              to={
+                currentUser
+                  ? `/search?tab=practices&category=strength training${
+                      searchItem && `&searchItem=${searchItem}`
+                    }&page=1`
+                  : "/login"
+              }
+            >
+              <div
+                className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
+                  category === "strength training" &&
+                  "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
+                }`}
+              >
+                Strength Training
+              </div>
+            </Link>
+
+            {/* Club Insides */}
             <Link
               to={
                 currentUser
@@ -343,6 +394,7 @@ function SearchSideBar({ tab, category, searchItem }) {
               </div>
             </Link>
 
+            {/* Matches */}
             <Link
               to={
                 currentUser
@@ -362,7 +414,7 @@ function SearchSideBar({ tab, category, searchItem }) {
               </div>
             </Link>
           </li>
-          {/* Practices Sidebar */}
+          {/* Practices Tab */}
         </ul>
       </div>
 

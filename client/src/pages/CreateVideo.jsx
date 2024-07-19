@@ -263,6 +263,8 @@ function CreateVideo() {
             <option value="goalkeepers">Goalkeepers</option>
             <option value="tutorials">Tutorials</option>
             <option value="youth curriculums">Youth Curriculums</option>
+            <option value="fit challenge">Fit Challenge</option>
+            <option value="strength training">Strength Training</option>
             <option value="club insides">Club Insides</option>
             <option value="matches">Matches</option>
           </Select>
@@ -613,7 +615,11 @@ function CreateVideo() {
             >
               Thumbnail Review
             </Button>
-            <Modal show={openModal} onClose={() => setOpenModal(false)}>
+            <Modal
+              show={openModal}
+              onClose={() => setOpenModal(false)}
+              position="bottom-center"
+            >
               <Modal.Header>Video Thubnail Preview</Modal.Header>
               <Modal.Body>
                 <div className="space-y-6">
