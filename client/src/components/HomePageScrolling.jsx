@@ -7,7 +7,7 @@ function HomePageScrolling() {
   useEffect(() => {
     const getVideos = async () => {
       try {
-        const res = await fetch("/api/video/getvideos");
+        const res = await fetch("/api/video/getvideos?order=desc");
         if (res.ok) {
           const data = await res.json();
           setAllVideos(data.videos || []);

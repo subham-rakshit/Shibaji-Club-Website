@@ -132,11 +132,16 @@ const Footer = () => {
                     Matches
                   </li>
                 </Link>
-                {/* 🖐️ TODO */}
-                <li className="text-[16px] font-semibold cursor-pointer hover:text-[18px] hover:underline transition-all duration-300">
-                  Nutrition
-                </li>
-                {/* 🖐️ TODO */}
+                <Link
+                  to={`${
+                    currentUser ? "/search?tab=nutrition&page=1" : "/login"
+                  }`}
+                >
+                  <li className="text-[16px] font-semibold cursor-pointer hover:text-[18px] hover:underline transition-all duration-300">
+                    Nutrition
+                  </li>
+                </Link>
+
                 <Link
                   to={`${
                     currentUser

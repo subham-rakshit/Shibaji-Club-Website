@@ -351,7 +351,7 @@ function Home() {
                   className="bg-[#95c121] w-[80px] h-[70px]"
                 />
                 <p className="text-[14px] md:text-[16px] font-[Inter] font-bold">
-                  CURRICULUMS
+                  Youth U-15
                 </p>
                 <IoIosArrowForward size="16" />
               </li>
