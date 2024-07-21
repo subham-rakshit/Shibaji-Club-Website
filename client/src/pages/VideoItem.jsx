@@ -5,6 +5,7 @@ import { Button } from "flowbite-react";
 import { PostCommentSection, VideoCard } from "../components";
 import { PiImageBrokenDuotone, PiListPlus } from "react-icons/pi";
 import { FaPlay, FaClock, FaPeopleGroup } from "react-icons/fa6";
+import { TbPlayFootball } from "react-icons/tb";
 import { FaCheckCircle } from "react-icons/fa";
 import { LuCheckSquare } from "react-icons/lu";
 import { IoFootball } from "react-icons/io5";
@@ -303,7 +304,7 @@ function VideoItem() {
           {fetchVideoDetails &&
             fetchVideoDetails.requiredPlayers.length > 0 && (
               <div className="flex flex-col gap-2">
-                <FaPeopleGroup size="30" color="#94C120" />
+                <TbPlayFootball size="30" color="#94C120" />
                 <p className="text-sm font-[Inter] font-semibold">
                   REQUIRED PLAYERS
                 </p>

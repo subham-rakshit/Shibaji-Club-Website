@@ -243,7 +243,7 @@ function Header() {
         />
       </div>
 
-      <Navbar.Collapse className="bg-white">
+      <Navbar.Collapse className="bg-white dark:bg-[#1F2937]">
         <Navbar.Link active={path === "/"} as={"div"}>
           <Link to="/" className="text-[16px] font-[Inter] font-semibold">
             Home

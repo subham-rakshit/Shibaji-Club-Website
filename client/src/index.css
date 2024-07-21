@@ -33,13 +33,18 @@ body::-webkit-scrollbar {
     font-size: 18px;
   }
 }
+.post-item-content-style {
+  color: black !important;
+}
 
+.dark .post-item-content-style {
+  color: white !important;
+}
 .post-item-content-style p {
   background-color: transparent !important;
   font-size: 16px !important;
   font-family: "Inter" !important;
   font-weight: 500 !important;
-  color: rgb(59, 59, 59) !important;
   line-height: 1.5 !important;
 }
 @media screen and (min-width: 768px) {
@@ -55,8 +60,14 @@ body::-webkit-scrollbar {
   color: rgb(190, 189, 189) !important;
 }
 
+.dark .post-item-content-style span {
+  font-family: "Inter" !important;
+  color: white !important;
+}
+
 .post-item-content-style span {
   font-family: "Inter" !important;
+  color: black !important;
 }
 
 .hide-scrollbar::-webkit-scrollbar {

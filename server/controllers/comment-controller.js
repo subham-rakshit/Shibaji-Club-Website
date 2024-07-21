@@ -134,7 +134,7 @@ export const deleteComment = async (req, res, next) => {
         message: "Comment not found!",
       });
     }
-    if (req.user.userId !== req.params.commentId && !req.user.isAdmin) {
+    if (req.user.userId !== commentInfo.userId && !req.user.isAdmin) {
       return res.status(403).json({
         message: "You are not allowed to delete this comment!",
       });
