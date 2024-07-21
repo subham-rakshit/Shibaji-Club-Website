@@ -13,18 +13,59 @@ import { BsConeStriped } from "react-icons/bs";
 import { GiGoalKeeper } from "react-icons/gi";
 import { CgCloseR } from "react-icons/cg";
 import ReactPlayer from "react-player";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { updateSuccess } from "../redux-slice/userSlice";
 
 function VideoItem() {
+  const { currentUser } = useSelector((state) => state.user);
   const { videoSlug } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [fetchError, setFetchError] = useState(false);
   const [fetchVideoDetails, setFetchVideoDetails] = useState(null);
   const [recentlyAddedVideo, setRecentlyAddedVideo] = useState(null);
   const [videoIsVisible, setVideoIsVisible] = useState(false);
+  const [isVideoSaved, setIsVideoSaved] = useState(false);
+  const dispatch = useDispatch();
 
-  const handleSaveVideoFunction = () => {
-    console.log("Save Video");
-  };
+  useEffect(() => {
+    const handleSaveVideoFunction = async () => {
+      try {
+        const res = await fetch(
+          `/api/video/savevideo/${
+            fetchVideoDetails ? fetchVideoDetails._id : ""
+          }/${currentUser ? currentUser._id : ""}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await res.json();
+        if (res.ok) {
+          dispatch(updateSuccess(data.userDetails));
+          toast.success(data.message, {
+            theme: "colored",
+            position: "bottom-center",
+          });
+        } else {
+          toast.error(data.extraDetails, {
+            theme: "colored",
+            position: "bottom-center",
+          });
+        }
+      } catch (error) {
+        console.log(error.message);
+      } finally {
+        setIsVideoSaved(false);
+      }
+    };
+
+    if (currentUser && isVideoSaved) {
+      handleSaveVideoFunction();
+    }
+  }, [isVideoSaved]);
 
   useEffect(() => {
     const getVideoFetchDetails = async () => {
@@ -295,14 +336,17 @@ function VideoItem() {
                   0
                 )} min to read`}
             </span>
+            {/* Save Video btn */}
             <button
               type="button"
-              className="flex items-center gap-1 text-xs font-[Inter]"
-              onClick={handleSaveVideoFunction}
+              className="flex items-center gap-1 text-xs font-[Inter] hover:scale-[1.2] hover:font-bold transition-all duration-200"
+              onClick={() => setIsVideoSaved(true)}
             >
-              {fetchVideoDetails && fetchVideoDetails.isSaved ? (
+              {currentUser &&
+              fetchVideoDetails &&
+              currentUser.savedVideos.includes(fetchVideoDetails._id) ? (
                 <>
-                  <FaCheckCircle size="20" color="blue" />
+                  <FaCheckCircle size="20" color="gray" />
                   Saved
                 </>
               ) : (

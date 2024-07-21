@@ -1,3 +1,4 @@
+import UserCollection from "../models/user-model.js";
 import VideoCollection from "../models/video-model.js";
 
 //* Create Video -->
@@ -234,5 +235,56 @@ export const getRecentVideos = async (req, res, next) => {
     });
   } catch (error) {
     next(error);
+  }
+};
+
+//* Save perticular video -->
+export const saveVideo = async (req, res, next) => {
+  try {
+    if (req.user.userId !== req.params.userId) {
+      const authError = {
+        status: 403,
+        message: "Not Authenticated",
+        extraDetails: "Please register to save this video.",
+      };
+      return next(authError);
+    }
+
+    // Get the user info
+    const user = await UserCollection.findById(req.user.userId);
+    if (!user) {
+      const userError = {
+        status: 404,
+        message: "User not registered",
+        extraDetails: "Please register to save this video.",
+      };
+      return next(userError);
+    }
+
+    // Check if videoId already present in saveVideos Array
+    const videoIndex = user.savedVideos.indexOf(req.params.videoId);
+    if (videoIndex > -1) {
+      // We have to remove that videoId from there
+      user.savedVideos.splice(videoIndex, 1);
+      await user.save();
+
+      const { password, ...rest } = user._doc;
+      return res.status(200).json({
+        message: "Video removed from Saved Videos tab successfully",
+        userDetails: rest,
+      });
+    } else {
+      // Add the videoId in savedVideos array
+      user.savedVideos.push(req.params.videoId);
+      await user.save();
+      const { password, ...rest } = user._doc;
+      return res.status(200).json({
+        message:
+          "Video saved successfully! You can watch it later in the Saved Videos tab.",
+        userDetails: rest,
+      });
+    }
+  } catch (error) {
+    return next(error);
   }
 };

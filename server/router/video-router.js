@@ -6,6 +6,7 @@ import {
   deleteVideo,
   getRecentVideos,
   updateVideo,
+  saveVideo
 } from "../controllers/video-controllers.js";
 
 const videoRouter = express.Router();
@@ -19,5 +20,6 @@ videoRouter
 videoRouter
   .route("/updatevideo/:videoId/:userId")
   .put(verifyToken, updateVideo);
+videoRouter.route("/savevideo/:videoId/:userId").put(verifyToken, saveVideo);
 
 export default videoRouter;
