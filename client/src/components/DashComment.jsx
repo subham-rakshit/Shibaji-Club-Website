@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Button, Table, Modal } from "flowbite-react";
+import { toast } from "react-toastify";
 import { IoImagesSharp } from "react-icons/io5";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
@@ -66,7 +67,7 @@ function DashComment() {
   };
 
   //* Delete a post functionality -->
-  const handleDeleteComment = async (e) => {
+  const handleDeleteComment = async () => {
     setShowModel(false);
     try {
       const res = await fetch(
@@ -76,15 +77,20 @@ function DashComment() {
         }
       );
       const data = await res.json();
-      console.log(data);
+
       if (res.ok) {
         setAllCommentsData((prev) =>
           prev.filter((comment) => comment._id !== selectedCommentId)
         );
-        alert(data.message);
+        toast.success(data.message, {
+          theme: "colored",
+          position: "bottom-center",
+        });
       } else {
-        console.log(data.extraDetails);
-        alert(data.extraDetails);
+        toast.error(data.extraDetails, {
+          theme: "colored",
+          position: "bottom-center",
+        });
       }
     } catch (error) {
       console.log(error.message);
@@ -117,7 +123,6 @@ function DashComment() {
             </Table.Head>
             <Table.Body className="text-[13px] font-medium">
               {allCommentsData.map((comment, i) => {
-                // console.log("Each comment", comment.userId, comment.postId);
                 return (
                   <Table.Row
                     className={`bg-white dark:bg-gray-800 ${
@@ -168,22 +173,26 @@ function DashComment() {
           )}
         </div>
       ) : (
-        <>
-          <IoImagesSharp size="100" className="mx-auto mb-10" />
-          <h1 className="text-gray-500 dark:text-gray-300 text-2xl font-bold font-[Inter] text-center">
-            Oops! No Comments to show
-          </h1>
-          <p className="text-gray-500 dark:text-gray-300 text-xs font-normal font-[Inter] text-center mt-2">
-            Currently, there are no comments available to display. Please check
-            back later for updates.
-          </p>
-        </>
+        <div className="h-screen flex flex-col">
+          <DashToggleButton />
+          <div className="h-full flex flex-col justify-center items-center">
+            <IoImagesSharp size="100" className="mx-auto mb-10" />
+            <h1 className="text-gray-500 dark:text-gray-300 text-2xl font-bold font-[Inter] text-center">
+              Oops! No Comments to show
+            </h1>
+            <p className="text-gray-500 dark:text-gray-300 text-xs font-normal font-[Inter] text-center mt-2">
+              Currently, there are no comments available to display. Please
+              check back later for updates.
+            </p>
+          </div>
+        </div>
       )}
       <Modal
         show={showModel}
         size="md"
         onClose={() => setShowModel(false)}
         popup
+        className="pt-[60px] sm:pt-[70px]"
       >
         <Modal.Header />
         <Modal.Body>

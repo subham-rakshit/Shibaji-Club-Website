@@ -3,6 +3,7 @@ import moment from "moment";
 import { FaThumbsUp } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { Button, Textarea } from "flowbite-react";
+import { toast } from "react-toastify";
 
 function Comment({ eachComment, onLikeClick, onEditClick, onDeleteClick }) {
   const [userInfo, setUserInfo] = useState({});
@@ -35,7 +36,10 @@ function Comment({ eachComment, onLikeClick, onEditClick, onDeleteClick }) {
 
   const handleEditSave = async () => {
     if (editedCommentText === eachComment.comment) {
-      return alert("Nothing to be edited!");
+      return toast.error("Nothing to be edited!", {
+        theme: "colored",
+        position: "bottom-center",
+      });
     }
     try {
       const res = await fetch(`/api/comments/editComment/${eachComment._id}`, {

@@ -1,13 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  Alert,
-  Button,
-  FileInput,
-  Select,
-  TextInput,
-  Modal,
-} from "flowbite-react";
+import { Button, FileInput, Select, TextInput, Modal } from "flowbite-react";
 import JoditEditor from "jodit-react";
+import { toast } from "react-toastify";
 import {
   getDownloadURL,
   getStorage,
@@ -30,18 +24,11 @@ function CreatePost() {
   //* Preview Image Modal State -->
   const [openModal, setOpenModal] = useState(false);
 
-  //* Image File Uploading Error state -->
-  const [imageFileUploadingError, setImageFileUploadingError] = useState(null);
-
   //* JoditEditor state -->
   const editor = useRef(null);
 
   //* Create post Form Data state -->
   const [postFormData, setPostFormData] = useState({});
-
-  //* Publish details state -->
-  const [publishSuccess, setPublishSuccess] = useState(null);
-  const [publishError, setPublishError] = useState(null);
 
   const navigate = useNavigate();
 
@@ -64,7 +51,6 @@ function CreatePost() {
   //* Image File Uploading in Firebase -->
   const imageFileUploading = () => {
     setIsImageFileUploading(true);
-    setImageFileUploadingError(null);
     //? To understand the requesting person is correct or not by passing the firebase app which is exported from firebase.js file.
     const storage = getStorage(app);
     //? For unique image file name
@@ -83,7 +69,10 @@ function CreatePost() {
         setImageFileUploadingProgress(progess.toFixed(0));
       },
       (error) => {
-        setImageFileUploadingError("File size must be less than 2MB!");
+        toast.error("File size must be less than 2MB!", {
+          theme: "colored",
+          position: "bottom-center",
+        });
         setImageFileUploadingProgress(null);
         setImageUploadFile(null);
         setImageUploadFileURL(null);
@@ -102,7 +91,10 @@ function CreatePost() {
   //* Onclick Image Upload Button Click -->
   const handleUploadButtonClick = () => {
     if (!imageUploadFileURL) {
-      setImageFileUploadingError("Please select a image to upload!");
+      toast.error("Please select a image to upload!", {
+        theme: "colored",
+        position: "bottom-center",
+      });
       return;
     }
     setPostFormData({ ...postFormData, blogImage: imageUploadFileURL });
@@ -122,25 +114,31 @@ function CreatePost() {
       };
       const res = await fetch(api, options);
       const data = await res.json();
-      console.log(data);
+
       if (res.ok) {
-        setPublishError(null);
-        setPublishSuccess(data.message);
+        toast.success(data.message, {
+          theme: "colored",
+          position: "bottom-center",
+        });
         setPostFormData({});
         navigate(`/post/${data.postDetails.slug}`);
-      }
-      if (!res.ok) {
-        setPublishError(data.extraDetails);
-        setPublishSuccess(null);
+      } else {
+        toast.error(data.extraDetails, {
+          theme: "colored",
+          position: "bottom-center",
+        });
       }
     } catch (error) {
-      setPublishError(error.message);
+      toast.error(error.message, {
+        theme: "colored",
+        position: "bottom-center",
+      });
       console.log(error.message);
     }
   };
 
   return (
-    <div className="p-3 w-full max-w-3xl mx-auto min-h-screen my-[65px] lg:mt-[76px] font-[Inter] flex flex-col justify-center">
+    <div className="p-3 w-full h-full max-w-3xl mx-auto mt-[60px] sm:mt-[70px] font-[Inter] flex flex-col">
       <div className="flex items-center justify-between gap-4 mb-2 lg:mb-5">
         <h1 className="text-center lg:text-left text-xl lg:text-3xl my-5 font-semibold">
           Create a post
@@ -184,7 +182,7 @@ function CreatePost() {
         </div>
         <div
           className={`flex flex-col sm:flex-row gap-4 items-center justify-between border-4 border-teal-500 border-dotted p-3 ${
-            imageFileUploadingError || imageUploadFileURL ? "" : "mb-2 lg:mb-5"
+            imageUploadFileURL ? "" : "mb-2 lg:mb-5"
           }`}
         >
           <FileInput
@@ -208,15 +206,6 @@ function CreatePost() {
               : "Upload"}
           </Button>
         </div>
-        {imageFileUploadingError && (
-          <Alert
-            color="failure"
-            onDismiss={() => setImageFileUploadingError(null)}
-            className="font-[Inter] text-semibold"
-          >
-            {imageFileUploadingError}
-          </Alert>
-        )}
         {postFormData.blogImage && (
           <>
             <Button
@@ -225,7 +214,11 @@ function CreatePost() {
             >
               Image Review
             </Button>
-            <Modal show={openModal} onClose={() => setOpenModal(false)}>
+            <Modal
+              show={openModal}
+              onClose={() => setOpenModal(false)}
+              className="pt-[60px] sm:pt-[70px]"
+            >
               <Modal.Header>Blog Thubnail Preview</Modal.Header>
               <Modal.Body>
                 <div className="space-y-6">
@@ -257,24 +250,6 @@ function CreatePost() {
           Publish
         </Button>
       </form>
-      {publishSuccess && (
-        <Alert
-          color="success"
-          onDismiss={() => setPublishSuccess(null)}
-          className="mt-3"
-        >
-          {publishSuccess}
-        </Alert>
-      )}
-      {publishError && (
-        <Alert
-          color="failure"
-          onDismiss={() => setPublishError(null)}
-          className="mt-3"
-        >
-          {publishError}
-        </Alert>
-      )}
     </div>
   );
 }

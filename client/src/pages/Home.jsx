@@ -16,15 +16,15 @@ import { FaPlay } from "react-icons/fa";
 import { CgCloseR } from "react-icons/cg";
 
 function Home() {
-  const [videoIsVisible, setVideoIsVisible] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
+  const [videoIsVisible, setVideoIsVisible] = useState(false);
 
   useEffect(() => {
     AOS.init({ duration: 2000 });
   }, []);
 
   return (
-    <div className="flex flex-col mt-[65px] lg:mt-[70px]">
+    <div className="flex flex-col mt-[60px] sm:mt-[70px]">
       {/* Home Banner Section ----> */}
       <div className="bg-[url('/banner-dark.png')] w-full min-h-screen bg-cover flex justify-center items-center py-[30px] md:py-[50px]">
         <div className="w-[90%] max-w-[1200px] flex flex-col lg:flex-row justify-start lg:justify-between items-start">

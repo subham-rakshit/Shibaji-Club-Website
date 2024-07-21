@@ -112,3 +112,8 @@ body::-webkit-scrollbar {
 /* From Left - Right */
 
 /* Silde animation in Home page */
+
+/* Search Sidebar */
+.search-side-bar::-webkit-scrollbar {
+  display: none;
+}

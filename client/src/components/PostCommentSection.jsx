@@ -6,6 +6,7 @@ import { PropagateLoader } from "react-spinners";
 import Comment from "./Comment";
 import { useNavigate } from "react-router-dom";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { toast } from "react-toastify";
 
 function PostCommentSection({ postId }) {
   const { currentUser } = useSelector((state) => state.user);
@@ -24,13 +25,13 @@ function PostCommentSection({ postId }) {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (comment.length > 200) {
-      setCommentSuccessMsg(null);
-      setCommentErrorMsg("Comment must be at least 200 characters.");
+      toast.error("Comment must be at least 200 characters.", {
+        theme: "colored",
+        position: "bottom-center",
+      });
       return;
     }
     try {
-      setCommentErrorMsg(null);
-      setCommentSuccessMsg(null);
       setIsLoading(true);
       const res = await fetch(`/api/comments/create`, {
         method: "POST",
@@ -42,23 +43,27 @@ function PostCommentSection({ postId }) {
       const data = await res.json();
 
       if (res.ok) {
-        setComment("");
-        setCommentSuccessMsg(data.message);
-        setCommentErrorMsg(null);
-        setIsLoading(false);
         setCommentsList((prev) => [data.commentDetails, ...prev]);
         setNumberOfComments((prev) => prev + 1);
-      }
-      if (!res.ok) {
-        setCommentSuccessMsg(null);
-        setCommentErrorMsg(data.extraDetails);
-        setIsLoading(false);
+        setComment("");
+        toast.success(data.message, {
+          theme: "colored",
+          position: "bottom-center",
+        });
+      } else {
+        toast.error(data.extraDetails, {
+          theme: "colored",
+          position: "bottom-center",
+        });
       }
     } catch (error) {
-      setCommentErrorMsg(error.message);
-      setCommentSuccessMsg(null);
-      setIsLoading(false);
+      toast.error(error.message, {
+        theme: "colored",
+        position: "bottom-center",
+      });
       console.log(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -78,8 +83,9 @@ function PostCommentSection({ postId }) {
           setIsShowButton(false);
         }
       } catch (error) {
-        setIsLoading(false);
         console.log(error.message);
+      } finally {
+        setIsLoading(false);
       }
     };
     getPostComments();
@@ -157,7 +163,10 @@ function PostCommentSection({ postId }) {
       const data = await res.json();
 
       if (res.ok) {
-        alert(data.message);
+        toast.success(data.message, {
+          theme: "colored",
+          position: "bottom-center",
+        });
         setCommentsList(
           commentsList.filter(
             (eachCommentItem) => eachCommentItem._id !== commentId
@@ -225,24 +234,6 @@ function PostCommentSection({ postId }) {
               Submit
             </Button>
           </div>
-          {commentSuccessMsg && (
-            <Alert
-              color="success"
-              className="mt-3"
-              onDismiss={() => setCommentSuccessMsg(null)}
-            >
-              {commentSuccessMsg}
-            </Alert>
-          )}
-          {commentErrorMsg && (
-            <Alert
-              color="failure"
-              className="mt-3"
-              onDismiss={() => setCommentErrorMsg(null)}
-            >
-              {commentErrorMsg}
-            </Alert>
-          )}
         </form>
       )}
       {isLoading ? (
@@ -295,6 +286,7 @@ function PostCommentSection({ postId }) {
         show={openModal}
         size="sm"
         onClose={() => setOpenModal(false)}
+        position="center"
         popup
       >
         <Modal.Header />

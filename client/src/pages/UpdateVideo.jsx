@@ -10,6 +10,7 @@ import {
   Checkbox,
 } from "flowbite-react";
 import JoditEditor from "jodit-react";
+import { toast } from "react-toastify";
 import {
   getDownloadURL,
   getStorage,
@@ -20,7 +21,7 @@ import { app } from "../firebase";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { PacmanLoader } from "react-spinners";
-import { FaCheckCircle, FaCloudUploadAlt } from "react-icons/fa";
+import { FaCloudUploadAlt } from "react-icons/fa";
 
 function UpdateVideo() {
   //* User provided image file and temporary image URL state -->
@@ -65,11 +66,12 @@ function UpdateVideo() {
         if (res.ok) {
           setVideoFormData(data.videos[0]);
           setIsLoading(false);
-          setPublishError(null);
-        }
-        if (!res.ok) {
+        } else {
           console.log("API ERRO: ", data.extraDetails);
-          setPublishError(data.extraDetails);
+          toast.error(data.extraDetails, {
+            theme: "colored",
+            position: "bottom-center",
+          });
           return;
         }
       } catch (error) {
@@ -101,7 +103,6 @@ function UpdateVideo() {
   //* Image File Uploading in Firebase -->
   const imageFileUploading = () => {
     setIsImageFileUploading(true);
-    setImageFileUploadingError(null);
     //? To understand the requesting person is correct or not by passing the firebase app which is exported from firebase.js file.
     const storage = getStorage(app);
     //? For unique image file name
@@ -120,7 +121,10 @@ function UpdateVideo() {
         setImageFileUploadingProgress(progess.toFixed(0));
       },
       (error) => {
-        setImageFileUploadingError("File size must be less than 2MB!");
+        toast.error("File size must be less than 2MB!", {
+          theme: "colored",
+          position: "bottom-center",
+        });
         setImageFileUploadingProgress(null);
         setImageUploadFile(null);
         setImageUploadFileURL(null);
@@ -139,7 +143,10 @@ function UpdateVideo() {
   //* Thumbnail Image upload -->
   const handleThumbnailUpload = () => {
     if (!imageUploadFileURL) {
-      setImageFileUploadingError("Please select a image to upload!");
+      toast.error("Please select a image to upload!", {
+        theme: "colored",
+        position: "bottom-center",
+      });
       return;
     }
     setVideoFormData({
@@ -216,25 +223,30 @@ function UpdateVideo() {
       };
       const res = await fetch(api, options);
       const data = await res.json();
-      console.log(data);
+
       if (res.ok) {
-        setPublishError(null);
-        setPublishSuccess(data.message);
-        // navigate(`/video/${data.videoDetails.slug}`);
-        navigate("/admin-dashboard?tab=videos");
-      }
-      if (!res.ok) {
-        setPublishError(data.extraDetails);
-        setPublishSuccess(null);
+        toast.success(data.message, {
+          theme: "colored",
+          position: "bottom-center",
+        });
+        navigate(`/video/${data.videoDetails.slug}`);
+      } else {
+        toast.error(data.extraDetails, {
+          theme: "colored",
+          position: "bottom-center",
+        });
       }
     } catch (error) {
-      setPublishError(error.message);
+      toast.error(error.message, {
+        theme: "colored",
+        position: "bottom-center",
+      });
       console.log("Backend Error: ", error.message);
     }
   };
 
   return (
-    <div className="p-3 w-full max-w-3xl mx-auto min-h-screen my-[65px] lg:mt-[76px] font-[Inter] flex flex-col justify-center">
+    <div className="p-3 w-full h-full max-w-3xl mx-auto mt-[60px] sm:mt-[70px] font-[Inter] flex flex-col">
       {isLoading ? (
         <PacmanLoader color="#36d7b7" className="mx-auto" />
       ) : (
@@ -296,15 +308,14 @@ function UpdateVideo() {
                 <option value="strength training">Strength Training</option>
                 <option value="club insides">Club Insides</option>
                 <option value="matches">Matches</option>
+                <option value="nutrition">Nutrition</option>
               </Select>
               {/* Category Input */}
             </div>
 
             <div
               className={`flex flex-col gap-4 border-4 border-slate-500 border-dotted rounded-tl-2xl rounded-br-2xl px-4 py-5 ${
-                imageFileUploadingError || imageUploadFileURL
-                  ? ""
-                  : "mb-2 lg:mb-5"
+                imageUploadFileURL ? "" : "mb-2 lg:mb-5"
               }`}
             >
               {/* Thumbnail and Video URL Inputbox  */}
@@ -665,15 +676,6 @@ function UpdateVideo() {
               </div>
               {/* Required equipments and Coaches Inputbox */}
             </div>
-            {imageFileUploadingError && (
-              <Alert
-                color="failure"
-                onDismiss={() => setImageFileUploadingError(null)}
-                className="font-[Inter] text-semibold"
-              >
-                {imageFileUploadingError}
-              </Alert>
-            )}
             {videoFormData.thumbnailURL && (
               <>
                 <Button
@@ -682,7 +684,11 @@ function UpdateVideo() {
                 >
                   Thumbnail Review
                 </Button>
-                <Modal show={openModal} onClose={() => setOpenModal(false)}>
+                <Modal
+                  show={openModal}
+                  onClose={() => setOpenModal(false)}
+                  className="pt-[60px] sm:pt-[70px]"
+                >
                   <Modal.Header>Video Thubnail Preview</Modal.Header>
                   <Modal.Body>
                     <div className="space-y-6">
@@ -722,24 +728,6 @@ function UpdateVideo() {
               Update
             </Button>
           </form>
-          {publishSuccess && (
-            <Alert
-              color="success"
-              onDismiss={() => setPublishSuccess(null)}
-              className="mt-3"
-            >
-              {publishSuccess}
-            </Alert>
-          )}
-          {publishError && (
-            <Alert
-              color="failure"
-              onDismiss={() => setPublishError(null)}
-              className="mt-3"
-            >
-              {publishError}
-            </Alert>
-          )}
         </>
       )}
     </div>

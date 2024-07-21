@@ -5,6 +5,7 @@ import {
   SearchAllContent,
   SearchPractices,
   SearchBlogs,
+  SearchNutrition,
 } from "../components";
 import { useSelector } from "react-redux";
 
@@ -39,12 +40,12 @@ function SearchPage() {
   };
 
   return (
-    <div className="min-h-screen mt-[65px] lg:mt-[70px] relative">
+    <div className="min-h-screen mt-[60px] sm:mt-[70px] relative">
       {/* Dashboard Left Side Bar */}
       <div
         className={`z-50 absolute top-0 ${
           isSearchSlide === "true" ? "left-[-100%]" : "left-0"
-        } transition-all duration-500 shadow-custom-light-dark dark:shadow-custom-dark-light rounded-tr-lg rounded-br-lg overflow-hidden h-full`}
+        } transition-all duration-500 shadow-custom-light-dark dark:shadow-custom-dark-light rounded-tr-lg rounded-br-lg overflow-auto h-full search-side-bar`}
       >
         <SearchSideBar tab={tab} category={category} searchItem={searchItem} />
       </div>
@@ -69,6 +70,15 @@ function SearchPage() {
       )}
       {tab === "practices" && (
         <SearchPractices
+          tab={tab}
+          category={category}
+          searchItem={searchItem}
+          currentPage={currentPage}
+          onChangePage={onChangePage}
+        />
+      )}
+      {tab === "nutrition" && (
+        <SearchNutrition
           tab={tab}
           category={category}
           searchItem={searchItem}

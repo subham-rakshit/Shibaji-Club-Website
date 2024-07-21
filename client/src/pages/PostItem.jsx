@@ -72,7 +72,7 @@ function PostItem() {
   }
 
   return (
-    <main className="min-h-screen mt-[65px] lg:mt-[76px] flex justify-center p-3">
+    <main className="min-h-screen mt-[60px] sm:mt-[70px] flex justify-center p-3">
       <div className="w-[90%] max-w-[1100px] my-5 flex flex-col items-center">
         <h1 className="font-[Inter] font-semibold lg:font-bold text-xl lg:text-3xl text-center">
           {fetchPostDetails && fetchPostDetails.title}

@@ -22,7 +22,7 @@ function About() {
 
   return (
     <>
-      <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen transition duration-300 mt-[65px] lg:mt-[70px] p-5 w-full font-[Inter]">
+      <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen transition duration-300 mt-[60px] sm:mt-[70px] p-5 w-full font-[Inter]">
         {/* About Sibaji */}
         <div className="my-10 md:my-16 flex flex-col md:flex-row md:items-center md:justify-between w-full max-w-[1200px] mx-auto">
           {/* Left Side */}

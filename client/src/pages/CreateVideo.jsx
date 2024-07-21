@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
-  Alert,
   Button,
   FileInput,
   Select,
@@ -10,6 +9,7 @@ import {
   Checkbox,
 } from "flowbite-react";
 import JoditEditor from "jodit-react";
+import { toast } from "react-toastify";
 import {
   getDownloadURL,
   getStorage,
@@ -33,9 +33,6 @@ function CreateVideo() {
   //* Preview Image Modal State -->
   const [openModal, setOpenModal] = useState(false);
 
-  //* Image File Uploading Error state -->
-  const [imageFileUploadingError, setImageFileUploadingError] = useState(null);
-
   //* JoditEditor state -->
   const editor = useRef(null);
 
@@ -46,10 +43,6 @@ function CreateVideo() {
     requiredEquipments: [],
     requiredPlayers: [],
   });
-
-  //* Publish details state -->
-  const [publishSuccess, setPublishSuccess] = useState(null);
-  const [publishError, setPublishError] = useState(null);
 
   const navigate = useNavigate();
 
@@ -72,7 +65,6 @@ function CreateVideo() {
   //* Image File Uploading in Firebase and store into videoFormData state -->
   const imageFileUploading = () => {
     setIsImageFileUploading(true);
-    setImageFileUploadingError(null);
     //? To understand the requesting person is correct or not by passing the firebase app which is exported from firebase.js file.
     const storage = getStorage(app);
     //? For unique image file name
@@ -91,7 +83,10 @@ function CreateVideo() {
         setImageFileUploadingProgress(progess.toFixed(0));
       },
       (error) => {
-        setImageFileUploadingError("File size must be less than 2MB!");
+        toast.error("File size must be less than 2MB!", {
+          theme: "colored",
+          position: "bottom-center",
+        });
         setImageFileUploadingProgress(null);
         setImageUploadFile(null);
         setImageUploadFileURL(null);
@@ -164,7 +159,10 @@ function CreateVideo() {
   //* Thumbnail Image upload -->
   const handleThumbnailUpload = () => {
     if (!imageUploadFileURL) {
-      setImageFileUploadingError("Please select a image to upload!");
+      toast.error("Please select a image to upload!", {
+        theme: "colored",
+        position: "bottom-center",
+      });
       return;
     }
     setVideoFormData({
@@ -188,11 +186,12 @@ function CreateVideo() {
       };
       const res = await fetch(api, options);
       const data = await res.json();
-      console.log(data);
 
       if (res.ok) {
-        setPublishError(null);
-        setPublishSuccess(data.message);
+        toast.success(data.message, {
+          theme: "colored",
+          position: "bottom-center",
+        });
         setVideoFormData({
           category: "uncategorized",
           ageRange: [],
@@ -202,19 +201,23 @@ function CreateVideo() {
         setImageUploadFile(null);
         setImageUploadFileURL(null);
         navigate(`/video/${data.videoDetails.slug}`);
-      }
-      if (!res.ok) {
-        setPublishError(data.extraDetails);
-        setPublishSuccess(null);
+      } else {
+        toast.error(data.extraDetails, {
+          theme: "colored",
+          position: "bottom-center",
+        });
       }
     } catch (error) {
-      setPublishError(error.message);
+      toast.error(error.message, {
+        theme: "colored",
+        position: "bottom-center",
+      });
       console.log(error.message);
     }
   };
 
   return (
-    <div className="p-3 w-full max-w-3xl mx-auto min-h-screen my-[65px] lg:mt-[76px] font-[Inter] flex flex-col justify-center">
+    <div className="p-3 w-full h-full max-w-3xl mx-auto mt-[60px] sm:mt-[70px] font-[Inter] flex flex-col">
       <div className="flex items-center justify-between gap-4 mb-2 lg:mb-5">
         <h1 className="text-center lg:text-left text-xl lg:text-3xl my-5 font-semibold">
           Create a video
@@ -267,13 +270,14 @@ function CreateVideo() {
             <option value="strength training">Strength Training</option>
             <option value="club insides">Club Insides</option>
             <option value="matches">Matches</option>
+            <option value="nutrition">Nutrition</option>
           </Select>
           {/* Category Input */}
         </div>
 
         <div
           className={`flex flex-col gap-4 border-4 border-slate-500 border-dotted rounded-tl-2xl rounded-br-2xl px-4 py-5 ${
-            imageFileUploadingError || imageUploadFileURL ? "" : "mb-2 lg:mb-5"
+            imageUploadFileURL ? "" : "mb-2 lg:mb-5"
           }`}
         >
           {/* Thumbnail and Video URL Inputbox  */}
@@ -598,15 +602,6 @@ function CreateVideo() {
           </div>
           {/* Required equipments and Coaches Inputbox */}
         </div>
-        {imageFileUploadingError && (
-          <Alert
-            color="failure"
-            onDismiss={() => setImageFileUploadingError(null)}
-            className="font-[Inter] text-semibold"
-          >
-            {imageFileUploadingError}
-          </Alert>
-        )}
         {videoFormData.thumbnailURL && (
           <>
             <Button
@@ -619,6 +614,7 @@ function CreateVideo() {
               show={openModal}
               onClose={() => setOpenModal(false)}
               position="bottom-center"
+              className="pt-[60px] sm:pt-[70px]"
             >
               <Modal.Header>Video Thubnail Preview</Modal.Header>
               <Modal.Body>
@@ -657,24 +653,6 @@ function CreateVideo() {
           Publish
         </Button>
       </form>
-      {publishSuccess && (
-        <Alert
-          color="success"
-          onDismiss={() => setPublishSuccess(null)}
-          className="mt-3"
-        >
-          {publishSuccess}
-        </Alert>
-      )}
-      {publishError && (
-        <Alert
-          color="failure"
-          onDismiss={() => setPublishError(null)}
-          className="mt-3"
-        >
-          {publishError}
-        </Alert>
-      )}
     </div>
   );
 }

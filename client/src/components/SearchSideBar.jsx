@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { HiDocumentText } from "react-icons/hi";
 import { FaMinus, FaPhotoVideo } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
+import { GiMeal } from "react-icons/gi";
 import { MdClose, MdOutlineContentPaste } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,11 +13,12 @@ function SearchSideBar({ tab, category, searchItem }) {
   const { currentUser } = useSelector((state) => state.user);
   const [blogDropdown, setBlogDropdown] = useState(false);
   const [practiceDropdown, setPracticeDropdown] = useState(false);
+  const [nutritionDropdown, setNutritionDropdown] = useState(false);
 
   const dispatch = useDispatch();
 
   return (
-    <div className="w-full min-h-full sm:w-56 py-5 px-3 flex flex-col justify-between bg-[#F7F7F7] dark:bg-[#223141]">
+    <div className="w-full min-h-full sm:w-56 py-5 px-3 flex flex-col bg-[#F7F7F7] dark:bg-[#223141]">
       <div>
         <MdClose
           size="25"
@@ -43,6 +45,7 @@ function SearchSideBar({ tab, category, searchItem }) {
               onClick={() => {
                 setBlogDropdown(false);
                 setPracticeDropdown(false);
+                setNutritionDropdown(false);
               }}
             >
               <MdOutlineContentPaste className="text-gray-500 dark:text-gray-400 text-lg sm:text-2xl" />
@@ -73,6 +76,7 @@ function SearchSideBar({ tab, category, searchItem }) {
                   tab === "blogs" && category && !prev ? prev : !prev
                 );
                 setPracticeDropdown(false);
+                setNutritionDropdown(false);
               }}
             >
               <div className="flex items-center gap-5">
@@ -191,6 +195,7 @@ function SearchSideBar({ tab, category, searchItem }) {
                   tab === "practices" && category && !prev ? prev : !prev
                 );
                 setBlogDropdown(false);
+                setNutritionDropdown(false);
               }}
             >
               <div className="flex items-center gap-5">
@@ -415,6 +420,125 @@ function SearchSideBar({ tab, category, searchItem }) {
             </Link>
           </li>
           {/* Practices Tab */}
+
+          {/* Nutrition Tab */}
+          <Link
+            to={
+              currentUser
+                ? `/search?tab=nutrition${
+                    searchItem && `&searchItem=${searchItem}`
+                  }&page=1`
+                : "/login"
+            }
+          >
+            <li
+              className={`flex items-center justify-between gap-2 cursor-pointer hover:bg-gray-100 hover:dark:bg-[#374151] py-2 px-2 rounded-lg ${
+                tab === "nutrition" &&
+                "bg-gray-100 dark:bg-[#374151] shadow-custom-light-dark"
+              } transition-all duration-300`}
+              onClick={() => {
+                setNutritionDropdown((prev) =>
+                  tab === "nutrition" && category && !prev ? prev : !prev
+                );
+                setBlogDropdown(false);
+                setPracticeDropdown(false);
+              }}
+            >
+              <div className="flex items-center gap-5">
+                <GiMeal className="text-gray-500 dark:text-gray-400 text-lg sm:text-2xl" />
+                <p className="text-xs sm:text-sm font-[Inter] font-semibold text-gray-600 dark:text-gray-300">
+                  Nutrition
+                </p>
+              </div>
+              {nutritionDropdown || (tab === "nutrition" && category) ? (
+                <FaMinus size="15" />
+              ) : (
+                <FaPlus size="15" />
+              )}
+            </li>
+          </Link>
+          {/* Nutrition category */}
+          <li
+            className={`${
+              nutritionDropdown || (tab === "nutrition" && category)
+                ? "inline"
+                : "hidden"
+            } flex flex-col gap-1 my-1 transition-all duration-300 mx-5`}
+          >
+            <Link
+              to={
+                currentUser
+                  ? `/search?tab=nutrition&category=breakfast${
+                      searchItem && `&searchItem=${searchItem}`
+                    }&page=1`
+                  : "/login"
+              }
+            >
+              <div
+                className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
+                  category === "breakfast" &&
+                  "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
+                }`}
+              >
+                Breakfast
+              </div>
+            </Link>
+            <Link
+              to={
+                currentUser
+                  ? `/search?tab=nutrition&category=mains${
+                      searchItem && `&searchItem=${searchItem}`
+                    }&page=1`
+                  : "/login"
+              }
+            >
+              <div
+                className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
+                  category === "mains" &&
+                  "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
+                }`}
+              >
+                Mains
+              </div>
+            </Link>
+            <Link
+              to={
+                currentUser
+                  ? `/search?tab=nutrition&category=snacks${
+                      searchItem && `&searchItem=${searchItem}`
+                    }&page=1`
+                  : "/login"
+              }
+            >
+              <div
+                className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
+                  category === "snacks" &&
+                  "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
+                }`}
+              >
+                Snacks
+              </div>
+            </Link>
+            <Link
+              to={
+                currentUser
+                  ? `/search?tab=nutrition&category=dinners${
+                      searchItem && `&searchItem=${searchItem}`
+                    }&page=1`
+                  : "/login"
+              }
+            >
+              <div
+                className={`text-xs font-[Inter] p-2 rounded-md text-gray-500 dark:text-gray-400 transition-all duration-300 ${
+                  category === "dinners" &&
+                  "bg-gray-100 dark:bg-[#374151] font-semibold scale-[1.1] shadow-custom-light-dark"
+                }`}
+              >
+                Dinners
+              </div>
+            </Link>
+          </li>
+          {/* Nutrition Tab */}
         </ul>
       </div>
 
@@ -428,6 +552,7 @@ function SearchSideBar({ tab, category, searchItem }) {
           onClick={() => {
             setBlogDropdown(false);
             setPracticeDropdown(false);
+            setNutritionDropdown(false);
           }}
         >
           Clear Filter

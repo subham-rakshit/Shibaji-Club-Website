@@ -3,13 +3,14 @@ import { Link, useParams } from "react-router-dom";
 import { RingLoader } from "react-spinners";
 import { Button } from "flowbite-react";
 import { PostCommentSection, VideoCard } from "../components";
-import { PiImageBrokenDuotone } from "react-icons/pi";
+import { PiImageBrokenDuotone, PiListPlus } from "react-icons/pi";
 import { FaPlay, FaClock, FaPeopleGroup } from "react-icons/fa6";
+import { FaCheckCircle } from "react-icons/fa";
 import { LuCheckSquare } from "react-icons/lu";
 import { IoFootball } from "react-icons/io5";
 import { CiShirt } from "react-icons/ci";
 import { BsConeStriped } from "react-icons/bs";
-import { GiGoalKeeper, GiBabyfootPlayers } from "react-icons/gi";
+import { GiGoalKeeper } from "react-icons/gi";
 import { CgCloseR } from "react-icons/cg";
 import ReactPlayer from "react-player";
 
@@ -20,6 +21,10 @@ function VideoItem() {
   const [fetchVideoDetails, setFetchVideoDetails] = useState(null);
   const [recentlyAddedVideo, setRecentlyAddedVideo] = useState(null);
   const [videoIsVisible, setVideoIsVisible] = useState(false);
+
+  const handleSaveVideoFunction = () => {
+    console.log("Save Video");
+  };
 
   useEffect(() => {
     const getVideoFetchDetails = async () => {
@@ -81,7 +86,7 @@ function VideoItem() {
   }
 
   return (
-    <main className="min-h-screen mt-[65px] lg:mt-[76px] flex justify-center p-3">
+    <main className="min-h-screen mt-[60px] sm:mt-[70px] flex justify-center p-3">
       <div className="w-[90%] max-w-[1100px] my-5 flex flex-col items-center">
         <h1 className="font-[Inter] font-semibold lg:font-bold text-xl lg:text-3xl text-center">
           {fetchVideoDetails && fetchVideoDetails.title}
@@ -89,9 +94,13 @@ function VideoItem() {
 
         {fetchVideoDetails && (
           <Link
-            to={`/search?tab=practices&category=${
+            to={`/search?tab=${
+              fetchVideoDetails && fetchVideoDetails.category === "nutrition"
+                ? "nutrition"
+                : "practices"
+            }&category=${
               fetchVideoDetails && fetchVideoDetails.category
-            }`}
+            }&page=1`}
           >
             <Button
               color="gray"
@@ -274,17 +283,36 @@ function VideoItem() {
         {/* Video related items */}
 
         {/* Video description section */}
-        <div className="w-full max-w-[900px] flex justify-between text-[12px] font-[Inter] font-semibold px-2 pt-2 pb-4 dark:text-gray-500 border-b border-gray-300 dark:border-gray-600">
+        <div className="w-full max-w-[900px] flex justify-between text-[12px] font-[Inter] font-semibold px-2 pt-2 pb-2 dark:text-gray-500 border-b border-gray-300 dark:border-gray-600">
           <span>
             {fetchVideoDetails &&
               new Date(fetchVideoDetails.createdAt).toLocaleDateString()}
           </span>
-          <span className="italic">
-            {fetchVideoDetails &&
-              `${(fetchVideoDetails.content.length / 1000).toFixed(
-                0
-              )} min to read`}
-          </span>
+          <div className="flex items-center gap-5">
+            <span className="italic">
+              {fetchVideoDetails &&
+                `${(fetchVideoDetails.content.length / 1000).toFixed(
+                  0
+                )} min to read`}
+            </span>
+            <button
+              type="button"
+              className="flex items-center gap-1 text-xs font-[Inter]"
+              onClick={handleSaveVideoFunction}
+            >
+              {fetchVideoDetails && fetchVideoDetails.isSaved ? (
+                <>
+                  <FaCheckCircle size="20" color="blue" />
+                  Saved
+                </>
+              ) : (
+                <>
+                  <PiListPlus size="20" />
+                  Save
+                </>
+              )}
+            </button>
+          </div>
         </div>
         <div
           dangerouslySetInnerHTML={{

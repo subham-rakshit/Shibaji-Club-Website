@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Button, Table, Modal } from "flowbite-react";
+import { toast } from "react-toastify";
 import { IoImagesSharp } from "react-icons/io5";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { FaCircleCheck } from "react-icons/fa6";
@@ -97,10 +98,15 @@ function DashTrial() {
         setAllTrialsData((prev) =>
           prev.filter((trial) => trial._id !== confirmedTrialId)
         );
-        alert(data.message);
+        toast.success(data.message, {
+          theme: "colored",
+          position: "bottom-center",
+        });
       } else {
-        console.log(data.extraDetails);
-        alert(data.extraDetails);
+        toast.error(data.extraDetails, {
+          theme: "colored",
+          position: "bottom-center",
+        });
       }
     } catch (error) {
       console.log(error.message);
@@ -134,9 +140,15 @@ function DashTrial() {
             trial._id === data.trialDetails._id ? data.trialDetails : trial
           )
         );
-        alert(data.message);
+        toast.success(data.message, {
+          theme: "colored",
+          position: "bottom-center",
+        });
       } else {
-        alert("Failed to update trial confirmation status");
+        toast.error("Failed to update trial confirmation status", {
+          theme: "colored",
+          position: "bottom-center",
+        });
       }
     } catch (error) {
       console.log(error.message);
@@ -148,7 +160,7 @@ function DashTrial() {
 
   return (
     <div
-      className={`min-h-screen table-auto overflow-x-scroll md:mx-auto px-3 py-5 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500 flex-1 ${
+      className={`table-auto overflow-x-scroll md:mx-auto px-3 py-5 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500 flex-1 ${
         allTrialsData.length === 0 || isLoading === true
           ? "flex flex-col justify-center"
           : ""
@@ -263,16 +275,19 @@ function DashTrial() {
           )}
         </div>
       ) : (
-        <>
-          <IoImagesSharp size="100" className="mx-auto mb-10" />
-          <h1 className="text-gray-500 dark:text-gray-300 text-2xl font-bold font-[Inter] text-center">
-            Oops! It looks like no one has booked a trial yet.
-          </h1>
-          <p className="text-gray-500 dark:text-gray-300 text-xs font-normal font-[Inter] text-center mt-2">
-            Currently, there are no booked trial data available to display.
-            Please check back later for updates.
-          </p>
-        </>
+        <div className="h-screen flex flex-col">
+          <DashToggleButton />
+          <div className="h-full flex flex-col justify-center items-center">
+            <IoImagesSharp size="100" className="mx-auto mb-10" />
+            <h1 className="text-gray-500 dark:text-gray-300 text-2xl font-bold font-[Inter] text-center">
+              Oops! It looks like no one has booked a trial yet.
+            </h1>
+            <p className="text-gray-500 dark:text-gray-300 text-xs font-normal font-[Inter] text-center mt-2">
+              Currently, there are no booked trial data available to display.
+              Please check back later for updates.
+            </p>
+          </div>
+        </div>
       )}
 
       {/* Model for Delete btn */}
@@ -281,6 +296,7 @@ function DashTrial() {
         size="md"
         onClose={() => setShowModel(false)}
         popup
+        className="pt-[60px] sm:pt-[70px]"
       >
         <Modal.Header />
         <Modal.Body>
@@ -306,6 +322,7 @@ function DashTrial() {
         size="md"
         onClose={() => setShowConfirmModal(false)}
         popup
+        className="pt-[60px] sm:pt-[70px]"
       >
         <Modal.Header />
         <Modal.Body>

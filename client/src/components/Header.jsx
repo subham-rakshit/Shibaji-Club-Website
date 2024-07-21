@@ -127,8 +127,8 @@ function Header() {
 
   return (
     <Navbar
-      className={`fixed left-0 z-[100] w-full shadow-lg ${
-        location.pathname === "/reset-password" && "hidden"
+      className={`fixed top-0 left-0 z-[100] w-full h-[60px] sm:h-[70px] shadow-lg ${
+        location.pathname === "/reset-password" ? "hidden" : ""
       }`}
     >
       {/* Website Logo */}
@@ -169,7 +169,10 @@ function Header() {
       </Popover>
 
       {/* Tabs, Theme changer, Toggle Profile */}
-      <div className="flex items-center gap-3 md:order-2" data-aos="fade-left">
+      <div
+        className="flex items-center gap-3 md:order-2 relative"
+        data-aos="fade-left"
+      >
         <Button
           className="w-[fit-content] h-8 hidden sm:inline border focus:outline-none focus:ring-0"
           color="gray"
@@ -191,6 +194,7 @@ function Header() {
             }
             arrowIcon={true}
             inline
+            className="absolute top-[60px] sm:top-[70px] right-0 z-[101] bg-white" // Updated positioning and styling for Dropdown
           >
             <Dropdown.Header>
               <span className="block text-xs font-medium font-[Inter">
@@ -239,7 +243,7 @@ function Header() {
         />
       </div>
 
-      <Navbar.Collapse>
+      <Navbar.Collapse className="bg-white">
         <Navbar.Link active={path === "/"} as={"div"}>
           <Link to="/" className="text-[16px] font-[Inter] font-semibold">
             Home

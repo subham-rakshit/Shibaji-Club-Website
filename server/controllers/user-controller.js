@@ -129,6 +129,16 @@ export const updateUserDetails = async (req, res, next) => {
 
 //! DELETE Profile -->
 export const deleteUserDetails = async (req, res, next) => {
+  //? Make sure admin can't delete his account
+  if (req.user.isAdmin && req.user.userId === req.params.userId) {
+    const adminError = {
+      status: 403,
+      message: "You are admin of this website",
+      extraDetails: "Admin is not allowed to delete his account.",
+    };
+    return next(adminError);
+  }
+
   //? Make user user is owner of the account.
   if (!req.user.isAdmin && req.user.userId !== req.params.userId) {
     const deleteAuthError = {
@@ -182,7 +192,7 @@ export const getAllUsers = async (req, res, next) => {
     const limit = parseInt(req.query.limit) || 9;
     const sortDirection = req.query.order === "asc" ? 1 : -1;
     const usersList = await UserCollection.find()
-      .sort({ updatedAt: sortDirection })
+      .sort({ createdAt: sortDirection })
       .skip(startIndex)
       .limit(limit);
     //? usersList gives user's details with their password. We have to remove those password in respond

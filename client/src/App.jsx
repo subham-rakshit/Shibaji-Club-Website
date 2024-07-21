@@ -27,11 +27,13 @@ import {
   ProtectedRoute,
   OnlyAdmiProtectedRoute,
   ScrollToTop,
+  Cursor,
 } from "./components";
 
 const App = () => {
   return (
     <div className="min-h-screen w-screen overflow-hidden">
+      <Cursor />
       <BrowserRouter>
         <ScrollToTop />
         <Header />

@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Input } from "../components";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Alert, Button, Spinner, Modal, Select, Label } from "flowbite-react";
+import { Button, Spinner, Modal, Select, Label } from "flowbite-react";
 
 import {
   getDownloadURL,
@@ -24,17 +24,15 @@ import {
 } from "../redux-slice/userSlice";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function DashProfile() {
   const { currentUser, loading } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState(null);
   const [imageFileURL, setImageFileURL] = useState(null);
   const [imageUploadProgress, setImageFileUploadProgress] = useState(null);
-  const [imageFileUploadError, setImageFileUploadError] = useState(null);
   const [imageFileUploading, setIageFileUploading] = useState(false);
   const [formData, setFormData] = useState({});
-  const [userUpdateSuccess, setUserUpdateSuccess] = useState(null);
-  const [possibleErrors, setPossibleErrors] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const imageFileRef = useRef();
   const dispatch = useDispatch();
@@ -55,6 +53,7 @@ function DashProfile() {
     }
   }, [imageFile]);
 
+  // Profile Iamge upload
   const uploadFile = () => {
     //! This code in Google Firebase, u have to change the rules of user's selected file's size and type. -->
     // service firebase.storage {
@@ -68,7 +67,6 @@ function DashProfile() {
     //   }
     // }
     setIageFileUploading(true);
-    setImageFileUploadError(null);
     //? To understand the requesting person is correct or not by passing the firebase app which is exported from firebase.js file.
     const storage = getStorage(app);
 
@@ -91,7 +89,10 @@ function DashProfile() {
         setImageFileUploadProgress(progress.toFixed(0));
       },
       (error) => {
-        setImageFileUploadError("File must be less than 2MB");
+        toast.error("File must be less than 2MB", {
+          theme: "colored",
+          position: "bottom-center",
+        });
         setImageFileUploadProgress(null);
         setImageFile(null);
         setImageFileURL(null);
@@ -112,18 +113,23 @@ function DashProfile() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Handle Update account
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    setUserUpdateSuccess(null);
-    setPossibleErrors(null);
 
     if (Object.keys(formData).length === 0) {
-      setPossibleErrors("No changes made!");
+      toast.error("No changes made!", {
+        theme: "colored",
+        position: "bottom-center",
+      });
       return;
     }
     //? This is protect our request from sending request between image uploading proccess.
     if (imageFileUploading) {
-      setPossibleErrors("Please wait for image to be uploaded!");
+      toast.error("Please wait for image to be uploaded!", {
+        theme: "colored",
+        position: "bottom-center",
+      });
       return;
     }
 
@@ -142,19 +148,29 @@ function DashProfile() {
       if (res.ok) {
         dispatch(updateSuccess(data.userDetails));
         setFormData({});
-        setUserUpdateSuccess(data.message);
+        toast.success(data.message, {
+          theme: "colored",
+          position: "bottom-center",
+        });
         navigate("/");
       } else {
         dispatch(updateFailure(data.extraDetails));
-        setPossibleErrors(data.extraDetails);
+        toast.error(data.extraDetails, {
+          theme: "colored",
+          position: "bottom-center",
+        });
       }
     } catch (error) {
       console.log(error.message);
       dispatch(updateFailure(error.message));
-      setPossibleErrors(error.message);
+      toast.error(error.message, {
+        theme: "colored",
+        position: "bottom-center",
+      });
     }
   };
 
+  // Handle Delete account
   const handleDeleteFunction = async () => {
     setOpenModal(false);
     try {
@@ -168,14 +184,27 @@ function DashProfile() {
       const data = await res.json();
       if (res.ok) {
         dispatch(deleteUserSuccess());
+        toast.success(data.message, {
+          theme: "colored",
+          position: "bottom-center",
+        });
       } else {
         dispatch(deleteUserFailure(data.message));
+        toast.error(data.extraDetails, {
+          theme: "colored",
+          position: "bottom-center",
+        });
       }
     } catch (error) {
       dispatch(deleteUserFailure(error.message));
+      toast.error(error.message, {
+        theme: "colored",
+        position: "bottom-center",
+      });
     }
   };
 
+  // Handle Sign Out
   const handleSignOut = async () => {
     try {
       const api = "/api/user/signout";
@@ -187,6 +216,10 @@ function DashProfile() {
 
       if (res.ok) {
         dispatch(signOutSuccess());
+        toast.success(data.message, {
+          theme: "colored",
+          position: "bottom-center",
+        });
       } else {
         console.log(data.message);
       }
@@ -196,7 +229,7 @@ function DashProfile() {
   };
 
   return (
-    <div className="max-w-lg mx-auto px-3 py-8 w-full">
+    <div className="max-w-lg mx-auto px-3 py-8 w-full h-full">
       <h1 className="font-[Inter] font-[700] text-xl text-center my-3">
         Profile
       </h1>
@@ -242,17 +275,6 @@ function DashProfile() {
             }`}
           />
         </div>
-        {imageFileUploadError && (
-          <Alert
-            color="failure"
-            className="mb-2"
-            onDismiss={() => {
-              setImageFileUploadError(null);
-            }}
-          >
-            {imageFileUploadError}
-          </Alert>
-        )}
         <div className="flex flex-col gap-2">
           <Input
             labelText="Username"
@@ -349,24 +371,6 @@ function DashProfile() {
           Sign Out
         </span>
       </div>
-      {userUpdateSuccess && (
-        <Alert
-          color="success"
-          className="mt-5"
-          onDismiss={() => setUserUpdateSuccess(null)}
-        >
-          {userUpdateSuccess}
-        </Alert>
-      )}
-      {possibleErrors && (
-        <Alert
-          color="failure"
-          className="mt-5"
-          onDismiss={() => setPossibleErrors(null)}
-        >
-          {possibleErrors}
-        </Alert>
-      )}
 
       {/* Delete Modal */}
       <Modal
@@ -374,6 +378,7 @@ function DashProfile() {
         size="md"
         onClose={() => setOpenModal(false)}
         popup
+        className="pt-[60px] sm:pt-[70px]"
       >
         <Modal.Header />
         <Modal.Body>

@@ -26,7 +26,7 @@ const Dashboard = () => {
     }
   }, [location.search]);
   return (
-    <div className="min-h-screen mt-[65px] lg:mt-[70px] flex flex-col md:flex-row">
+    <div className="min-h-screen mt-[60px] sm:mt-[70px] flex flex-col md:flex-row">
       {/* Dashboard Left Side Bar */}
       <div>
         <DashSideBar />

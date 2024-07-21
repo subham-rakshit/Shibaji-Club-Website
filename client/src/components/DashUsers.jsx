@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Button, Table, Modal } from "flowbite-react";
+import { toast } from "react-toastify";
 import { IoImagesSharp } from "react-icons/io5";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { MdCancel } from "react-icons/md";
@@ -63,7 +64,7 @@ function DashUsers() {
   };
 
   //* Delete a post functionality -->
-  const handleDeleteUser = async (e) => {
+  const handleDeleteUser = async () => {
     setShowModel(false);
     try {
       const res = await fetch(`/api/user/delete/${selectedUserId}`, {
@@ -75,14 +76,22 @@ function DashUsers() {
         setAllUsersData((prev) =>
           prev.filter((user) => user._id !== selectedUserId)
         );
-        console.log(data.message);
-        alert(data.message);
+        toast.success(data.message, {
+          theme: "colored",
+          position: "bottom-center",
+        });
       } else {
-        console.log(data.extraDetails);
-        alert(data.extraDetails);
+        toast.error(data.extraDetails, {
+          theme: "colored",
+          position: "bottom-center",
+        });
       }
     } catch (error) {
       console.log(error.message);
+      toast.error(error.message, {
+        theme: "colored",
+        position: "bottom-center",
+      });
     }
   };
 
@@ -169,22 +178,26 @@ function DashUsers() {
           )}
         </div>
       ) : (
-        <>
-          <IoImagesSharp size="100" className="mx-auto mb-10" />
-          <h1 className="text-gray-500 dark:text-gray-300 text-2xl font-bold font-[Inter] text-center">
-            Oops! No Users to show
-          </h1>
-          <p className="text-gray-500 dark:text-gray-300 text-xs font-normal font-[Inter] text-center mt-2">
-            Currently, there are no users available to display. Please check
-            back later for updates.
-          </p>
-        </>
+        <div className="h-screen flex flex-col">
+          <DashToggleButton />
+          <div className="h-full flex flex-col justify-center items-center">
+            <IoImagesSharp size="100" className="mx-auto mb-10" />
+            <h1 className="text-gray-500 dark:text-gray-300 text-2xl font-bold font-[Inter] text-center">
+              Oops! No Users to show
+            </h1>
+            <p className="text-gray-500 dark:text-gray-300 text-xs font-normal font-[Inter] text-center mt-2">
+              Currently, there are no users available to display. Please check
+              back later for updates.
+            </p>
+          </div>
+        </div>
       )}
       <Modal
         show={showModel}
         size="md"
         onClose={() => setShowModel(false)}
         popup
+        className="pt-[60px] sm:pt-[70px]"
       >
         <Modal.Header />
         <Modal.Body>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Button, Table, Modal } from "flowbite-react";
+import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import { IoImagesSharp } from "react-icons/io5";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
@@ -24,7 +25,7 @@ function DashPosts() {
       try {
         const res = await fetch(`/api/post/getposts`);
         const data = await res.json();
-        console.log(data);
+
         if (res.ok) {
           setAllPostsData(data.posts);
           setIsLoading(false);
@@ -78,11 +79,15 @@ function DashPosts() {
         setAllPostsData((prev) =>
           prev.filter((post) => post._id !== selectedPostId)
         );
-        console.log(data.message);
-        alert(data.message);
+        toast.success(data.message, {
+          theme: "colored",
+          position: "bottom-center",
+        });
       } else {
-        console.log(data.extraDetails);
-        alert(data.extraDetails);
+        toast.error(data.extraDetails, {
+          theme: "colored",
+          position: "bottom-center",
+        });
       }
     } catch (error) {
       console.log(error.message);
@@ -181,31 +186,35 @@ function DashPosts() {
           )}
         </div>
       ) : (
-        <>
-          <IoImagesSharp size="100" className="mx-auto mb-10" />
-          <h1 className="text-gray-500 dark:text-gray-300 text-2xl font-bold font-[Inter] text-center">
-            Oops! No posts to show
-          </h1>
-          <p className="text-gray-500 dark:text-gray-300 text-xs font-normal font-[Inter] text-center mt-2">
-            You haven't created any posts yet. Don't miss out—start creating
-            your first post now and share your thoughts with the community!
-          </p>
-          <Button
-            type="button"
-            gradientDuoTone="purpleToPink"
-            outline
-            className="font-[Inter] w-[fit-content] mx-auto mt-5"
-            onClick={() => navigate("/create-post")}
-          >
-            Create posts
-          </Button>
-        </>
+        <div className="h-screen flex flex-col">
+          <DashToggleButton />
+          <div className="h-full flex flex-col justify-center items-center">
+            <IoImagesSharp size="100" className="mx-auto mb-10" />
+            <h1 className="text-gray-500 dark:text-gray-300 text-2xl font-bold font-[Inter] text-center">
+              Oops! No posts to show
+            </h1>
+            <p className="text-gray-500 dark:text-gray-300 text-xs font-normal font-[Inter] text-center mt-2">
+              You haven't created any posts yet. Don't miss out—start creating
+              your first post now and share your thoughts with the community!
+            </p>
+            <Button
+              type="button"
+              gradientDuoTone="purpleToPink"
+              outline
+              className="font-[Inter] w-[fit-content] mx-auto mt-5"
+              onClick={() => navigate("/create-post")}
+            >
+              Create posts
+            </Button>
+          </div>
+        </div>
       )}
       <Modal
         show={showModel}
         size="md"
         onClose={() => setShowModel(false)}
         popup
+        className="pt-[60px] sm:pt-[70px]"
       >
         <Modal.Header />
         <Modal.Body>

@@ -39,7 +39,7 @@ export const getAllContentSearchPage = async (req, res, next) => {
     if (tab === "all") {
       limit = 6;
     }
-    if (tab === "blogs" || tab === "practices") {
+    if (tab === "blogs" || tab === "practices" || tab === "nutrition") {
       limit = 9;
     }
 
@@ -68,7 +68,7 @@ export const getAllContentSearchPage = async (req, res, next) => {
         .limit(limit);
     }
 
-    if (tab === "all" || tab === "practices") {
+    if (tab === "all" || tab === "practices" || tab === "nutrition") {
       totalVideos = await VideoCollection.countDocuments({
         ...(category && { category }),
         ...(searchItem && {
@@ -145,6 +145,15 @@ export const getAllContentSearchPage = async (req, res, next) => {
     }
 
     if (tab === "practices") {
+      return res.status(200).json({
+        videosList,
+        totalItem: totalVideos,
+        currentPage: parsedPage,
+        totalPages: Math.ceil((totalPosts + totalVideos) / limit),
+      });
+    }
+
+    if (tab === "nutrition") {
       return res.status(200).json({
         videosList,
         totalItem: totalVideos,

@@ -20,6 +20,7 @@ import SearchSideBar from "./SearchSideBar";
 import SearchAllContent from "./SearchAllContent";
 import SearchPractices from "./SearchPractices";
 import SearchBlogs from "./SearchBlogs";
+import SearchNutrition from "./SearchNutrition";
 import DashToggleButton from "./DashToggleButton";
 import SearchToggleButton from "./SearchToggleButton";
 import DashVideos from "./DashVideos";
@@ -28,6 +29,7 @@ import HomePageScrolling from "./HomePageScrolling";
 import DashTrial from "./DashTrial";
 import VerifyEmail from "./VerifyEmail";
 import OTPInputBox from "./OTPInputBox";
+import Cursor from "./Cursor";
 
 export {
   Header,
@@ -55,9 +57,11 @@ export {
   SearchPractices,
   SearchBlogs,
   SearchToggleButton,
+  SearchNutrition,
   Pagination,
   HomePageScrolling,
   DashTrial,
   VerifyEmail,
   OTPInputBox,
+  Cursor,
 };
