@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { FaPlay } from "react-icons/fa";
+import { FaPlus, FaMinus } from "react-icons/fa6";
 import ReactPlayer from "react-player";
 import { CgCloseR } from "react-icons/cg";
 import { Link } from "react-router-dom";
@@ -9,11 +10,46 @@ import { Button } from "flowbite-react";
 import { BiSolidChevronDown } from "react-icons/bi";
 import { useSelector } from "react-redux";
 
+const faqData = [
+  {
+    id: "faq_1",
+    question: "What is Shibaji Sangha?",
+    answer:
+      "Shibaji Sangha is a community dedicated to promoting and nurturing the sport of football. We aim to provide opportunities for players of all backgrounds and skill levels to learn and grow in football, creating a supportive environment for skill development and personal growth.",
+  },
+  {
+    id: "faq_2",
+    question: "What does Shibaji Sangha offer for player recruitment?",
+    answer:
+      "Shibaji Sangha actively recruits players for our football team. We are always on the lookout for talented individuals who share our passion for football and commitment to excellence. Players have the opportunity to showcase their skills and gain valuable experience in a competitive environment.",
+  },
+  {
+    id: "faq_3",
+    question: "What should users do if they need assistance with the website?",
+    answer:
+      "If users need assistance with the website, they can reach out to our support team. For specific inquiries, users can visit the Contact Us page which is in Footer section on our website, where they can find various ways to get in touch with us for help or additional information.",
+  },
+  {
+    id: "faq_4",
+    question: "How do I create an account on your website?",
+    answer:
+      "To create an account, click on the Sign Up button at the top right corner of the homepage. Follow the prompts to enter your details, such as your name, email address, and a password. Once you complete the registration process, you will receive a confirmation email to verify your account.",
+  },
+  {
+    id: "faq_5",
+    question: "I forgot my password. How can I reset it?",
+    answer:
+      "Click on the Forgot Password link on the login page. Enter your registered email address, and you will receive instructions on how to reset your password. Follow the instructions to create a new password and regain access to your account.",
+  },
+];
+
 function About() {
   const [aboutVideoIsVisible, setAboutVideoIsVisible] = useState(false);
   const [requitmentVideoIsVisible, setRequitmentVideoIsVisible] =
     useState(false);
   const [howToUseVideoIsVisible, setHowToUseVideoIsVisible] = useState(false);
+  const [selectedFAQ, setSelectedFAQ] = useState("");
+  const [faqIsOpen, setFaqIsOpen] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
@@ -319,6 +355,39 @@ function About() {
           </div>
           {/* Right Side */}
         </div>
+
+        {/* Frequently Asked Qus */}
+        <ul className="list-none pl-0 my-10 md:my-16 w-full max-w-[1200px] mx-auto">
+          <h1 className="text-2xl md:text-4xl font-bold mb-5">FAQs</h1>
+          {faqData.map((data) => (
+            <li className="w-full my-4">
+              <div className="flex items-center justify-between gap-2">
+                <h1 className="text-lg font-bold">{data.question}</h1>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedFAQ(data.id);
+                    setFaqIsOpen((prev) => !prev);
+                  }}
+                  className="transition-all duration-300 hover:scale-[1.2]"
+                >
+                  {faqIsOpen && data.id === selectedFAQ ? (
+                    <FaMinus size="20" color="#80A61C" />
+                  ) : (
+                    <FaPlus size="20" color="#80A61C" />
+                  )}
+                </button>
+              </div>
+              <p
+                className={`${
+                  data.id === selectedFAQ && faqIsOpen ? "block" : "hidden"
+                } text-sm mt-2`}
+              >
+                {data.answer}
+              </p>
+            </li>
+          ))}
+        </ul>
       </div>
 
       {/* Map Section */}
