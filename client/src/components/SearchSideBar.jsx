@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { HiDocumentText } from "react-icons/hi";
 import { FaMinus, FaPhotoVideo } from "react-icons/fa";
-import { FaPlus } from "react-icons/fa6";
+import { FaPlus, FaRegClock } from "react-icons/fa6";
 import { GiMeal } from "react-icons/gi";
 import { MdClose, MdOutlineContentPaste } from "react-icons/md";
 import { Link } from "react-router-dom";
@@ -539,6 +539,27 @@ function SearchSideBar({ tab, category, searchItem }) {
             </Link>
           </li>
           {/* Nutrition Tab */}
+
+          {/* Save Videos Tab */}
+          <Link to={currentUser ? `/search?tab=savedvideos` : "/login"}>
+            <li
+              className={`flex items-center gap-5 cursor-pointer hover:bg-gray-100 hover:dark:bg-[#374151] py-2 px-2 rounded-lg ${
+                tab === "savedvideos" &&
+                "bg-gray-100 dark:bg-[#374151] shadow-custom-light-dark"
+              } transition-all duration-300`}
+              onClick={() => {
+                setBlogDropdown(false);
+                setPracticeDropdown(false);
+                setNutritionDropdown(false);
+              }}
+            >
+              <FaRegClock className="text-gray-500 dark:text-gray-400 text-lg sm:text-2xl" />
+              <p className="text-xs sm:text-sm font-[Inter] font-semibold text-gray-600 dark:text-gray-300">
+                Watch Later
+              </p>
+            </li>
+          </Link>
+          {/* Save Videos Tab */}
         </ul>
       </div>
 

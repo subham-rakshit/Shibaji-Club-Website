@@ -30,6 +30,7 @@ import DashTrial from "./DashTrial";
 import VerifyEmail from "./VerifyEmail";
 import OTPInputBox from "./OTPInputBox";
 import Cursor from "./Cursor";
+import SavedVideos from "./SavedVideos";
 
 export {
   Header,
@@ -64,4 +65,5 @@ export {
   VerifyEmail,
   OTPInputBox,
   Cursor,
+  SavedVideos,
 };

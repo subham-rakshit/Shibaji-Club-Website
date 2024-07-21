@@ -6,6 +6,7 @@ import {
   SearchPractices,
   SearchBlogs,
   SearchNutrition,
+  SavedVideos,
 } from "../components";
 import { useSelector } from "react-redux";
 
@@ -86,6 +87,8 @@ function SearchPage() {
           onChangePage={onChangePage}
         />
       )}
+
+      {tab === "savedvideos" && <SavedVideos />}
     </div>
   );
 }

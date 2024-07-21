@@ -45,7 +45,7 @@ function SearchAllContent({ tab, searchItem, currentPage, onChangePage }) {
 
   return (
     <div
-      className={`w-full max-w-[1024px] min-h-screen mx-auto p-5 overflow-auto hide-scrollbar transition-all duration-300 ${
+      className={`w-full max-w-[1024px] min-h-screen mx-auto p-5 transition-all duration-300 ${
         isLoading ? "flex justify-center items-center" : ""
       }`}
     >
