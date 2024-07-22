@@ -40,6 +40,7 @@ function Contact() {
   };
 
   const handleSubmit = async (e) => {
+    console.log(contactDetails);
     e.preventDefault();
     setLoading(true);
 
