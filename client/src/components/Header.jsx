@@ -18,6 +18,11 @@ import { FaMoon, FaSun } from "react-icons/fa";
 import { signOutSuccess } from "../redux-slice/userSlice";
 import Cookies from "js-cookie";
 
+// Define the sleep function
+const sleep = (ms) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
 function Header() {
   const [searchInput, setSearchInput] = useState("");
   const [isSearchFromSearchBox, setIsSearchFromSearchBox] = useState(false);
@@ -60,6 +65,17 @@ function Header() {
       setSearchInput(searchItemFromURL);
     }
   }, [location.search]);
+
+  const handlePageChange = async (e, href) => {
+    e.preventDefault();
+    const body = document.querySelector("body");
+    body.classList.add("page-transition");
+
+    await sleep(200);
+    navigate(href);
+    await sleep(200);
+    body.classList.remove("page-transition");
+  };
 
   const handleSignOut = async () => {
     try {
@@ -245,12 +261,20 @@ function Header() {
 
       <Navbar.Collapse className="bg-white dark:bg-[#1F2937]">
         <Navbar.Link active={path === "/"} as={"div"}>
-          <Link to="/" className="text-[16px] font-[Inter] font-semibold">
+          <Link
+            to="/"
+            className="text-[16px] font-[Inter] font-semibold"
+            onClick={(e) => handlePageChange(e, "/")}
+          >
             Home
           </Link>
         </Navbar.Link>
         <Navbar.Link active={path === "/about"} as={"div"}>
-          <Link to="/about" className="text-[16px] font-[Inter] font-semibold">
+          <Link
+            to="/about"
+            className="text-[16px] font-[Inter] font-semibold"
+            onClick={(e) => handlePageChange(e, "/about")}
+          >
             About
           </Link>
         </Navbar.Link>
@@ -258,6 +282,7 @@ function Header() {
           <Link
             to={`${currentUser ? "/search?tab=all&page=1" : "/login"}`}
             className="text-[16px] font-[Inter] font-semibold"
+            onClick={(e) => handlePageChange(e, "/search?tab=all&page=1")}
           >
             Content
           </Link>

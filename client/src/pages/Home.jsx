@@ -34,7 +34,7 @@ function Home() {
               style={{ textShadow: "5px 5px 5px #000" }}
             >
               HELPING{" "}
-              <span className="text-[#95c121] text-[35px] md:text-[38px]">
+              <span className="text-[#95c121] text-[25px] md:text-[28px] banner-section-moving-text">
                 <Typewriter
                   words={[
                     "GLOBAL TALENT",
@@ -98,7 +98,7 @@ function Home() {
           {/* Banner Video */}
           <div
             className="w-full lg:w-[45%] h-[350px] rounded-md lg:rounded-xl mt-5 md:mt-0 relative transition-all duration-500 shadow-custom-light-dark overflow-hidden"
-            data-aos="fade-left"
+            data-aos="zoom-in"
           >
             <img
               src="https://firebasestorage.googleapis.com/v0/b/shibaji-website.appspot.com/o/Welcome%20Banner%20Thumbnail.jpg?alt=media&token=9b6c0ad9-43e4-425b-9e4b-03ac0f6b21b7"

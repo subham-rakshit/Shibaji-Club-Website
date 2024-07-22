@@ -360,7 +360,7 @@ function About() {
         <ul className="list-none pl-0 my-10 md:my-16 w-full max-w-[1200px] mx-auto">
           <h1 className="text-2xl md:text-4xl font-bold mb-5">FAQs</h1>
           {faqData.map((data) => (
-            <li className="w-full my-4">
+            <li className="w-full my-4" key={data.id}>
               <div className="flex items-center justify-between gap-2">
                 <h1 className="text-lg font-bold">{data.question}</h1>
                 <button
