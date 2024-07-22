@@ -213,7 +213,10 @@ function Login() {
               </div>
               <button
                 type="button"
-                className="self-end text-xs text-[#0065FF] font-semibold mt-2 cursor-pointer"
+                className={`self-end text-xs text-[#0065FF] font-semibold mt-2 ${
+                  registeredUser ? "cursor-not-allowed" : "cursor-pointer"
+                }`}
+                disabled={registeredUser}
                 onClick={() => setIsPassModelShown(true)}
               >
                 Forgot Password?
