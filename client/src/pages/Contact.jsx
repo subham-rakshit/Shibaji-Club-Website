@@ -45,7 +45,7 @@ function Contact() {
     setLoading(true);
 
     try {
-      const apiUrl = "http://localhost:5000/api/form/contact-us";
+      const apiUrl = "/api/form/contact-us";
       const options = {
         method: "POST",
         headers: {
