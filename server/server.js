@@ -22,12 +22,14 @@ const app = express();
 const corsOptions = {
   origin: "http://localhost:5173",
   methods: "GET, POST, PUT, DELETE, PATCH, HEAD",
-  credential: true,
+  credentials: true,
 };
 
 app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use(express.json());
+
+app.use(express.static(path.join(__dirname, "/client/dist"))); // If u create project in create-react-app then "dist" will change into "build"
 
 app.use("/api/auth", router);
 app.use("/api/form", contactRouter);
@@ -38,14 +40,12 @@ app.use("/api/comments", commentRouter);
 app.use("/api/search", allContentRouter);
 app.use("/api/trial", trailRouter);
 
-app.use(errorMiddleware);
-
-app.use(express.static(path.join(__dirname, "/client/dist"))); // If u create project in create-react-app then "dist" will change into "build"
-
 // What ever address we have execpt those APIs is going to index.html which is our react project.
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
 });
+
+app.use(errorMiddleware);
 
 connectionDB().then(() => {
   app.listen(APP_PORT, () => {
