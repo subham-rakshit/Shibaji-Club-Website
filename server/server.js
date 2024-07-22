@@ -13,6 +13,9 @@ import commentRouter from "./router/comment-router.js";
 import videoRouter from "./router/video-router.js";
 import allContentRouter from "./router/all-content-router.js";
 import trailRouter from "./router/trial-router.js";
+import path from "path";
+
+const __dirname = path.resolve(); // Get the directory in any place where the project is available.
 
 const app = express();
 
@@ -36,6 +39,13 @@ app.use("/api/search", allContentRouter);
 app.use("/api/trial", trailRouter);
 
 app.use(errorMiddleware);
+
+app.use(express.static(path.join(__dirname, "/client/dist"))); // If u create project in create-react-app then "dist" will change into "build"
+
+// What ever address we have execpt those APIs is going to index.html which is our react project.
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
 
 connectionDB().then(() => {
   app.listen(APP_PORT, () => {
