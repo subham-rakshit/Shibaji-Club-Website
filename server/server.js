@@ -19,10 +19,23 @@ const __dirname = path.resolve(); // Get the directory in any place where the pr
 
 const app = express();
 
+// For request comming from deployed website or develpo url
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://shibaji-sangha.onrender.com",
+];
+
+// Handle the CORS error while requesting
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: (origin, callback) => {
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: "GET, POST, PUT, DELETE, PATCH, HEAD",
-  credential: true,
+  credentials: true,
 };
 
 app.use(cookieParser());

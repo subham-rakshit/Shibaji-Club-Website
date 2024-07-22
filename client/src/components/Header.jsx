@@ -284,7 +284,7 @@ function Header() {
             className="text-[16px] font-[Inter] font-semibold"
             onClick={(e) => handlePageChange(e, "/search?tab=all&page=1")}
           >
-            Contents
+            Content
           </Link>
         </Navbar.Link>
       </Navbar.Collapse>
