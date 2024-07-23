@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Button, Label, Modal, Spinner, TextInput } from "flowbite-react";
+import { Button, Label, Modal, Spinner } from "flowbite-react";
 import { Input, OAuth, VerifyEmail } from "../components";
 import { IoMdMail } from "react-icons/io";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
@@ -20,7 +20,7 @@ import { toast } from "react-toastify";
 import { BeatLoader } from "react-spinners";
 
 function Login() {
-  const { loading, currentUser } = useSelector((state) => state.user);
+  const { loading } = useSelector((state) => state.user);
   const { registeredUser } = useSelector((state) => state.register);
   const [loginDetails, setLoginDetails] = useState({
     email: "",
@@ -134,10 +134,6 @@ function Login() {
 
   useEffect(() => {
     dispatch(initialRender());
-
-    if (currentUser) {
-      navigate("/");
-    }
 
     AOS.init({ duration: 1200 });
   }, []);

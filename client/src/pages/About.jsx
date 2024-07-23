@@ -330,7 +330,7 @@ function About() {
                   />
                   <div className="w-full h-full rounded-xl overflow-hidden">
                     <ReactPlayer
-                      url="https://youtu.be/jFGK8VNMq_g"
+                      url="https://www.youtube.com/watch?v=3v5hReC9ryw"
                       className="react-player"
                       playing
                       controls

@@ -3,6 +3,7 @@ import Footer from "./Footer";
 import Input from "./Input";
 import ProtectedRoute from "./ProtectedRoute";
 import OnlyAdmiProtectedRoute from "./OnlyAdminProtectedRoute";
+import AuthProtectedRoute from "./AuthProtectedRoute";
 import DashProfile from "./DashProfile";
 import DashSideBar from "./DashSideBar";
 import OAuth from "./OAuth";
@@ -38,6 +39,7 @@ export {
   Input,
   ProtectedRoute,
   OnlyAdmiProtectedRoute,
+  AuthProtectedRoute,
   DashProfile,
   DashSideBar,
   DashPosts,

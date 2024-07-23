@@ -28,6 +28,7 @@ import {
   OnlyAdmiProtectedRoute,
   ScrollToTop,
   Cursor,
+  AuthProtectedRoute,
 } from "./components";
 
 const App = () => {
@@ -40,22 +41,24 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/contact-us" element={<Contact />} />
-          <Route path="/book-trials" element={<Trials />} />
-
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-
-          <Route path="/post/:postSlug" element={<PostItem />} />
-          <Route path="/video/:videoSlug" element={<VideoItem />} />
-
-          <Route path="/search" element={<SearchPage />} />
-          <Route path="/practices" element={<Practices />} />
-          <Route path="/blogs" element={<Blogs />} />
 
           <Route element={<ProtectedRoute />}>
+            <Route path="/contact-us" element={<Contact />} />
+            <Route path="/book-trials" element={<Trials />} />
+
+            <Route path="/post/:postSlug" element={<PostItem />} />
+            <Route path="/video/:videoSlug" element={<VideoItem />} />
+
+            <Route path="/search" element={<SearchPage />} />
+            <Route path="/practices" element={<Practices />} />
+            <Route path="/blogs" element={<Blogs />} />
+
             <Route path="/admin-dashboard" element={<Dashboard />} />
+          </Route>
+          <Route element={<AuthProtectedRoute />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
           </Route>
           <Route element={<OnlyAdmiProtectedRoute />}>
             <Route path="/create-post" element={<CreatePost />} />

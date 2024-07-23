@@ -91,9 +91,6 @@ function Register() {
   useEffect(() => {
     dispatch(initialRender());
     dispatch(registrationInitialRender());
-    if (currentUser) {
-      navigate("/");
-    }
 
     AOS.init({ duration: 1200 });
   }, []);

@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { BeatLoader } from "react-spinners";
 
 function ResetPassword() {
   const [newUser, setNewUser] = useState({
@@ -178,7 +179,14 @@ function ResetPassword() {
           gradientDuoTone="purpleToPink"
           className="font-[Inter] w-full mt-10"
         >
-          Reset Password
+          {isLoading ? (
+            <>
+              Processing
+              <BeatLoader color="#fff" size={8} className="my-auto ml-2" />
+            </>
+          ) : (
+            "Reset Password"
+          )}
         </Button>
       </form>
     </div>
