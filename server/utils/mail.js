@@ -140,3 +140,33 @@ export const contactQueryEmailTemplate = (
     </html>
   `;
 };
+
+// Booked trail email template (for admin)
+export const bookedTrialEmailTemplate = (newTrialData) => {
+  return `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>New Trial Booking Comes</title>
+    </head>
+    <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; color: #333;">
+      <div style="background-color: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); max-width: 600px; margin: auto;">
+        <h2 style="text-align: center; color: #4CAF50;">New Trial Booking Comes</h2>
+        <p><strong>Player Name:</strong> ${newTrialData.playerFullName}</p>
+        <p><strong>Phone No:</strong> ${newTrialData.playerContactNumber}</p>
+        <p><strong>DOB:</strong> ${newTrialData.playerDOB}</p>
+        <p><strong>Gender:</strong> ${newTrialData.playerGender}</p>
+        <p><strong>Address:</strong> ${newTrialData.playerStreetAddress}</p>
+        <p><strong>City:</strong> ${newTrialData.playerCity}</p>
+        <p><strong>Position:</strong> ${newTrialData.playerPosition}</p>
+        <p><strong>Emergency Phone No:</strong> ${newTrialData.playerEmergencyContactNumber}</p>
+        <footer style="text-align: center; margin-top: 20px; font-size: 0.9em; color: #888;">
+          <p>&copy; 2024 Your Company. All rights reserved.</p>
+        </footer>
+      </div>
+    </body>
+    </html>
+  `;
+};

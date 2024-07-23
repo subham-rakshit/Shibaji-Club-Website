@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import AOS from "aos";
 import {
   Alert,
@@ -183,8 +184,6 @@ function Trials() {
     playerEmergencyContactName: "",
     playerEmergencyContactNumber: "",
   });
-  const [trialBookSuccessMsg, setTrialBookSuccessMsg] = useState(null);
-  const [trialBookErrorMsg, setTrialBookErrorMsg] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -201,7 +200,10 @@ function Trials() {
       });
       const data = await res.json();
       if (res.ok) {
-        setTrialBookSuccessMsg(data.message);
+        toast.success(data.message, {
+          theme: "colored",
+          position: "bottom-center",
+        });
         setTrialFormData({
           playerFullName: "",
           playerContactNumber: "",
@@ -223,7 +225,10 @@ function Trials() {
           playerEmergencyContactNumber: "",
         });
       } else {
-        setTrialBookErrorMsg(data.extraDetails);
+        toast.error(data.extraDetails, {
+          theme: "colored",
+          position: "bottom-center",
+        });
       }
     } catch (error) {
       console.log(error.message);
@@ -302,7 +307,7 @@ function Trials() {
                   type="text"
                   id="playerPhoneNumber"
                   className="text-sm"
-                  placeholder="+91 1234567890"
+                  placeholder="+91-123-456-7890"
                   value={trialFormData.playerContactNumber}
                   onChange={(e) =>
                     setTrialFormData({
@@ -487,7 +492,7 @@ function Trials() {
                   type="text"
                   id="parentPhoneNumber"
                   className="text-sm"
-                  placeholder="+91 1234567890"
+                  placeholder="+91-123-456-7890"
                   value={trialFormData.parentPhoneNumber}
                   onChange={(e) =>
                     setTrialFormData({
@@ -744,7 +749,7 @@ function Trials() {
                   type="text"
                   id="emergencyPhoneNumber"
                   className="text-sm"
-                  placeholder="+91 1234567890"
+                  placeholder="+91-123-456-7890"
                   value={trialFormData.playerEmergencyContactNumber}
                   onChange={(e) =>
                     setTrialFormData({
@@ -784,28 +789,6 @@ function Trials() {
             )}
           </Button>
         </form>
-
-        {/* Alert Success Message */}
-        {trialBookSuccessMsg && (
-          <Alert
-            color="success"
-            onDismiss={() => setTrialBookSuccessMsg(null)}
-            className="my-5"
-          >
-            {trialBookSuccessMsg}
-          </Alert>
-        )}
-
-        {/* Alert Failure Message */}
-        {trialBookErrorMsg && (
-          <Alert
-            color="failure"
-            onDismiss={() => setTrialBookErrorMsg(null)}
-            className="my-5"
-          >
-            {trialBookErrorMsg}
-          </Alert>
-        )}
       </div>
     </div>
   );

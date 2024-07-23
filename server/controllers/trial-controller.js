@@ -7,6 +7,18 @@ import {
   SMTP_MAIL,
   SMTP_PASSWORD,
 } from "../config/envConfig.js";
+import { bookedTrialEmailTemplate } from "../utils/mail.js";
+
+//? Mail transporter from nodemailer
+let transporter = nodemailer.createTransport({
+  host: SMTP_HOST,
+  port: SMTP_PORT, // Typically 587 for TLS, 465 for SSL
+  secure: false, // Use `true` for port 465, `false` for all other ports
+  auth: {
+    user: SMTP_MAIL,
+    pass: SMTP_PASSWORD,
+  },
+});
 
 // Create new Trial booking data -->
 export const createTrialDetails = async (req, res, next) => {
@@ -212,6 +224,13 @@ export const createTrialDetails = async (req, res, next) => {
 
     try {
       await newTrialData.save();
+      // We are sending these details to my email address
+      transporter.sendMail({
+        from: SMTP_MAIL,
+        to: SMTP_MAIL,
+        subject: "NEW TRIAL BOOKING FROM SHIBAJI WEBSITE",
+        html: bookedTrialEmailTemplate(newTrialData),
+      });
 
       res.status(201).json({
         message:
@@ -271,16 +290,6 @@ export const getAllTrialsData = async (req, res, next) => {
 };
 
 //* Update to confirm a specific trial starts -->
-//? Mail transporter from nodemailer
-let transporter = nodemailer.createTransport({
-  host: SMTP_HOST,
-  port: SMTP_PORT, // Typically 587 for TLS, 465 for SSL
-  secure: false, // Use `true` for port 465, `false` for all other ports
-  auth: {
-    user: SMTP_MAIL,
-    pass: SMTP_PASSWORD,
-  },
-});
 
 export const updateTrial = async (req, res, next) => {
   //? Check user is Admin or not -->
