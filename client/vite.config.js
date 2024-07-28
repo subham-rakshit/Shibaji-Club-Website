@@ -8,6 +8,7 @@ export default defineConfig({
       "/api": {
         target: "https://shibaji-sangha.onrender.com/",
         secure: true,
+        changeOrigin: true,
       },
     },
   },
