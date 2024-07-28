@@ -6,9 +6,8 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://shibaji-sangha.onrender.com/",
-        secure: true,
-        changeOrigin: true,
+        target: "http://localhost:5000",
+        secure: false,
       },
     },
   },
