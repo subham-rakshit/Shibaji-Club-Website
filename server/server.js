@@ -23,7 +23,6 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:5173",
   "https://shibaji-sangha.onrender.com",
-  "https://shibaji.netlify.app",
 ];
 
 // Handle the CORS error while requesting
