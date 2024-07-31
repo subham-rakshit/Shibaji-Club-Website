@@ -149,7 +149,7 @@ function Login() {
           data-aos="fade-right"
         >
           <h1 className="font-extrabold font-[Inter] text-normal text-2xl sm:text-3xl mb-5">
-            Wellcome Back!
+            Welcome Back!
           </h1>
 
           {/* Main From */}
