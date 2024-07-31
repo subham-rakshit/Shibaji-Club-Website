@@ -133,7 +133,7 @@ function SearchNutrition({
                   <ul className="flex items-center flex-wrap gap-4 my-5 mx-auto">
                     {allContentData.map((item) => (
                       <li
-                        className="shadow-custom-light-dark rounded-lg"
+                        className="shadow-custom-light-dark rounded-lg w-full sm:w-[fit-content]"
                         key={item._id}
                       >
                         <VideoCard eachVideo={item} />

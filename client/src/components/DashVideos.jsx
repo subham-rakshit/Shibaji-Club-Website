@@ -28,13 +28,14 @@ function DashVideos() {
 
         if (res.ok) {
           setAllVideosData(data.videos);
-          setIsLoading(false);
           if (data.videos.length < 9) {
             setShowMoreData(false);
           }
         }
       } catch (error) {
-        console.log(error.message);
+        console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     };
     if (currentUser.isAdmin) {

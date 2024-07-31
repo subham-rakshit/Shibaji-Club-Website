@@ -29,13 +29,14 @@ function DashComment() {
 
         if (res.ok) {
           setAllCommentsData(data.comments);
-          setIsLoading(false);
           if (data.comments.length < 9) {
             setShowMoreData(false);
           }
         }
       } catch (error) {
-        console.log(error.message);
+        console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     };
     if (currentUser.isAdmin) {

@@ -28,13 +28,14 @@ function DashUsers() {
 
         if (res.ok) {
           setAllUsersData(data.users);
-          setIsLoading(false);
           if (data.users.length < 9) {
             setShowMoreData(false);
           }
         }
       } catch (error) {
-        console.log(error.message);
+        console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     };
     if (currentUser.isAdmin) {

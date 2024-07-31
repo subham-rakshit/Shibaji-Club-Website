@@ -100,7 +100,7 @@ function SavedVideos() {
                 {videoDetailsList.length > 0 &&
                   videoDetailsList.map((video) => (
                     <li
-                      className="shadow-custom-light-dark rounded-lg"
+                      className="shadow-custom-light-dark rounded-lg w-full sm:w-[fit-content]"
                       key={video.title}
                     >
                       <VideoCard eachVideo={video} />

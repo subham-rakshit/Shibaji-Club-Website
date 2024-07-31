@@ -28,13 +28,14 @@ function DashPosts() {
 
         if (res.ok) {
           setAllPostsData(data.posts);
-          setIsLoading(false);
           if (data.posts.length < 9) {
             setShowMoreData(false);
           }
         }
       } catch (error) {
-        console.log(error.message);
+        console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     };
     if (currentUser.isAdmin) {

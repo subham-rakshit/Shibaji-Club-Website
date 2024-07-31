@@ -121,7 +121,7 @@ function SearchAllContent({ tab, searchItem, currentPage, onChangePage }) {
                     {allContentData &&
                       allContentData.map((item) => (
                         <li
-                          className="shadow-custom-light-dark rounded-lg"
+                          className="shadow-custom-light-dark rounded-lg w-full sm:w-[fit-content]"
                           key={item._id}
                         >
                           {Object.keys(item).includes("blogImage") ? (
