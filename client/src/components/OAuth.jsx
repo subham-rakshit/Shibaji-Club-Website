@@ -77,7 +77,7 @@ function OAuth() {
         alt="google"
         className="mr-2"
       />
-      Goggle
+      Google
     </Button>
   );
 }
