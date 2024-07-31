@@ -11,6 +11,8 @@ function SavedVideos() {
   const [videoDetailsList, setVideoDetailsList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  console.log(videoDetailsList);
+
   // Fetch video details
   const getVideoDetails = async (videoId) => {
     try {
@@ -18,12 +20,9 @@ function SavedVideos() {
       const data = await res.json();
       if (res.ok) {
         return data.videos[0];
-      } else {
-        return "Faild to fetch video";
       }
     } catch (error) {
       console.log(error.message);
-      return "Back-end Error";
     }
   };
 
@@ -66,11 +65,15 @@ function SavedVideos() {
               Total Videos
             </h1>
             <span className="min-w-8 min-h-8 text-center text-sm text-cyan-500 font-[Inter] font-semibold border p-1 shadow-custom-light-dark rounded-full">
-              {currentUser && currentUser.savedVideos.length}
+              {currentUser &&
+              videoDetailsList.every((video) => video !== undefined)
+                ? currentUser.savedVideos.length
+                : 0}
             </span>
           </div>
 
-          {currentUser && currentUser.savedVideos.length === 0 ? (
+          {(currentUser && currentUser.savedVideos.length === 0) ||
+          videoDetailsList.length < 1 ? (
             <div className="min-h-screen flex flex-col justify-center items-center my-5 p-5">
               <img
                 src="https://firebasestorage.googleapis.com/v0/b/shibaji-website.appspot.com/o/404%20bg%20rmove.png?alt=media&token=d7c415d5-c276-4cc9-8145-92e5bdf58365"
@@ -98,14 +101,40 @@ function SavedVideos() {
             <>
               <ul className="flex items-center flex-wrap gap-4 my-5 mx-auto">
                 {videoDetailsList.length > 0 &&
-                  videoDetailsList.map((video) => (
-                    <li
-                      className="shadow-custom-light-dark rounded-lg w-full sm:w-[fit-content]"
-                      key={video.title}
-                    >
-                      <VideoCard eachVideo={video} />
-                    </li>
-                  ))}
+                videoDetailsList.every((video) => video !== undefined) ? (
+                  videoDetailsList.map((video) => {
+                    if (video) {
+                      return (
+                        <li
+                          className="shadow-custom-light-dark rounded-lg w-full sm:w-[fit-content]"
+                          key={video.title}
+                        >
+                          <VideoCard eachVideo={video} />
+                        </li>
+                      );
+                    }
+                  })
+                ) : (
+                  <div className="min-h-screen flex flex-col justify-center items-center my-5 p-5 w-full">
+                    <img
+                      src="https://firebasestorage.googleapis.com/v0/b/shibaji-website.appspot.com/o/404%20bg%20rmove.png?alt=media&token=d7c415d5-c276-4cc9-8145-92e5bdf58365"
+                      alt="404 not found"
+                    />
+                    <p className="text-lg sm:text-2xl font-[Inter] font-bold mt-2">
+                      Oops! Something went wrong.
+                    </p>
+                    <Link to="/search?tab=savedvideos">
+                      <Button
+                        type="button"
+                        gradientDuoTone="purpleToPink"
+                        outline
+                        className="my-5"
+                      >
+                        Watch Later
+                      </Button>
+                    </Link>
+                  </div>
+                )}
               </ul>
             </>
           )}
