@@ -527,7 +527,7 @@ const authControllerObject = {
         to: email,
         subject: "RESET PASSWORD",
         html: resetTokenEmailTemplate(
-          `http://localhost:5173/reset-password?token=${token}&id=${user._id}`
+          `${process.env.BASE_URL}/reset-password?token=${token}&id=${user._id}`
         ),
       });
 
