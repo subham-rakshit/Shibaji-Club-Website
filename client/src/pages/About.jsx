@@ -251,7 +251,7 @@ function About() {
           {/* Right Side */}
           <div className="w-full md:w-[50%]" data-aos="fade-left">
             <h1 className="text-2xl md:text-4xl font-bold">
-              Player Requitment
+              Player Recruitments
             </h1>
             <p className="text-sm md:text-[20px] mt-5 leading-6">
               We also recruit players for our football team. Our club is always
@@ -261,7 +261,7 @@ function About() {
               in a competitive environment.
             </p>
             <p className="text-sm md:text-[20px] mt-5 leading-6">
-              Joining Shbaji Sangha means becoming part of a community that
+              Joining Shibaji Sangha means becoming part of a community that
               values teamwork, discipline, and continuous improvement. We offer
               a nurturing environment where players can develop both on and off
               the field.
