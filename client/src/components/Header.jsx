@@ -151,7 +151,7 @@ function Header() {
       <Link to="/">
         <img
           src="https://firebasestorage.googleapis.com/v0/b/shibaji-website.appspot.com/o/bgRemoveWebLogo.png?alt=media&token=4d742d92-7d25-42dd-8835-1951c710c18b"
-          className="w-[120px] sm:w-[160px] h-6 lg:h-9 object-cover"
+          className="w-[120px] sm:w-[160px] h-6 lg:h-9 bg-cover"
           alt="Shibaji logo"
           data-aos="fade-right"
         />

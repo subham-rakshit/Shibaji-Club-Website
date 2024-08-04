@@ -43,7 +43,7 @@ const Footer = () => {
                 </li>
               </Link>
               <Link
-                to="https://www.instagram.com/subham_rakshit_1/"
+                to="https://www.instagram.com/shibaji_sangha_fc_official/"
                 target="_blank"
               >
                 <li className="hover:shadow-custom-light-dark p-2 rounded-full">
@@ -154,7 +154,6 @@ const Footer = () => {
                   </li>
                 </Link>
               </ul>
-              {/* TODO ⛔⛔⛔⛔ */}
             </div>
             {/* Info */}
           </div>
